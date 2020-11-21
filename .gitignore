@@ -12,11 +12,12 @@ Thumbs.db
 *.log
 
 
-# recursos que los usuarios suben como videos, documentos, imagenes 
+# recursos que se suben como videos, documentos, imagenes 
 /public/video/**/*.*
 /public/files/**/*.*
 /public/subtitles/*.*
 /public/images/user_img/*.*
 *.mp4
+*.zip
 /public
 !.gitignore
