@@ -1,0 +1,22 @@
+# Archivos de la aplicación
+/bootstrap/compiled.php
+/vendor
+/node_modules
+composer.phar
+composer.lock
+.env.*.php
+.env.php
+.DS_Store
+workspace.xml
+Thumbs.db
+*.log
+
+
+# recursos que los usuarios suben como videos, documentos, imagenes 
+/public/video/**/*.*
+/public/files/**/*.*
+/public/subtitles/*.*
+/public/images/user_img/*.*
+*.mp4
+/public
+!.gitignore
