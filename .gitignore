@@ -19,5 +19,4 @@ Thumbs.db
 /public/images/user_img/*.*
 *.mp4
 *.zip
-/public
 !.gitignore
