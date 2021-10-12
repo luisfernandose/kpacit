@@ -1,7 +1,10 @@
 
 ## Kpacit Laravel Project
 
+#A. Composer Install
 
-A. Import BD to MySQL
-B. Edit .ENV
-C. RUN php artisan serve --port=8080
+#B. Import BD to MySQL
+
+#C. Edit .ENV
+
+#D. RUN php artisan serve --port=8080
