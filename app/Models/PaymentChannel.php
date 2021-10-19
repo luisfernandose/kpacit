@@ -11,6 +11,6 @@ class PaymentChannel extends Model
     public $timestamps = false;
 
     static $classes = [
-        'Paypal', 'Paystack', 'Paytm'
+        'Paypal', 'Paystack', 'Paytm', 'Payu'
     ];
 }
