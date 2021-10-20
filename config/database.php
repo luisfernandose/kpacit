@@ -57,7 +57,7 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => false,
-            'engine' => null,
+            'engine' => 'InnoDB',
             'modes' => [
                 'STRICT_ALL_TABLES',
             ],
