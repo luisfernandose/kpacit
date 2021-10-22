@@ -84,7 +84,6 @@ class PaymentController extends Controller
         $order->payment_method = Order::$paymentChannel;
         $order->save();
 
-
         try {
             $channelManager = ChannelManager::makeChannel($paymentChannel);
             $redirect_url = $channelManager->paymentRequest($order);

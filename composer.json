@@ -40,7 +40,6 @@
         "spatie/laravel-google-calendar": "^3.1",
         "stripe/stripe-php": "^7.76",
         "twilio/sdk": "^6.17",
-        "tzsk/payu": "^5.0",
         "unicodeveloper/laravel-paystack": "1.0.*",
         "unisharp/laravel-filemanager": "^2.1",
         "vrajroham/laravel-bitpay": "^3.0"

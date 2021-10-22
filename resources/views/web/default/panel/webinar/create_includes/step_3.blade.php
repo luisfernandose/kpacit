@@ -5,7 +5,7 @@
 
 <div class="row">
     <div class="col-12 col-md-6">
-        <div class="form-group mt-30 d-flex align-items-center justify-content-between mb-5">
+        <!-- <div class="form-group mt-30 d-flex align-items-center justify-content-between mb-5">
             <label class="cursor-pointer input-label" for="subscribeSwitch">{{ trans('webinars.include_subscribe') }}</label>
             <div class="custom-control custom-switch">
                 <input type="checkbox" name="subscribe" class="custom-control-input" id="subscribeSwitch" {{ !empty($webinar) && $webinar->subscribe ? 'checked' : (old('subscribe') ? 'checked' : '')  }}>
@@ -15,7 +15,7 @@
 
         <div>
             <p class="font-12 text-gray">- {{ trans('forms.subscribe_hint') }}</p>
-        </div>
+        </div> -->
 
         <div class="form-group mt-15">
             <label class="input-label">{{ trans('public.price') }}</label>

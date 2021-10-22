@@ -52,4 +52,13 @@ return [
         'industry_type' => env('PAYTM_INDUSTRY_TYPE'),
     ],
 
+    'payu' => [
+        'test_mode' => env('PAYU_TEST_MODE'),
+        'end_point' => env('PAYU_END_POINT'),
+        'merchant_id' => env('PAYU_MERCHANT_ID'),
+        'account_id' => env('PAYU_ACCOUNT_ID'),
+        'api_key' => env('PAYU_API_KEY'),
+        'currency' => env('PAYU_CURRENCY', 'COP'),
+    ],
+
 ];
