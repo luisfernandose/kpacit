@@ -51,14 +51,14 @@ return [
     |--------------------------------------------------------------------------
      */
 
-    'max_image_size' => 2097152, //2G
-    'max_file_size' => 2097152,
+    'max_image_size' => 4194304, //2G
+    'max_file_size' => 4194304,
 
     'folder_categories' => [
         'file' => [
             'folder_name' => '/',
             'startup_view' => 'list',
-            'max_size' => 2097152, // size in KB
+            'max_size' => 4194304, // size in KB
             'valid_mime' => [
                 '.pdf',
                 '.doc',
@@ -80,7 +80,7 @@ return [
         'image' => [
             'folder_name' => '/',
             'startup_view' => 'list',
-            'max_size' => 2097152, // size in KB
+            'max_size' => 4194304, // size in KB
             'valid_mime' => [
                 '.pdf',
                 '.doc',
