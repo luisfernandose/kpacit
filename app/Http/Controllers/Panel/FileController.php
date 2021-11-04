@@ -136,13 +136,27 @@ class FileController extends Controller
     {
         $file = array();
 
-        $file_path = public_path($path);
+        if (config('filesystems.default') == 'local') {
 
-        $filePath = pathinfo($file_path);
+            $file_path = public_path($path);
 
-        $file['name'] = $filePath['filename'];
-        $file['extension'] = $filePath['extension'];
-        $file['size'] = filesize($file_path);
+            $filePath = pathinfo($file_path);
+
+            $file['name'] = $filePath['filename'];
+            $file['extension'] = $filePath['extension'];
+            $file['size'] = filesize($file_path);
+
+        } else if (config('filesystems.default') == 's3') {
+
+            $path = str_replace(config('filesystems.aws_url'), '', $path);
+
+            $fileName = array_reverse(explode('/', $path))[0] ?? 'not found.nfd';
+
+            $file['name'] = $fileName;
+            $file['extension'] = array_reverse(explode('.', $fileName))[0] ?? '.';
+            $file['size'] = Storage::size($path);
+
+        }
 
         return $file;
     }

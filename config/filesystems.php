@@ -41,6 +41,8 @@ return [
     |
     */
 
+    'aws_url' => env('AWS_URL', '/'),
+
     'disks' => [
 
         'local' => [
@@ -123,6 +125,7 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
+            'visibility' => 'public',
         ],
 
     ],

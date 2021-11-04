@@ -12,6 +12,7 @@ use App\Models\TextLesson;
 use App\Models\CourseLearning;
 use App\Models\WebinarReport;
 use App\Models\Webinar;
+use App\Http\Responses\S3FileStream;
 use Illuminate\Http\Request;
 
 class WebinarController extends Controller
@@ -240,6 +241,46 @@ class WebinarController extends Controller
         return back();
     }
 
+    public function getFileStream(Request $request, $slug, $file_id) {
+
+        $id = decrypt($file_id);
+
+        $file = File::where('id', $id)
+            ->first();
+
+        if (!empty($file)) {
+
+            $webinar = Webinar::where('id', $file->webinar_id)
+                ->where('status', 'active')
+                ->first();
+
+            if (!empty($webinar)) {
+                $canAccess = true;
+
+                if ($file->accessibility == 'paid') {
+                    $canAccess = $webinar->checkUserHasBought();
+                }
+
+                if ($canAccess) {
+                    $storageService = 'youtube';
+
+                    if (strpos($file->file, 'vimeo')) {
+                        $storageService = 'vimeo';
+                    }
+
+                    $path = str_replace(config('filesystems.aws_url'), '', $file->file);
+                    $fileName = array_reverse(explode('/', $path))[0] ?? '_filename.nfd';
+
+                    $filestream = new S3FileStream($path, config('filesystems.default'), $fileName);
+                    return $filestream->output();
+
+                }
+            }
+        }
+
+        return abort(403);
+    }
+
     public function getFilePath(Request $request)
     {
         $this->validate($request, [
@@ -270,10 +311,31 @@ class WebinarController extends Controller
                         $storageService = 'vimeo';
                     }
 
+                    $path = '';
+
+                    if ($file->storage == 'local') {
+
+                        $s3 = str_contains($file->file, config('filesystems.aws_url'));
+
+                        if ($s3) {
+
+                            $path = route('maskVideo', [$webinar->slug, encrypt($file_id)]);
+
+                        } else {
+
+                            $path = url($file->file);
+
+                        }
+
+                    } else {
+
+                        $path = $file->file;
+                    }
+
                     return response()->json([
                         'code' => 200,
                         'storage' => $file->storage,
-                        'path' => $file->storage == 'local' ? url($file->file) : $file->file,
+                        'path' =>  $path,
                         'storageService' => $storageService
                     ], 200);
                 }

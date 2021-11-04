@@ -48,6 +48,7 @@ Route::group(['namespace' => 'Web', 'middleware' => ['impersonate', 'share']], f
 
     Route::group(['prefix' => 'course'], function () {
         Route::get('/{slug}', 'WebinarController@course');
+        Route::get('/{slug}/file/{file_id}', 'WebinarController@getFileStream')->name('maskVideo');
         Route::get('/{slug}/file/{file_id}/download', 'WebinarController@downloadFile');
         Route::get('/{slug}/lessons/{lesson_id}/read', 'WebinarController@getLesson');
         Route::post('/getFilePath', 'WebinarController@getFilePath');

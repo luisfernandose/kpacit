@@ -24,6 +24,7 @@
         "laravel/socialite": "^4.4",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.1",
+        "league/flysystem-aws-s3-v3": "~1.0",
         "league/omnipay": "^3.1",
         "maatwebsite/excel": "^3.1",
         "macsidigital/laravel-zoom": "^4.1",
