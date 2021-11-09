@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SendNotifications;
 use App\Models\Role;
 use App\Providers\RouteServiceProvider;
 use App\User;
@@ -164,5 +165,62 @@ class RegisterController extends Controller
                 ? new JsonResponse([], 201)
                 : redirect($this->redirectPath());
         }
+    }
+
+    public function showRegisterOrganizationForm()
+    {
+        $seoSettings = getSeoMetas('organizations');
+        $pageTitle = !empty($seoSettings['title']) ? $seoSettings['title'] : trans('home.organizations');
+        $pageDescription = !empty($seoSettings['description']) ? $seoSettings['description'] : trans('home.organizations');
+        $pageRobot = getPageRobot('organizations');
+
+        $data['title'] = trans('home.organizations');
+        $data['page'] = 'organizations';
+        $data['pageTitle'] = $pageTitle;
+        $data['pageDescription'] = $pageDescription;
+        $data['pageRobot'] = $pageRobot;
+
+        return view('web.default.auth.register_organization', $data);
+    }
+
+    public function registerOrganization(Request $request)
+    {
+        $data = $request->validate([
+            'organization_name' => 'required|max:250',
+            'organization_nit' => 'required|numeric',
+            'contact_name' => 'required|max:250',
+            'contact_phone' => 'required|max:15',
+            'contact_email' => 'required|email|max:100',
+            'term' => 'required',
+        ]);
+
+        $data = (Object)$data;
+
+        $message = "
+            <b>Empresa:<b> $data->organization_name
+            <br>
+            <b>NIT:<b> $data->organization_nit
+            <br>
+            <b>Nombre contacto:<b> $data->contact_name
+            <br>
+            <b>Teléfono contacto:<b> $data->contact_phone
+            <br>
+            <b>Email contacto:<b> $data->contact_email
+            <br>
+        ";
+
+        $email = getGeneralSettings('site_email');
+
+        \Mail::to($email)->send(new SendNotifications(['title' => 'Solicitud registro empresa', 'message' => $message]));
+
+        $toastData = [
+            'title' => '',
+            'msg' => 'La solicitud de registro fue enviada con éxito.',
+            'status' => 'success'
+        ];
+
+        return $request->wantsJson()
+            ? new JsonResponse([], 201)
+            : redirect($this->redirectPath())->with(['toast' => $toastData]);
     }
 }

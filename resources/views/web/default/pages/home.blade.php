@@ -270,6 +270,22 @@
     @endif
 
     {{-- Ads Bannaer --}}
+    @if(!empty($advertisingBanners2) and count($advertisingBanners2))
+        <div class="home-sections container mt-0">
+            <div class="row">
+                @foreach($advertisingBanners2 as $banner2)
+                    <div class="col-{{ $banner2->size }}">
+                        <a href="{{ $banner2->link }}">
+                            <img src="{{ $banner2->image }}" class="img-cover rounded-sm" alt="{{ $banner2->title }}">
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
+    {{-- ./ Ads Bannaer --}}
+
+    {{-- Ads Bannaer --}}
     @if(!empty($advertisingBanners1) and count($advertisingBanners1))
         <div class="home-sections container">
             <div class="row">
@@ -572,22 +588,6 @@
             </div>
         </section>
     @endif
-
-    {{-- Ads Bannaer --}}
-    @if(!empty($advertisingBanners2) and count($advertisingBanners2))
-        <div class="home-sections container">
-            <div class="row">
-                @foreach($advertisingBanners2 as $banner2)
-                    <div class="col-{{ $banner2->size }}">
-                        <a href="{{ $banner2->link }}">
-                            <img src="{{ $banner2->image }}" class="img-cover rounded-sm" alt="{{ $banner2->title }}">
-                        </a>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    @endif
-    {{-- ./ Ads Bannaer --}}
 
     @if(!empty($organizations) and !$organizations->isEmpty())
         <section class="home-sections home-sections-swiper container">

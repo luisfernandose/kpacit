@@ -30,6 +30,10 @@ Route::group(['namespace' => 'Auth', 'middleware' => ['share']], function () {
     Route::get('/google/callback', 'SocialiteController@handleGoogleCallback');
     Route::get('/facebook/redirect', 'SocialiteController@redirectToFacebook');
     Route::get('/facebook/callback', 'SocialiteController@handleFacebookCallback');
+
+    Route::get('/register-organization', 'RegisterController@showRegisterOrganizationForm');
+    Route::post('/register-organization', 'RegisterController@registerOrganization');
+
 });
 
 

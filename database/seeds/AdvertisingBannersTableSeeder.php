@@ -46,7 +46,7 @@ class AdvertisingBannersTableSeeder extends Seeder
                 'position' => 'home2',
                 'image' => '/store/1/empresa.png',
                 'size' => 6,
-                'link' => '/pages/empresa',
+                'link' => '/organizations/register',
                 'published' => 1,
                 'created_at' => 1607885681,
             ),
