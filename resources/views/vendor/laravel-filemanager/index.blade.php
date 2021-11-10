@@ -287,6 +287,28 @@
       acceptedFiles: "{{ implode(',', $helper->availableMimeTypes()) }}",
       maxFilesize: ({{ $helper->maxUploadSize() }} / 1000)
     }
+
+    $(document).ready(() => {
+
+      setInterval(() => {
+
+        $('.dz-progress .dz-upload').each(function (i, obj) {
+
+          const span = $(this)[0];
+
+          $(`#percentage_span_${i}`).remove();
+
+          const e = document.createElement('span');
+          e.id = `percentage_span_${i}`;
+          e.innerText = span.style.width;
+
+          span.parentElement.previousElementSibling.appendChild(e);
+
+        });
+
+      }, 1000);
+
+    })
   </script>
 </body>
 </html>
