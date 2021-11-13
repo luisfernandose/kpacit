@@ -61,6 +61,24 @@ Route::group(['namespace' => 'Panel', 'prefix' => 'panel', 'middleware' => ['imp
         });
     });
 
+    Route::group(['prefix' => 'course-groups', 'middleware' => 'user.not.access'], function () {
+        Route::get('/', 'CourseGroupController@index')->name('panel.courseGroups.index');
+        Route::get('/new', 'CourseGroupController@create');
+        Route::post('/store', 'CourseGroupController@store')->name('panel.courseGroups.store');
+        Route::get('/{course_group_list_id}/edit', 'CourseGroupController@edit')->name('panel.courseGroups.edit');
+        Route::post('/{course_group_list_id}/update', 'CourseGroupController@update')->name('panel.courseGroups.update');
+        Route::get('/{course_group_list_id}/delete', 'CourseGroupController@destroy')->name('panel.courseGroups.delete');
+
+        Route::get('/{course_group_list_id}/manager/students', 'CourseGroupController@manageStudentsIndex')->name('panel.courseGroups.manage.students');
+        Route::post('/{course_group_list_id}/manager/students/store', 'CourseGroupController@manageStudentsStore')->name('panel.courseGroups.manage.students.store');
+        Route::get('/{course_group_list_id}/manager/students/{group_user_id}/delete', 'CourseGroupController@manageStudentsDestroy')->name('panel.courseGroups.manage.students.delete');
+
+        Route::get('/{course_group_list_id}/manager/classes', 'CourseGroupController@manageClassesIndex')->name('panel.courseGroups.manage.classes');
+        Route::post('/{course_group_list_id}/manager/classes/store', 'CourseGroupController@manageClassesStore')->name('panel.courseGroups.manage.classes.store');
+        Route::get('/{course_group_list_id}/manager/classes/{group_class_id}/delete', 'CourseGroupController@manageClassesDestroy')->name('panel.courseGroups.manage.classes.delete');
+    });
+
+
     Route::group(['prefix' => 'quizzes'], function () {
         Route::group(['middleware' => 'user.not.access'], function () {
 

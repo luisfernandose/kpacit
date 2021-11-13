@@ -215,6 +215,22 @@ return [
     'instructors_no_result' => 'No instructor added yet!',
     'instructors_no_result_hint' => 'You can create instructors related to the organization.',
 
+    // Groups
+    'groups_no_result' => 'No group added yet!',
+    'groups_no_result_hint' => 'You can create groups to associate courses and students.',
+    'groups_no_student_result' => 'No student added to the group yet!',
+    'groups_no_student_result_hint' => 'You can add students to groups and share the group classes.',
+    'groups_no_class_result' => 'No class added to the group yet!',
+    'groups_no_class_result_hint' => 'You can add classes to groups and share with students.',
+    'add_a_group' => 'New group',
+    'group_store_success' => 'Group successfully created',
+    'group_update_success' => 'Group successfully updated',
+    'group_delete_success' => 'Group successfully deleted',
+    'group_student_store_success' => 'Student added to group successfully',
+    'group_class_store_success' => 'Class added to group successfully',
+
+
+
     'filter_students' => 'Filter Students',
     'students_list' => 'Students List',
     'add_an_student' => 'New student',
