@@ -31,6 +31,10 @@
                     @enderror
                 </div>
             </div>
+
+            <div class="col-lg-8 text-right">
+                <a class="btn btn-sm btn-secondary" href="{{ route('panel.courseGroups.manage.students', Request::route('course_group_list_id')) }}">{{ trans('groups.manage_students') }}</a>
+            </div>
         </div>
 
         <div class="row mb-2">
