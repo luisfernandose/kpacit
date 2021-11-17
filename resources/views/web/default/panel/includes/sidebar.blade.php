@@ -160,6 +160,28 @@
             </div>
         </li>
 
+        @if($authUser->isOrganization())
+            <li class="sidenav-item {{ (request()->is('panel/course-groups') or request()->is('panel/course-groups/*')) ? 'sidenav-item-active' : '' }}">
+                <a class="d-flex align-items-center" data-toggle="collapse" href="#courseCollapse" role="button" aria-expanded="false" aria-controls="courseCollapse">
+                <span class="sidenav-item-icon mr-10">
+                    @include('web.default.panel.includes.sidebar_icons.groups')
+                </span>
+                    <span class="font-14 text-dark-blue font-weight-500">{{ trans('public.groups') }}</span>
+                </a>
+
+                <div class="collapse {{ (request()->is('panel/course-groups') or request()->is('panel/course-groups/*')) ? 'show' : '' }}" id="courseCollapse">
+                    <ul class="sidenav-item-collapse">
+                        <li class="mt-5 {{ (request()->is('panel/course-groups/new')) ? 'active' : '' }}">
+                            <a href="/panel/course-groups/new">{{ trans('public.new') }}</a>
+                        </li>
+                        <li class="mt-5 {{ (request()->is('panel/course-groups')) ? 'active' : '' }}">
+                            <a href="/panel/course-groups">{{ trans('public.list') }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        @endif
+
         <li class="sidenav-item {{ (request()->is('panel/meetings') or request()->is('panel/meetings/*')) ? 'sidenav-item-active' : '' }}">
             <a class="d-flex align-items-center" data-toggle="collapse" href="#meetingCollapse" role="button" aria-expanded="false" aria-controls="meetingCollapse">
                 <span class="sidenav-item-icon mr-10">
