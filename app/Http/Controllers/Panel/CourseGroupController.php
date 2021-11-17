@@ -138,10 +138,16 @@ class CourseGroupController extends Controller
     {
 
         $group = CourseGroupList::where('id', $id)
-        ->where('creator_id', auth()->user()->id)
-        ->firstOrFail();
+            ->where('creator_id', auth()->user()->id)
+            ->firstOrFail();
 
         if (!empty($group)) {
+
+            CourseGroupUsers::where('course_group_list_id', $id)
+                ->delete();
+
+            CourseGroups::where('course_group_list_id', $id)
+                ->delete();
 
             $group->delete();
 

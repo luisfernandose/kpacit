@@ -73,14 +73,24 @@ class WebinarController extends Controller
         $user = auth()->user();
 
         if (!empty($user->organ_id)) {
-            $query = Webinar::where('creator_id', $user->organ_id)
-                ->where('status', 'active');
+            $query = Webinar::select('webinars.*')
+                ->join('course_group_lists', 'webinars.creator_id', '=', 'course_group_lists.creator_id')
+                ->join('course_group_users', 'course_group_lists.id', '=', 'course_group_users.course_group_list_id')
+                ->join('course_groups', function ($join) {
+                    $join->on('course_group_lists.id', '=', 'course_groups.course_group_list_id')
+                        ->on('webinars.id', '=', 'course_groups.webinar_id');
+                })
+                ->where('webinars.creator_id', $user->organ_id)
+                ->where('course_group_lists.creator_id', $user->organ_id)
+                ->where('course_group_users.user_id', $user->id)
+                ->where('webinars.status', 'active');
 
             $query = $this->organizationClassesFilters($query, $request);
 
             $webinars = $query
-                ->orderBy('created_at', 'desc')
-                ->orderBy('updated_at', 'desc')
+                ->orderBy('webinars.created_at', 'desc')
+                ->orderBy('webinars.updated_at', 'desc')
+                ->distinct()
                 ->paginate(10);
 
             $data = [
