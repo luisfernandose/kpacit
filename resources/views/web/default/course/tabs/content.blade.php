@@ -383,7 +383,7 @@
                                     <div class="col-3 text-gray font-14 text-center">{{ $quiz->pass_mark }}/{{ $quiz->quizQuestions->sum('grade') }}</div>
 
                                     <div class="col-3 d-flex justify-content-end">
-                                        @if(!empty($user) and $quiz->can_download_certificate and $hasBought)
+                                        @if(!empty($user) and $quiz->can_download_certificate and $hasBought and !empty($quiz->result->id))
                                             <a href="/panel/quizzes/results/{{ $quiz->result->id }}/downloadCertificate" class="course-content-btns btn btn-sm btn-primary flex-grow-1">{{ trans('home.download') }}</a>
                                         @else
                                             <button type="button" class="course-content-btns btn btn-sm btn-gray flex-grow-1 disabled {{ ((empty($user)) ? 'not-login-toast' : (!$hasBought ? 'not-access-toast' : (!$quiz->can_download_certificate ? 'can-not-download-certificate-toast' : ''))) }}">
