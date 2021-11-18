@@ -233,7 +233,15 @@ class CertificateController extends Controller
 
             $img->save($file_path);
 
-            $file_path = '/' . explode('/public/', $file_path)[1];
+            $explodeResult = explode('/public/', $file_path);
+
+            if (count($explodeResult) <= 1) {
+
+                $explodeResult = explode('\\public\\', $file_path);
+
+            }
+
+            $file_path = '/' . $explodeResult[1];
 
             $certificate = Certificate::where('quiz_id', $quiz->id)
                 ->where('student_id', $user->id)
