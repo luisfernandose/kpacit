@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['namespace' => 'Auth', 'middleware' => ['share']], function () {
-    Route::get('/login', 'LoginController@showLoginForm');
+    Route::get('/login', 'LoginController@showLoginForm')->name('user.login');
     Route::post('/login', 'LoginController@login');
     Route::get('/logout', 'LoginController@logout');
     Route::get('/register', 'RegisterController@showRegistrationForm');

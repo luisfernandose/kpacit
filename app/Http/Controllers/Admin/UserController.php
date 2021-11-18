@@ -6,6 +6,7 @@ use App\Exports\OrganizationsExport;
 use App\Exports\StudentsExport;
 use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
+use App\Mail\SendNotifications;
 use App\Models\Badge;
 use App\Models\BecomeInstructor;
 use App\Models\Category;
@@ -428,7 +429,6 @@ class UserController extends Controller
             'userGroups' => $userGroups,
         ];
 
-
         return view('admin.users.create', $data);
     }
 
@@ -488,6 +488,13 @@ class UserController extends Controller
                         ]);
                     }
                 }
+
+                // Envío de correo
+                $message = 'Felicidades!<br>Se ha relizado un registro en Kpacit con tu correo electrónico,
+                para ingresar puedes hacerlo ingresando a ' . route('user.login') . ' con la contraseña: ' . $data['password'] .
+                '<br><b>te recomendamos cambiar la contraseña una vez inicies sesión.</b>';
+
+                \Mail::to($user->email)->send(new SendNotifications(['title' => 'Registro en plataforma Kpacit', 'message' => $message]));
 
                 return redirect('/admin/users/' . $user->id . '/edit');
             }

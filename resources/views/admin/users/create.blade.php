@@ -41,7 +41,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="username">{{ trans('auth.email_or_mobile') }}:</label>
+                                            <label for="username">{{ trans('auth.email') }}:</label>
                                             <input name="username" type="text" class="form-control @error('email') is-invalid @enderror @error('mobile') is-invalid @enderror" id="username" value="{{ old('email') }}" aria-describedby="emailHelp">
                                             @error('email')
                                             <div class="invalid-feedback">
