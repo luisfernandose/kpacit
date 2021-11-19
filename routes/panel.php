@@ -258,6 +258,7 @@ Route::group(['namespace' => 'Panel', 'prefix' => 'panel', 'middleware' => ['imp
         Route::post('/{user_type}/new', 'UserController@storeUser');
         Route::get('/{user_type}/{user_id}/edit', 'UserController@editUser');
         Route::get('/{user_type}/{user_id}/edit/step/{step?}', 'UserController@editUser');
+        Route::get('/{user_type}/{user_id}/remove', 'UserController@removeUserFromOrganization');
     });
 });
 

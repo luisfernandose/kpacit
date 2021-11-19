@@ -495,6 +495,28 @@ class UserController extends Controller
         abort(404);
     }
 
+    public function removeUserFromOrganization($user_type, $user_id)
+    {
+        $valid_type = ['instructors', 'students'];
+        $organization = auth()->user();
+
+        if ($organization->isOrganization() and in_array($user_type, $valid_type)) {
+
+            User::where('id', $user_id)
+                ->where('organ_id', $organization->id)
+                ->update([
+                    'organ_id' => null,
+                ]);
+
+            return response()->json([
+                'code' => 200
+            ], 200);
+        }
+
+        return response()->json([], 422);
+
+    }
+
     public function search(Request $request)
     {
         $term = $request->get('term');

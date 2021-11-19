@@ -109,7 +109,7 @@
                                                 <div class="dropdown-menu">
                                                     <a href="{{ $user->getProfileUrl() }}" class="btn-transparent webinar-actions d-block mt-10">{{ trans('public.profile') }}</a>
                                                     <a href="/panel/manage/instructors/{{ $user->id }}/edit" class="btn-transparent webinar-actions d-block mt-10">{{ trans('public.edit') }}</a>
-                                                    <a href="/panel/manage/instructors/{{ $user->id }}/delete" class="webinar-actions d-block mt-10 delete-action">{{ trans('public.delete') }}</a>
+                                                    <a href="/panel/manage/instructors/{{ $user->id }}/remove" class="webinar-actions d-block mt-10 delete-action">{{ trans('public.remove') }}</a>
                                                 </div>
                                             </div>
                                         </td>
