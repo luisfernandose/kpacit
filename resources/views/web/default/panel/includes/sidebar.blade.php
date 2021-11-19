@@ -293,13 +293,13 @@
                         </li>
                     @endif
 
-                    <li class="mt-5 {{ (request()->is('panel/financial/account')) ? 'active' : '' }}">
+                    <!-- <li class="mt-5 {{ (request()->is('panel/financial/account')) ? 'active' : '' }}">
                         <a href="/panel/financial/account">{{ trans('financial.charge_account') }}</a>
                     </li>
 
                     <li class="mt-5 {{ (request()->is('panel/financial/subscribes')) ? 'active' : '' }}">
                         <a href="/panel/financial/subscribes">{{ trans('financial.subscribes') }}</a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </li>
@@ -341,9 +341,9 @@
                         <li class="mt-5 {{ (request()->is('panel/marketing/special_offers')) ? 'active' : '' }}">
                             <a href="/panel/marketing/special_offers">{{ trans('panel.discounts') }}</a>
                         </li>
-                        <li class="mt-5 {{ (request()->is('panel/marketing/promotions')) ? 'active' : '' }}">
+                        <!-- <li class="mt-5 {{ (request()->is('panel/marketing/promotions')) ? 'active' : '' }}">
                             <a href="/panel/marketing/promotions">{{ trans('panel.promotions') }}</a>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
             </li>

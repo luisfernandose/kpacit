@@ -264,7 +264,7 @@
                 </li>
             @endcan()
 
-            @can('admin_group')
+            @can('admin_group' && false)
                 <li class="nav-item dropdown {{ (request()->is('admin/users/groups*')) ? 'active' : '' }}">
                     <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
                         <i class="fas fa-sitemap"></i>
@@ -293,12 +293,12 @@
                   </a>
                 </li>
             @endcan()
-          
-          
+
+
 
             @can('admin_become_instructors_list')
                 <li class="{{ (request()->is('admin/users/become_instructors')) ? 'active' : '' }}">
-                    <a class="nav-link" href="/admin/users/become_instructors"><i class="fas fa-list-alt"></i> 
+                    <a class="nav-link" href="/admin/users/become_instructors"><i class="fas fa-list-alt"></i>
                       <span>{{ trans('admin/main.instructor_requests') }}</span>
                   </a>
                 </li>
@@ -665,7 +665,7 @@
                 </li>
             @endcan
 
-            @can('admin_offline_payments_list')
+            @can('admin_offline_payments_list' && false)
                 <li class="nav-item dropdown {{ (request()->is('admin/financial/offline_payments*')) ? 'active' : '' }}">
                     <a href="#" class="nav-link has-dropdown"><i class="fas fa-university"></i> <span>{{ trans('admin/main.offline_payments') }}</span></a>
                     <ul class="dropdown-menu">
@@ -684,7 +684,7 @@
                 </li>
             @endcan
 
-            @can('admin_subscribe')
+            @can('admin_subscribe' && false)
                 <li class="nav-item dropdown {{ (request()->is('admin/financial/subscribes*')) ? 'active' : '' }}">
                     <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
                         <i class="fas fa-cart-plus"></i>
@@ -782,7 +782,7 @@
                 </li>
             @endcan
 
-            @can('admin_promotion')
+            @can('admin_promotion && false')
                 <li class="nav-item dropdown {{ (request()->is('admin/financial/promotions*')) ? 'active' : '' }}">
                     <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
                         <i class="fas fa-rocket"></i>

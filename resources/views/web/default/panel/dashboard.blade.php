@@ -76,7 +76,7 @@
                             <span class="font-16 font-weight-500 text-gray">{{ trans('panel.with_drawable') }}:</span>
                             <span class="font-16 font-weight-bold text-secondary">{{ $currency }}{{ $drawable }}</span>
                         @else
-                            <a href="/panel/financial/account" class="font-16 font-weight-bold text-dark-blue">{{ trans('financial.charge_account') }}</a>
+                            <!-- <a href="/panel/financial/account" class="font-16 font-weight-bold text-dark-blue">{{ trans('financial.charge_account') }}</a> -->
                         @endif
                     </div>
                 </div>
