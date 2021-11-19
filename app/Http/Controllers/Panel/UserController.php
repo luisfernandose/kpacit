@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SendNotifications;
 use App\Models\Category;
 use App\Models\Newsletter;
 use App\Models\Role;
@@ -443,8 +444,16 @@ class UserController extends Controller
                 'language' => $data['language'],
                 'newsletter' => (!empty($data['join_newsletter']) and $data['join_newsletter'] == 'on'),
                 'public_message' => (!empty($data['public_messages']) and $data['public_messages'] == 'on'),
-                'created_at' => time()
+                'verified' => true,
+                'created_at' => time(),
             ]);
+
+            // Envío de correo
+            $message = 'Felicidades!<br>Se ha relizado un registro en Kpacit con tu correo electrónico,
+            para ingresar puedes hacerlo ingresando a ' . route('user.login') . ' con la contraseña: ' . $data['password'] .
+            '<br><b>Te recomendamos cambiar la contraseña una vez inicies sesión.</b>';
+
+            \Mail::to($user->email)->send(new SendNotifications(['title' => 'Registro en plataforma Kpacit', 'message' => $message]));
 
             return redirect('/panel/manage/' . $user_type . '/' . $user->id . '/edit');
         }
