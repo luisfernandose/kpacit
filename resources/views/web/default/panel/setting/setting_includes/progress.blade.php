@@ -36,11 +36,6 @@
             'name' => 'identity_and_financial',
             'icon' => 'financial'
         ];
-
-        $progressSteps[8] =[
-            'name' => 'zoom_api',
-            'icon' => 'zoom'
-        ];
     }
 
     $currentStep = empty($currentStep) ? 1 : $currentStep;

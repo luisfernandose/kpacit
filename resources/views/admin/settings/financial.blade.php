@@ -27,9 +27,9 @@
                                     <a class="nav-link  @if(empty(request()->get('page'))) active @endif" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">{{ trans('admin/main.basic') }}</a>
                                 </li>
 
-                                <li class="nav-item">
+                                <!-- <li class="nav-item">
                                     <a class="nav-link " id="offline_banks_credits-tab" data-toggle="tab" href="#offline_banks_credits" role="tab" aria-controls="offline_banks_credits" aria-selected="true">{{ trans('admin/main.offline_banks_credits') }}</a>
-                                </li>
+                                </li> -->
 
                                 @can('admin_payment_channel')
                                     <li class="nav-item">

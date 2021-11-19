@@ -78,7 +78,7 @@
             </div>
         </section>
 
-        <section class="mt-30">
+        <!-- <section class="mt-30">
             <h2 class="section-title">{{ trans('panel.my_hourly_charge') }}</h2>
 
             <div class="row align-items-center mt-20">
@@ -112,7 +112,7 @@
                     <button type="button" id="meetingSettingFormSubmit" class="btn btn-sm btn-primary mt-30">{{ trans('public.submit') }}</button>
                 </div>
             </div>
-        </section>
+        </section> -->
     </form>
 @endsection
 
