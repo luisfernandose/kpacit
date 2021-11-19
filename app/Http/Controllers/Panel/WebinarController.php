@@ -96,6 +96,7 @@ class WebinarController extends Controller
             $data = [
                 'pageTitle' => trans('panel.organization_classes'),
                 'webinars' => $webinars,
+                'isOrganization' => $user->isOrganization(),
             ];
 
             return view(getTemplate() . '.panel.webinar.organization_classes', $data);
@@ -224,6 +225,7 @@ class WebinarController extends Controller
 
         $teachers = null;
         $isOrganization = $user->isOrganization();
+        $isTeacherFromOrganization = $user->organ_id ? true : false;
 
         if ($isOrganization) {
             $teachers = User::where('role_name', Role::$teacher)
@@ -235,6 +237,7 @@ class WebinarController extends Controller
             'teachers' => $teachers,
             'categories' => $categories,
             'isOrganization' => $isOrganization,
+            'isTeacherFromOrganization' => $isTeacherFromOrganization,
             'currentStep' => 1,
         ];
 
@@ -267,11 +270,22 @@ class WebinarController extends Controller
 
         $data = $request->all();
 
+        // Si es profesor de organización
+        $creatorId = $user->id;
+        $private = (!empty($data['private']) and $data['private'] == 'on') ? true : false;
+
+        if (!empty($user->organ_id) && $request->organizationClass) {
+
+            $creatorId = $user->organ_id;
+            $private = true;
+
+        }
+
         $webinar = Webinar::create([
             'teacher_id' => $user->isTeacher() ? $user->id : $data['teacher_id'],
-            'creator_id' => $user->id,
+            'creator_id' => $creatorId,
             'type' => $data['type'],
-            'private' => (!empty($data['private']) and $data['private'] == 'on') ? true : false,
+            'private' => $private,
             'title' => $data['title'],
             'seo_description' => $data['seo_description'],
             'thumbnail' => $data['thumbnail'],
@@ -294,6 +308,7 @@ class WebinarController extends Controller
     {
         $user = auth()->user();
         $isOrganization = $user->isOrganization();
+        $isTeacherFromOrganization = $user->organ_id ? true : false;
 
         if (!$user->isTeacher() and !$user->isOrganization()) {
             abort(404);
@@ -303,6 +318,7 @@ class WebinarController extends Controller
             'pageTitle' => trans('webinars.new_page_title_step', ['step' => $step]),
             'currentStep' => $step,
             'isOrganization' => $isOrganization,
+            'isTeacherFromOrganization' => $isTeacherFromOrganization,
         ];
 
         $query = Webinar::where('id', $id)
@@ -523,6 +539,28 @@ class WebinarController extends Controller
         }
 
         unset($data['_token'], $data['current_step'], $data['draft'], $data['get_next'], $data['partners'], $data['tags'], $data['filters'], $data['ajax']);
+
+        if ($currentStep == 1) {
+
+            $creatorId = $webinar->creator_id;
+            $private = $webinar->private;
+
+            if (!empty($user->organ_id) && $request->organizationClass) {
+
+                $creatorId = $user->organ_id;
+                $private = true;
+
+            } else {
+
+                $creatorId = $user->id;
+                $private = (!empty($data['private']) and $data['private'] == 'on');
+
+            }
+
+            $data['creator_id'] = $creatorId;
+            $data['private'] = $private;
+
+        }
 
         $webinar->update($data);
 

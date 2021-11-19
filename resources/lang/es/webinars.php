@@ -132,6 +132,9 @@ return [
     'create_private_course_hint' => 'If you enable this option the class wont be published on website and will be displayed on the organization instructors and students panel.',
     'partner_Teacher_hint' => 'If your course has a partner instructor, turn it on.',
 
+    'organization_class' => 'Organization class',
+    'create_organization_class_hint' => 'If you enable this option the class will be crated as organization class.',
+
 
     'invoice_page_title' => 'Invoice',
 
