@@ -41,6 +41,22 @@
             </div>
         @endif
 
+        @if ($isTeacherFromOrganization)
+        <div class="row mb-4">
+            <div class="col-12">
+
+                <div class="form-group mt-2 d-flex align-items-center">
+                    <label class="cursor-pointer mb-0 input-label" for="organizationClassSwitch">{{ trans('webinars.organization_class') }}</label>
+                    <div class="ml-30 custom-control custom-switch">
+                        <input type="checkbox" name="organizationClass" class="custom-control-input" id="organizationClassSwitch" {{ (!empty($webinar) and $webinar->teacher_id != $webinar->creator_id) ? 'checked' :  '' }}>
+                        <label class="custom-control-label" for="organizationClassSwitch"></label>
+                    </div>
+                </div>
+
+                <p class="text-gray font-12">{{ trans('webinars.create_organization_class_hint') }}</p>
+            </div>
+        </div>
+        @endif
 
         <div class="form-group mt-15">
             <label class="input-label">{{ trans('public.title') }}</label>
