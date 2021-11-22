@@ -128,7 +128,7 @@
                 'file_name' => 'studentt.png',
                 'title' => trans('panel.students_no_result'),
                 'hint' =>  nl2br(trans('panel.students_no_result_hint')),
-                'btn' => ['url' => '/panel/students/new','text' => trans('panel.add_an_student')]
+                'btn' => ['url' => '/panel/manage/students/new','text' => trans('panel.add_an_student')]
             ])
         @endif
 

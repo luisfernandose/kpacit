@@ -127,7 +127,7 @@
                 'file_name' => 'teachers.png',
                 'title' => trans('panel.instructors_no_result'),
                 'hint' =>  nl2br(trans('panel.instructors_no_result_hint')),
-                'btn' => ['url' => '/panel/instructors/new','text' => trans('panel.add_an_instructor')]
+                'btn' => ['url' => '/panel/manage/instructors/new','text' => trans('panel.add_an_instructor')]
             ])
         @endif
     </section>
