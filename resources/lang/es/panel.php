@@ -229,8 +229,6 @@ return [
     'group_student_store_success' => 'Student added to group successfully',
     'group_class_store_success' => 'Class added to group successfully',
 
-
-
     'filter_students' => 'Filter Students',
     'students_list' => 'Students List',
     'add_an_student' => 'New student',
