@@ -270,6 +270,8 @@ class WebinarController extends Controller
 
         $data = $request->all();
 
+        $webinarStatus = ((!empty($data['draft']) and $data['draft'] == 1) or (!empty($data['get_next']) and $data['get_next'] == 1)) ? Webinar::$isDraft : Webinar::$pending;
+
         // Si es profesor de organización
         $creatorId = $user->id;
         $private = (!empty($data['private']) and $data['private'] == 'on') ? true : false;
@@ -278,6 +280,15 @@ class WebinarController extends Controller
 
             $creatorId = $user->organ_id;
             $private = true;
+
+            $webinarStatus = Webinar::$active;
+
+        }
+
+        // Si es organización
+        if ($user->isOrganization()) {
+
+            $webinarStatus = Webinar::$active;
 
         }
 
@@ -292,7 +303,7 @@ class WebinarController extends Controller
             'image_cover' => $data['image_cover'],
             'video_demo' => $data['video_demo'],
             'description' => $data['description'],
-            'status' => ((!empty($data['draft']) and $data['draft'] == 1) or (!empty($data['get_next']) and $data['get_next'] == 1)) ? Webinar::$isDraft : Webinar::$pending,
+            'status' => $webinarStatus,
             'created_at' => time(),
         ]);
 
@@ -554,11 +565,26 @@ class WebinarController extends Controller
 
                 $creatorId = $user->id;
                 $private = (!empty($data['private']) and $data['private'] == 'on');
+                $data['status'] = ($isDraft or $webinarRulesRequired) ? Webinar::$isDraft : Webinar::$pending;
 
             }
 
             $data['creator_id'] = $creatorId;
             $data['private'] = $private;
+
+        }
+
+        // Organization class
+        if (!empty($user->organ_id) && $webinar->teacher_id != $webinar->creator_id) {
+
+            $data['status'] = Webinar::$active;
+
+        }
+
+        // Si es organización
+        if ($user->isOrganization()) {
+
+            $data['status'] = Webinar::$active;
 
         }
 
