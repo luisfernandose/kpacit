@@ -30,7 +30,7 @@
                                     <div class="col-3 text-gray text-center text-center font-14">{{ dateTimeFormat($session->date, 'j M Y | H:i') }}</div>
                                     <div class="col-2 text-gray text-center text-center font-14 d-none d-md-block">{{ convertMinutesToHourAndMinute($session->duration) }}</div>
                                     <div class="col-3 d-flex justify-content-end">
-                                        @if($session->date < time())
+                                        @if(($session->date + 600) < time())
                                             <button type="button" class="course-content-btns btn btn-sm btn-gray disabled flex-grow-1 disabled session-finished-toast">{{ trans('public.finished') }}</button>
                                         @elseif(empty($user))
                                             <button type="button" class="course-content-btns btn btn-sm btn-gray disabled flex-grow-1 disabled not-login-toast">{{ trans('public.go_to_class') }}</button>
