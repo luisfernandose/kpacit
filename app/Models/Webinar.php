@@ -395,7 +395,7 @@ class Webinar extends Model
         $salesCount = !empty($this->sales_count) ? $this->sales_count : $this->sales()->count();
 
         if ($this->type == 'webinar') {
-            return ($this->start_date > time() and $salesCount < $this->capacity);
+            return ($salesCount < $this->capacity);
         }
 
         return true;
