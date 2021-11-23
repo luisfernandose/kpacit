@@ -14,6 +14,7 @@ use App\Models\WebinarReport;
 use App\Models\Webinar;
 use App\Http\Responses\S3FileStream;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class WebinarController extends Controller
 {
@@ -216,7 +217,7 @@ class WebinarController extends Controller
                 }
 
                 if ($canAccess) {
-                    $filePath = public_path($file->file);
+                    $filePath = $file->file;
 
                     $fileName = str_replace(' ', '-', $file->title);
                     $fileName = str_replace('.', '-', $fileName);
@@ -226,7 +227,10 @@ class WebinarController extends Controller
                         'Content-Type: application/' . $file->file_type,
                     );
 
-                    return response()->download($filePath, $fileName, $headers);
+                    $path = str_replace(config('filesystems.aws_url'), '', $file->file);
+                    $fileName = array_reverse(explode('/', $path))[0] ?? '_filename.nfd';
+
+                    return Storage::download($path);
                 } else {
                     $toastData = [
                         'title' => trans('public.not_access_toast_lang'),
