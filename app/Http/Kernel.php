@@ -7,6 +7,7 @@ use App\Http\Middleware\Impersonate;
 use App\Http\Middleware\PanelAuthenticate;
 use App\Http\Middleware\Share;
 use App\Http\Middleware\UserNotAccess;
+use App\Http\Middleware\ValidateSessionToken;
 use App\Http\Middleware\WebAuthenticate;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -76,5 +77,6 @@ class Kernel extends HttpKernel
         'web.auth' => WebAuthenticate::class,
         'impersonate' => Impersonate::class,
         'share' => Share::class,
+        'user.validate.sesion' => ValidateSessionToken::class
     ];
 }
