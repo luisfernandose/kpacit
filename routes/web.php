@@ -37,7 +37,7 @@ Route::group(['namespace' => 'Auth', 'middleware' => ['share']], function () {
 });
 
 
-Route::group(['namespace' => 'Web', 'middleware' => ['impersonate', 'share']], function () {
+Route::group(['namespace' => 'Web', 'middleware' => ['impersonate', 'share', 'user.validate.sesion']], function () {
     Route::get('/stripe', function () {
         return view('web.default.cart.channels.stripe');
     });
