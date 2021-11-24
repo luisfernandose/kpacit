@@ -41,14 +41,14 @@ class CreateSessionToken
                 'id',
                 'token'
             )
-            ->where('user_id', Auth::id())
+            ->where('user_id', $event->user->id)
             ->orderBy('created_at', 'DESC')
             ->limit(3)
             ->get();
 
         $ids = $tokens->pluck('id')->all();
 
-        UserSession::where('user_id', Auth::id())
+        UserSession::where('user_id', $event->user->id)
             ->whereNotIn('id', $ids)
             ->delete();
 
