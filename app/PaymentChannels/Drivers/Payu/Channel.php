@@ -149,7 +149,7 @@ class Channel implements IChannel
 
                 }
 
-                return null;
+                return back();
 
             } else {
 
