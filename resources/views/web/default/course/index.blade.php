@@ -161,7 +161,6 @@
 
                             @if(!empty($course->tickets))
                                 @foreach($course->tickets as $ticket)
-
                                     <div class="form-check mt-20">
                                         <input class="form-check-input" @if(!$ticket->isValid()) disabled @endif type="radio" data-discount="{{ $ticket->discount }}" value="{{ ($ticket->isValid()) ? $ticket->id : '' }}"
                                                name="ticket_id"
