@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'Panel', 'prefix' => 'panel', 'middleware' => ['impersonate', 'panel', 'share', 'user.validate.sesion']], function () {
 
-    Route::get('/', 'DashboardController@dashboard');
+    Route::get('/', 'DashboardController@dashboard')->name('main.home');
 
     Route::group(['prefix' => 'users'], function () {
         Route::post('/search', 'UserController@search');

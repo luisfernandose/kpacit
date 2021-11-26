@@ -149,7 +149,7 @@ class Channel implements IChannel
 
                 }
 
-                return back();
+                return route('main.home');
 
             } else {
 
