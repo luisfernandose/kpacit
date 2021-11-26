@@ -36,6 +36,12 @@ Route::group(['namespace' => 'Auth', 'middleware' => ['share']], function () {
 
 });
 
+Route::group(['namespace' => 'Web', 'middleware' => ['impersonate', 'share']], function () {
+    Route::group(['prefix' => 'payments'], function () {
+        Route::get('/verify/{gateway}', ['as' => 'payment_verify', 'uses' => 'PaymentController@paymentVerify']);
+        Route::post('/verify/{gateway}', ['as' => 'payment_verify_post', 'uses' => 'PaymentController@paymentVerify']);
+    });
+});
 
 Route::group(['namespace' => 'Web', 'middleware' => ['impersonate', 'share', 'user.validate.sesion']], function () {
     Route::get('/stripe', function () {
@@ -125,8 +131,6 @@ Route::group(['namespace' => 'Web', 'middleware' => ['impersonate', 'share', 'us
 
     Route::group(['prefix' => 'payments'], function () {
         Route::post('/payment-request', 'PaymentController@paymentRequest');
-        Route::get('/verify/{gateway}', ['as' => 'payment_verify', 'uses' => 'PaymentController@paymentVerify']);
-        Route::post('/verify/{gateway}', ['as' => 'payment_verify_post', 'uses' => 'PaymentController@paymentVerify']);
         Route::get('/status', 'PaymentController@payStatus');
     });
 
