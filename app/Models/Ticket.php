@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Ticket extends Model
@@ -12,12 +13,17 @@ class Ticket extends Model
 
     public function isValid()
     {
-        $now = time();
         $ticket = $this;
-        $valid = true;
+        $valid = false;
 
-        if ($ticket->start_date > $now or $this->end_date < $now) {
-            $valid = false;
+        $now = now();
+        $startDate = Carbon::parse($this->start_date)->startOfDay()->addDay(1);
+        $endDate = Carbon::parse($this->end_date)->endOfDay()->addDay(1);
+
+        if ($now->isAfter($startDate) && $now->isBefore($endDate)) {
+
+            $valid = true;
+
         }
 
         if ($ticket->capacity) {
