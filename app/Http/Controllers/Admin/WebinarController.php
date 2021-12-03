@@ -16,6 +16,7 @@ use App\Models\WebinarPartnerTeacher;
 use App\Models\WebinarReport;
 use App\User;
 use App\Models\Webinar;
+use App\Services\AlegraService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -520,10 +521,34 @@ class WebinarController extends Controller
 
         $webinar->slug = null; // regenerate slug in model
 
+        // Si no existe creado en el ERP
+        if ($publish && empty($webinar->external_id)) {
+
+            $alegraService = new AlegraService();
+
+            $serviceResult = $alegraService->createItem($webinar->title, $webinar->price);
+
+            if (!$serviceResult->success || empty($serviceResult->data->id)) {
+
+                $toastData = [
+                    'title' => trans('public.request_failed'),
+                    'msg' => 'No se pudo crear el item en el ERP',
+                    'status' => 'error'
+                ];
+
+                return back()->with(['toast' => $toastData]);
+
+            }
+
+            $webinar->external_id = $serviceResult->data->id;
+
+        }
+
         $webinar->update($data);
 
         if ($publish) {
             sendNotification('course_approve', ['[c.title]' => $webinar->title], $webinar->teacher_id);
+
         } elseif ($reject) {
             sendNotification('course_reject', ['[c.title]' => $webinar->title], $webinar->teacher_id);
         }
