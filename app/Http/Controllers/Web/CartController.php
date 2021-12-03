@@ -13,6 +13,8 @@ use App\Models\ReserveMeeting;
 use App\Models\Setting;
 use App\Models\Webinar;
 use App\PaymentChannels\ChannelManager;
+use App\Services\AlegraService;
+use App\User;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -252,6 +254,33 @@ class CartController extends Controller
             $order = $this->createOrderAndOrderItems($carts, $calculate, $user, $discountCoupon);
 
             if (!empty($order) and $order->total_amount > 0) {
+
+                // Si el contacto no existe creado en el ERP
+                if (empty($user->external_id)) {
+
+                    $alegraService = new AlegraService();
+
+                    $serviceResult = $alegraService->createContact($user->full_name, $user->email, $user->mobile);
+
+                    if (!$serviceResult->success || empty($serviceResult->data->id)) {
+
+                        $toastData = [
+                            'title' => trans('public.request_failed'),
+                            'msg' => 'No se pudo crear el contacto en el ERP',
+                            'status' => 'error'
+                        ];
+
+                        return back()->with(['toast' => $toastData]);
+
+                    }
+
+                    User::where('id', $user->id)
+                        ->update([
+                            'external_id' => $serviceResult->data->id,
+                        ]);
+
+                }
+
                 $razorpay = false;
                 foreach ($paymentChannels as $paymentChannel) {
                     if ($paymentChannel->class_name == 'Razorpay') {

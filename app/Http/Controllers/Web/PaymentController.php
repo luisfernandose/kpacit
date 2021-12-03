@@ -11,8 +11,12 @@ use App\Models\PaymentChannel;
 use App\Models\ReserveMeeting;
 use App\Models\Sale;
 use App\Models\TicketUser;
+use App\Models\Webinar;
 use App\PaymentChannels\ChannelManager;
+use App\Services\AlegraService;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
 class PaymentController extends Controller
@@ -115,17 +119,73 @@ class PaymentController extends Controller
             $order = $channelManager->verify($request);
 
             if (!empty($order)) {
-                $orderItem = OrderItem::where('order_id', $order->id)->first();
+                $orderItem = OrderItem::where('order_id', $order->id)->get();
 
                 $reserveMeeting = null;
-                if ($orderItem && $orderItem->reserve_meeting_id) {
-                    $reserveMeeting = ReserveMeeting::where('id', $orderItem->reserve_meeting_id)->first();
+
+                foreach ($orderItem as $item) {
+
+                    if ($item && $item->reserve_meeting_id && !$reserveMeeting) {
+
+                        $reserveMeeting = ReserveMeeting::where('id', $item->reserve_meeting_id)->first();
+
+                    }
+
                 }
 
                 if ($order->status == Order::$paying) {
+
                     $this->setPaymentAccounting($order);
 
                     $order->update(['status' => Order::$paid]);
+
+                    // Generación de la factura en el ERP
+                    $alegraService = new AlegraService();
+
+                    $anotation = 'Kpacit order ' . $order->id;
+
+                    $items = [];
+
+                    foreach ($orderItem as $item) {
+
+                        $webinar = Webinar::select('id', 'external_id', 'title')
+                            ->find($item->webinar_id);
+
+                        $items[] = (Object)[
+                            'id' => $webinar->external_id,
+                            'price' => $item->amount,
+                            'description' => $webinar->title,
+                            'quantity' => 1,
+                            'tax' => [
+                                (Object)[
+                                    'id' => config('alegra.tax_id'),
+                                ],
+                            ],
+                        ];
+
+                    }
+
+                    $alegraUser = User::select('id', 'external_id')
+                        ->find($order->user_id);
+
+                    $serviceResult = $alegraService->createInvoice($alegraUser->external_id, $items, $anotation, $order->total_amount);
+
+                    if (!$serviceResult->success || empty($serviceResult->data->id)) {
+
+                        $toastData = [
+                            'title' => trans('public.request_failed'),
+                            'msg' => 'No se pudo crear la factura en el ERP',
+                            'status' => 'error'
+                        ];
+
+                        return back()->with(['toast' => $toastData]);
+
+                    }
+
+                    $order->update([
+                        'external_invoice_id' => $serviceResult->data->id
+                    ]);
+
                 } else {
                     if ($order->type === Order::$meeting) {
                         $reserveMeeting->update(['locked_at' => null]);
@@ -136,6 +196,8 @@ class PaymentController extends Controller
             }
 
         } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
+
             $toastData = [
                 'title' => trans('cart.fail_purchase'),
                 'msg' => trans('cart.gateway_error'),
