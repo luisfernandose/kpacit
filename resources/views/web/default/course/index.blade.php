@@ -292,6 +292,12 @@
                     </div>
                 @endif
 
+                <a href="{{ config('app.store_url') }}" target="_blank">
+                    <div class="rounded-lg shadow-sm mt-35 px-25 py-20 text-center">
+                        <img src="/store/1/Store.png" width="60%">
+                    </div>
+                </a>
+
                 <div class="rounded-lg shadow-sm mt-35 px-25 py-20">
                     <h3 class="sidebar-title font-16 text-secondary font-weight-bold">{{ trans('webinars.'.$course->type) .' '. trans('webinars.specifications') }}</h3>
 
