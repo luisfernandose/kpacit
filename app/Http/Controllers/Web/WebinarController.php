@@ -20,6 +20,7 @@ class WebinarController extends Controller
 {
     public function course($slug)
     {
+
         $user = null;
 
         if (auth()->check()) {
@@ -43,13 +44,25 @@ class WebinarController extends Controller
                 'faqs' => function ($query) {
                     $query->orderBy('order', 'asc');
                 },
-                'files' => function ($query) use ($user) {
-                    $query->orderBy('order', 'asc')
-                        ->with([
-                            'learningStatus' => function ($query) use ($user) {
-                                $query->where('user_id', !empty($user) ? $user->id : null);
-                            }
-                        ]);
+                // 'files' => function ($query) use ($user) {
+                //     $query->orderBy('order', 'asc')
+                //         ->with([
+                //             'learningStatus' => function ($query) use ($user) {
+                //                 $query->where('user_id', !empty($user) ? $user->id : null);
+                //             }
+                //         ]);
+                // },
+                'modules' => function ($query) use ($user) {
+                    $query->with([
+                        'files' => function ($query) use ($user) {
+                            $query->orderBy('order', 'asc')
+                                ->with([
+                                    'learningStatus' => function ($query) use ($user) {
+                                        $query->where('user_id', !empty($user) ? $user->id : null);
+                                    }
+                                ]);
+                        }
+                    ]);
                 },
                 'textLessons' => function ($query) use ($user) {
                     $query->withCount(['attachments'])
@@ -113,6 +126,15 @@ class WebinarController extends Controller
         if (empty($course)) {
             return back();
         }
+
+        $course->files_without_module = File::with([
+                                                'learningStatus' => function ($query) use ($user) {
+                                                    $query->where('user_id', !empty($user) ? $user->id : null);
+                                                }
+                                            ])
+                                            ->where('webinar_id', '=', $course->id)
+                                            ->whereNull('module_id')
+                                            ->get();
 
         $isPrivate = $course->private;
         if (!empty($user) and ($user->id == $course->creator_id or $user->organ_id == $course->creator_id or $user->isAdmin())) {

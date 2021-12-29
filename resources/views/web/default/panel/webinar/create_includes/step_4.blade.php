@@ -40,6 +40,37 @@
     </div>
 @endif
 
+<section class="mt-50">
+    <div class="">
+        <h2 class="section-title after-line">Módulos ({{ trans('public.optional') }})</h2>
+    </div>
+    <button id="webinarAddModule1" data-webinar-id="{{ $webinar->id }}" type="button" class="btn btn-primary btn-sm mt-15">Nuevo Módulo</button>
+
+    <div class="row mt-10">
+        <div class="col-12">
+
+            <div class="accordion-content-wrapper mt-15" id="modulesAccordion" role="tablist" aria-multiselectable="true">
+                @if(!empty($webinar->modules) and count($webinar->modules))
+                    <ul class="draggable-lists2" data-order-table="modules">
+                        @foreach($webinar->modules as $module)
+                            @include('web.default.panel.webinar.create_includes.accordions.module',['webinar' => $webinar, 'module' => $module])
+                        @endforeach
+                    </ul>
+                @else
+                    @include(getTemplate() . '.includes.no-result',[
+                        'file_name' => 'files.png',
+                        'title' => trans('public.files_no_result'),
+                        'hint' => trans('public.files_no_result_hint'),
+                    ])
+                @endif
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="newModuleForm" class="d-none">
+    @include('web.default.panel.webinar.create_includes.accordions.module', ['webinar' => $webinar, 'module' => null])
+</div>
 
 <section class="mt-50">
     <div class="">
@@ -112,6 +143,7 @@
     <div id="newTextLessonForm" class="d-none">
         @include('web.default.panel.webinar.create_includes.accordions.text-lesson',['webinar' => $webinar])
     </div>
+
 @endif
 
 @push('scripts_bottom')
@@ -120,3 +152,34 @@
     <script src="/assets/vendors/summernote/summernote-bs4.min.js"></script>
     <script src="/assets/default/vendors/sortable/jquery-ui.min.js"></script>
 @endpush
+
+<script type="module">
+
+    $(document).ready(function() {
+
+        $('body').on('click', '#webinarAddModule1', function (e) {
+
+            e.preventDefault();
+            const key = randomString();
+
+            let add_module = $('#newModuleForm').html();
+            add_module = add_module.replaceAll('record', key);
+
+            $('#modulesAccordion').prepend(add_module);
+
+            feather.replace();
+        });
+
+    });
+
+    const randomString = () => {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+        for (var i = 0; i < 5; i++)
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
+    }
+
+</script>

@@ -317,6 +317,7 @@ class WebinarController extends Controller
 
     public function edit($id, $step = 1)
     {
+
         $user = auth()->user();
         $isOrganization = $user->isOrganization();
         $isTeacherFromOrganization = $user->organ_id ? true : false;
@@ -378,7 +379,8 @@ class WebinarController extends Controller
                         $qu->with('file');
                     }])->orderBy('order', 'asc');
                 },
-            ]);
+            ])
+            ->with('modules');
         } elseif ($step == 5) {
             $query->with([
                 'prerequisites' => function ($query) {
@@ -414,6 +416,14 @@ class WebinarController extends Controller
             abort(404);
         }
 
+        // $modules = (Object)[
+        //     (Object)['name' => 'modioe 1', 'id' => 1],
+        //     (Object)['name' => 'modioe 2', 'id' => 2],
+        //     (Object)['name' => 'modioe 3', 'id' => 3]
+        // ];
+
+        // $webinar->modules = $modules;
+
         $data['webinar'] = $webinar;
 
 
@@ -431,6 +441,7 @@ class WebinarController extends Controller
 
     public function update(Request $request, $id)
     {
+
         $user = auth()->user();
 
         if (!$user->isTeacher() and !$user->isOrganization()) {
