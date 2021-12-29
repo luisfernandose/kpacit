@@ -144,7 +144,7 @@
                 </div>
 
                 <div class="mt-30 d-flex align-items-center">
-                    <button type="button" class="js-save-file btn btn-sm btn-primary">{{ trans('public.save') }} </button>
+                    <button type="button" class="js-save-file save-file1 btn btn-sm btn-primary">{{ trans('public.save') }} </button>
 
                     @if(empty($file))
                         <button type="button" class="btn btn-sm btn-danger ml-10 cancel-accordion">{{ trans('public.close') }}</button>
@@ -154,3 +154,4 @@
         </div>
     </div>
 </li>
+

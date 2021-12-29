@@ -67,4 +67,21 @@ class ModuleController extends Controller
 
         return response()->json([], 422);
     }
+
+    public function destroy($id)
+    {
+        $module = Module::find($id);
+
+        if (!empty($module)) {
+
+            $module->delete();
+
+        }
+
+        return response()->json([
+
+            'code' => 200
+
+        ], 200);
+    }
 }

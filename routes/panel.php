@@ -145,6 +145,7 @@ Route::group(['namespace' => 'Panel', 'prefix' => 'panel', 'middleware' => ['imp
     Route::group(['prefix' => 'modules'], function () {
         Route::post('/store', 'ModuleController@store');
         Route::post('/{id}/update', 'ModuleController@update');
+        Route::get('/{id}/delete', 'ModuleController@destroy');
     });
 
     Route::group(['prefix' => 'text-lesson'], function () {
