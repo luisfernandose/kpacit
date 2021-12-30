@@ -112,6 +112,19 @@
                             </div>
                         </div>
 
+                        <div class="form-group mt-15 ">
+                            <label class="input-label d-block">Módulo</label>
+                            <select class="custom-select js-ajax-module_id" name="ajax[{{ !empty($file) ? $file->id : 'new' }}][module_id]" value="{{ !empty($file) ? $file->module : '' }}">
+                                <option value="0" selected disabled>Seleccione una opción...</option>
+                                @foreach ( $webinar->modules as $module )
+
+                                    <option value="{{$module->id}}" @if(!empty($file) and !empty($file->module_id) and $file->module_id == $module->id) selected @endif >{{$module->name}}</option>
+
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback"></div>
+                        </div>
+
                         <div class="form-group">
                             <label class="input-label">{{ trans('public.description') }}</label>
                             <textarea name="ajax[{{ !empty($file) ? $file->id : 'new' }}][description]" class="js-ajax-description form-control" rows="6">{{ !empty($file) ? $file->description : '' }}</textarea>
@@ -131,7 +144,7 @@
                 </div>
 
                 <div class="mt-30 d-flex align-items-center">
-                    <button type="button" class="js-save-file btn btn-sm btn-primary">{{ trans('public.save') }}</button>
+                    <button type="button" class="js-save-file save-file1 btn btn-sm btn-primary">{{ trans('public.save') }} </button>
 
                     @if(empty($file))
                         <button type="button" class="btn btn-sm btn-danger ml-10 cancel-accordion">{{ trans('public.close') }}</button>
@@ -141,3 +154,4 @@
         </div>
     </div>
 </li>
+

@@ -121,6 +121,11 @@ class Webinar extends Model
         return $this->hasOne('App\Models\FeatureWebinar', 'webinar_id', 'id');
     }
 
+    public function modules()
+    {
+        return $this->hasMany('App\Models\Module', 'webinar_id', 'id');
+    }
+
     public function getRate()
     {
         $rate = 0;

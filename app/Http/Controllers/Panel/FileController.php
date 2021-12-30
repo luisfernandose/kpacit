@@ -14,6 +14,7 @@ class FileController extends Controller
 {
     public function store(Request $request)
     {
+
         $user = auth()->user();
         $data = $request->get('ajax')['new'];
 
@@ -27,6 +28,7 @@ class FileController extends Controller
 
         $validator = Validator::make($data, [
             'webinar_id' => 'required',
+            'module_id' => 'required',
             'title' => 'required|max:64',
             'accessibility' => 'required|' . Rule::in(File::$accessibility),
             'file_path' => 'required',
@@ -61,6 +63,7 @@ class FileController extends Controller
             'storage' => $data['storage'],
             'downloadable' => !empty($data['downloadable']) ? true : false,
             'description' => $data['description'],
+            'module_id' => $data['module_id'],
             'created_at' => time()
         ]);
 
@@ -71,6 +74,7 @@ class FileController extends Controller
 
     public function update(Request $request, $id)
     {
+
         $user = auth()->user();
         $data = $request->get('ajax')[$id];
 
@@ -84,6 +88,7 @@ class FileController extends Controller
 
         $validator = Validator::make($data, [
             'webinar_id' => 'required',
+            'module_id' => 'required',
             'title' => 'required|max:64',
             'accessibility' => 'required|' . Rule::in(File::$accessibility),
             'file_path' => 'required',
@@ -121,6 +126,7 @@ class FileController extends Controller
                 'storage' => $data['storage'],
                 'downloadable' => !empty($data['downloadable']) ? true : false,
                 'description' => $data['description'],
+                'module_id' => $data['module_id'],
                 'updated_at' => time()
             ]);
 
