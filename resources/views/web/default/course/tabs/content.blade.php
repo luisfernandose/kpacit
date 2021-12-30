@@ -187,7 +187,7 @@
 
         </section>
     @endforeach
-    @if (!empty($course->files_without_module) and count($course->files_without_module) > 0))
+    @if (!empty($course->files_without_module) and count($course->files_without_module) > 0)
         <section class="mt-40">
             <h2 class="section-title after-line">{{ trans('public.files') }} (Sin Módulo)</h2>
 

@@ -42,7 +42,7 @@
 
 <section class="mt-50">
     <div class="">
-        <h2 class="section-title after-line">Módulos ({{ trans('public.optional') }})</h2>
+        <h2 class="section-title after-line">Módulos</h2>
     </div>
     <button id="webinarAddModule1" data-webinar-id="{{ $webinar->id }}" type="button" class="btn btn-primary btn-sm mt-15">Nuevo Módulo</button>
 
@@ -59,8 +59,8 @@
                 @else
                     @include(getTemplate() . '.includes.no-result',[
                         'file_name' => 'files.png',
-                        'title' => trans('public.files_no_result'),
-                        'hint' => trans('public.files_no_result_hint'),
+                        'title' => 'No module defined',
+                        'hint' => 'You can define your course modules here.',
                     ])
                 @endif
             </div>
