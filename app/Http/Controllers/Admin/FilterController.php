@@ -20,7 +20,7 @@ class FilterController extends Controller
 
         $data = [
             'pageTitle' => trans('admin/main.filters_list_page_title'),
-            'filters' => $filters
+            'filters' => $filters,
         ];
 
         return view('admin.filters.lists', $data);
@@ -36,7 +36,7 @@ class FilterController extends Controller
 
         $data = [
             'pageTitle' => trans('admin/main.filter_new_page_title'),
-            'categories' => $categories
+            'categories' => $categories,
         ];
 
         return view('admin.filters.create', $data);
@@ -52,7 +52,7 @@ class FilterController extends Controller
         ]);
 
         $filter = Filter::create([
-            'title' => $request->input('title'),
+            'title' => clean($request->input('title')),
             'category_id' => $request->input('category_id'),
         ]);
 
@@ -97,7 +97,7 @@ class FilterController extends Controller
 
         $filter = Filter::findOrFail($id);
         $filter->update([
-            'title' => $request->input('title'),
+            'title' => clean($request->input('title')),
             'category_id' => $request->input('category_id'),
         ]);
 
@@ -149,7 +149,7 @@ class FilterController extends Controller
         $filters = Filter::select('id', 'title')
             ->where('category_id', $categoryId)
             ->with([
-                'options'  => function ($query) {
+                'options' => function ($query) {
                     $query->orderBy('order', 'asc');
                 },
             ])

@@ -36,7 +36,7 @@
                                             <td>
                                                 <img src="{{ $category->icon }}" width="30" alt="">
                                             </td>
-                                            <td class="text-left">{{ $category->title }}</td>
+                                            <td class="text-left">{!! $category->title !!}</td>
                                             <td>{{ count($category->getCategoryCourses()) }}</td>
                                             <td>{{ count($category->getCategoryInstructorsIdsHasMeeting()) }}</td>
                                             <td>
