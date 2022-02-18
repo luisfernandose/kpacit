@@ -7,6 +7,7 @@ use App\Models\QuizzesQuestion;
 use App\Models\QuizzesQuestionsAnswer;
 use Illuminate\Http\Request;
 use App\Models\Quiz;
+use App\Rules\GradeMax;
 
 class QuizQuestionController extends Controller
 {
@@ -15,7 +16,7 @@ class QuizQuestionController extends Controller
         $this->validate($request, [
             'quiz_id' => 'required|exists:quizzes,id',
             'title' => 'required|max:255',
-            'grade' => 'required|integer',
+            'grade' => ['required','integer', new GradeMax],
             'type' => 'required',
         ]);
 
