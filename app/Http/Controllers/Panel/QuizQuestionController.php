@@ -8,17 +8,18 @@ use App\Models\QuizzesQuestionsAnswer;
 use Illuminate\Http\Request;
 use App\Models\Quiz;
 use Illuminate\Support\Facades\Validator;
+use App\Rules\GradeMax;
 
 class QuizQuestionController extends Controller
 {
     public function store(Request $request)
     {
         $data = $request->get('ajax');
-
+      
         $rules = [
             'quiz_id' => 'required|exists:quizzes,id',
             'title' => 'required|max:255',
-            'grade' => 'required|integer',
+            'grade' => ['required','integer', new GradeMax],
             'type' => 'required',
         ];
 

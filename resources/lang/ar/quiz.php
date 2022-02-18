@@ -38,7 +38,7 @@ return [
     'multiple_choice_question' => 'سؤال اختيار من متعدد',
     'question_title' => 'عنوان السؤال',
     'question_grade' => 'درجة السؤال',
-
+    'question_grade_error' => 'جميع الدرجات غير صحيحة لا يمكن أن تتجاوز القيمة',
     'add_an_answer' => 'اضافة اجابة',
     'answer_title' => 'عنوان الاجابة',
     'answer_image' => 'صورة الاجابة (اختياري)',
