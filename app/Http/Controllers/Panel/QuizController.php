@@ -127,7 +127,7 @@ class QuizController extends Controller
         $rules = [
             'title' => 'required|max:255',
             'webinar_id' => 'nullable',
-            'pass_mark' => 'required',
+            'pass_mark' => 'required|numeric|between:1,100',
         ];
 
         if ($request->ajax()) {
@@ -219,7 +219,7 @@ class QuizController extends Controller
         $rules = [
             'title' => 'required|max:255',
             'webinar_id' => 'nullable',
-            'pass_mark' => 'required',
+            'pass_mark' => 'required|numeric|between:1,100',
         ];
         $data = $request->get('ajax');
 

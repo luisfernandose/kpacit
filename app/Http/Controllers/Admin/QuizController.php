@@ -180,7 +180,7 @@ class QuizController extends Controller
         $this->validate($request, [
             'title' => 'required|max:255',
             'webinar_id' => 'nullable',
-            'pass_mark' => 'required',
+            'pass_mark' => 'required|numeric|between:1,100'
         ]);
         $data = $request->all();
 
