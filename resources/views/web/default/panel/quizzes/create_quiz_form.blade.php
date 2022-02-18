@@ -53,7 +53,7 @@
 
                     <div class="form-group">
                         <label class="input-label">{{ trans('quiz.pass_mark') }}</label>
-                        <input type="text" name="ajax[pass_mark]" value="{{ !empty($quiz) ? $quiz->pass_mark : old('pass_mark') }}" class="js-ajax-pass_mark form-control @error('pass_mark')  is-invalid @enderror" placeholder=""/>
+                        <input type="text" name="ajax[pass_mark]" value="{{ !empty($quiz) ? $quiz->pass_mark : old('pass_mark') }}" maxlength="3" class="js-ajax-pass_mark only_number form-control @error('pass_mark')  is-invalid @enderror" placeholder=""/>
                         <div class="invalid-feedback">
                             @error('pass_mark')
                             {{ $message }}
@@ -97,7 +97,7 @@
                         <div class="quiz-question-card d-flex align-items-center mt-20">
                             <div class="flex-grow-1">
                                 <h4 class="question-title">{{ $question->title }}</h4>
-                                <div class="font-12 mt-5 question-infos">
+                                <div class="font-12 mt-5 question-infos" data-question-grade="{{ $question->grade }}">
                                     <span>{{ $question->type === App\Models\QuizzesQuestion::$multiple ? trans('quiz.multiple_choice') : trans('quiz.descriptive') }} | {{ trans('quiz.grade') }}: {{ $question->grade }}</span>
                                 </div>
                             </div>
@@ -134,3 +134,44 @@
     @include(getTemplate() .'.panel.quizzes.modals.multiple_question',['quiz' => $quiz])
     @include(getTemplate() .'.panel.quizzes.modals.descriptive_question',['quiz' => $quiz])
 @endif
+
+@push('scripts_bottom')
+    <script src="/assets/default/vendors/jQuery-Mask-Plugin-master/dist/jquery.mask.min.js"></script>
+    <script>
+    $(document).ready(()=>{
+       
+        $('.only_number').mask('0#');
+       
+
+        $('body').on("keyup",'input[name="ajax[grade]"]', function (e) {
+            let maxPassMark = +$('input[name="ajax[pass_mark]"').val();
+            let sumGrade= +event.target.value;
+            
+            $('.question-infos').each(function () {  
+                    sumGrade += +$(this).attr('data-question-grade')
+            });
+
+            if(sumGrade > maxPassMark){
+               let msg = $('.invalid-grade-max').attr('data-label')
+               msg = msg.replace('value', maxPassMark);
+               $('.invalid-grade-max').html(msg);
+               $('.invalid-grade-max').show();
+               $('.save-question').prop('disabled',true);
+            }else{
+                $('.invalid-grade-max').html('');
+                $('.invalid-grade-max').hide();
+                $('.save-question').prop('disabled',false);
+            }        
+        });
+        
+        $('body').on("click",'.close-swl', function (e) {
+            $('.invalid-grade-max').html('');
+            $('.invalid-grade-max').hide();
+            $('.save-question').prop('disabled',false);
+        })
+
+    });
+    </script>
+
+
+@endpush

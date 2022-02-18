@@ -19,8 +19,13 @@
                 <div class="col-12 col-md-4">
                     <div class="form-group">
                         <label class="input-label">{{ trans('quiz.grade') }}</label>
-                        <input type="text" name="ajax[grade]" class="js-ajax-grade form-control" value="{{ !empty($question_edit) ? $question_edit->grade : '' }}"/>
+                        <input type="text" name="ajax[grade]" maxlength="3" class="js-ajax-grade form-control only_number" value="{{ !empty($question_edit) ? $question_edit->grade : '' }}"/>
                         <span class="invalid-feedback"></span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="invalid-grade-max invalid-feedback text-center" 
+                        data-label ="{{ trans('quiz.question_grade_error') }}">        
                     </div>
                 </div>
             </div>

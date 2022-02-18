@@ -120,7 +120,7 @@
                                                 <div class="quiz-question-card d-flex align-items-center mt-4">
                                                     <div class="flex-grow-1">
                                                         <h4 class="question-title">{{ $question->title }}</h4>
-                                                        <div class="font-12 mt-3 question-infos">
+                                                        <div class="font-12 mt-3 question-infos" data-question-grade="{{ $question->grade }}">
                                                             <span>{{ $question->type === App\Models\QuizzesQuestion::$multiple ? trans('quiz.multiple_choice') : trans('quiz.descriptive') }} | {{ trans('quiz.grade') }}: {{ $question->grade }}</span>
                                                         </div>
                                                     </div>
@@ -163,4 +163,38 @@
     </script>
 
     <script src="/assets/default/js/admin/quiz.min.js"></script>
+    <script src="/assets/default/vendors/jQuery-Mask-Plugin-master/dist/jquery.mask.min.js"></script>
+    <script>
+    $(document).ready(()=>{
+       
+        $('.only_number').mask('0#');       
+
+        $('body').on("keyup",'input[name="grade"]', function (e) {
+            let maxPassMark = +$('input[name="pass_mark"]').val();
+            let sumGrade= +event.target.value;
+            
+            $('.question-infos').each(function () {  
+                    sumGrade += +$(this).attr('data-question-grade')
+            });
+            if(sumGrade > maxPassMark){
+               let msg = $('.invalid-grade-max').attr('data-label')
+               msg = msg.replace('value', maxPassMark);
+               $('.invalid-grade-max').html(msg);
+               $('.invalid-grade-max').show();
+               $('.save-question').prop('disabled',true);
+            }else{
+                $('.invalid-grade-max').html('');
+                $('.invalid-grade-max').hide();
+                $('.save-question').prop('disabled',false);
+            }        
+        });
+        
+        $('body').on("click",'.close-swl', function (e) {
+            $('.invalid-grade-max').html('');
+            $('.invalid-grade-max').hide();
+            $('.save-question').prop('disabled',false);
+        })
+ 
+    });
+    </script>
 @endpush

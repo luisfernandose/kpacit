@@ -146,5 +146,6 @@ return [
     */
 
     'attributes' => [],
+    'max_grade' => 'The :attribute may not be greater than :max value.',
 
 ];
