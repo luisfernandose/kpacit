@@ -6,6 +6,9 @@
 
             <div class="row">
                 <div class="col-12 col-md-4">
+                    <div class="alert alert-warning" role="alert">
+                        {{trans('panel.quizz_message_grade')}}
+                      </div>
 
                     @if(empty($selectedWebinar))
                         <div class="form-group mt-25">

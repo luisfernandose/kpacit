@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Models\Quiz;
-use App\Models\Role;
-use App\User;
-use App\Models\Webinar;
-use App\Models\QuizzesResult;
 use App\Models\QuizzesQuestion;
 use App\Models\QuizzesQuestionsAnswer;
+use App\Models\QuizzesResult;
+use App\Models\Role;
+use App\Models\Webinar;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -23,7 +23,6 @@ class QuizController extends Controller
             ->where('creator_id', $user->id)
             ->where('status', 'active')
             ->get();
-
 
         $query = Quiz::where('creator_id', $user->id);
 
@@ -70,7 +69,7 @@ class QuizController extends Controller
             'questionsCount' => $questionsCount,
             'quizzesCount' => $quizzesCount,
             'userCount' => $userCount,
-            'allQuizzesLists' => $allQuizzesLists
+            'allQuizzesLists' => $allQuizzesLists,
         ];
 
         return view(getTemplate() . '.panel.quizzes.lists', $data);
@@ -84,7 +83,6 @@ class QuizController extends Controller
         $total_mark = $request->get('total_mark');
         $status = $request->get('status');
         $active_quizzes = $request->get('active_quizzes');
-
 
         $query = fromAndToDateFilter($from, $to, $query, 'created_at');
 
@@ -119,7 +117,7 @@ class QuizController extends Controller
             'pageTitle' => trans('quiz.new_quiz_page_title'),
             'webinars' => $webinars,
         ];
-
+        
         return view(getTemplate() . '.panel.quizzes.create', $data);
     }
 
@@ -138,7 +136,7 @@ class QuizController extends Controller
             if ($validate->fails()) {
                 return response()->json([
                     'code' => 422,
-                    'errors' => $validate->errors()
+                    'errors' => $validate->errors(),
                 ], 422);
             }
         } else {
@@ -179,7 +177,7 @@ class QuizController extends Controller
 
             return response()->json([
                 'code' => 200,
-                'redirect_url' => $redirectUrl
+                'redirect_url' => $redirectUrl,
             ]);
         } else {
             return redirect()->route('panel_edit_quiz', ['id' => $quiz->id]);
@@ -231,7 +229,7 @@ class QuizController extends Controller
             if ($validate->fails()) {
                 return response()->json([
                     'code' => 422,
-                    'errors' => $validate->errors()
+                    'errors' => $validate->errors(),
                 ], 422);
             }
         } else {
@@ -264,7 +262,7 @@ class QuizController extends Controller
 
         if ($request->ajax()) {
             return response()->json([
-                'code' => 200
+                'code' => 200,
             ]);
         } else {
             return redirect('panel/quizzes');
@@ -282,7 +280,7 @@ class QuizController extends Controller
             $quiz->delete();
 
             return response()->json([
-                'code' => 200
+                'code' => 200,
             ], 200);
         }
 
@@ -320,7 +318,7 @@ class QuizController extends Controller
                     'results' => '',
                     'user_grade' => 0,
                     'status' => 'waiting',
-                    'created_at' => time()
+                    'created_at' => time(),
                 ]);
 
                 $data = [
@@ -328,7 +326,7 @@ class QuizController extends Controller
                     'quiz' => $quiz,
                     'quizQuestions' => $quiz->quizQuestions,
                     'attempt_count' => $userQuizDone->count() + 1,
-                    'newQuizStart' => $newQuizStart
+                    'newQuizStart' => $newQuizStart,
                 ];
 
                 return view(getTemplate() . '.panel.quizzes.start', $data);
@@ -383,7 +381,7 @@ class QuizController extends Controller
 
                                     if ($answer and $answer->correct) {
                                         $results[$questionId]['status'] = true;
-                                        $totalMark += (int)$question->grade;
+                                        $totalMark += (int) $question->grade;
                                     }
 
                                     if ($question->type == 'descriptive') {
@@ -404,7 +402,7 @@ class QuizController extends Controller
                         'results' => json_encode($results),
                         'user_grade' => $totalMark,
                         'status' => $status,
-                        'created_at' => time()
+                        'created_at' => time(),
                     ]);
 
                     if ($quizResult->status == QuizzesResult::$waiting) {
@@ -475,7 +473,7 @@ class QuizController extends Controller
         $quizResults = $query->with([
             'quiz' => function ($query) {
                 $query->with(['quizQuestions', 'creator', 'webinar']);
-            }
+            },
         ])->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -503,7 +501,7 @@ class QuizController extends Controller
             'quizzesResultsCount' => $quizResultsCount,
             'passedCount' => $passedCount,
             'failedCount' => $failedCount,
-            'waitingCount' => $waitingCount
+            'waitingCount' => $waitingCount,
         ];
 
         return view(getTemplate() . '.panel.quizzes.my_results', $data);
@@ -528,7 +526,7 @@ class QuizController extends Controller
 
         $data = [
             'pageTitle' => trans('quiz.open_quizzes'),
-            'quizzes' => $quizzes
+            'quizzes' => $quizzes,
         ];
 
         return view(getTemplate() . '.panel.quizzes.opens', $data);
@@ -561,7 +559,7 @@ class QuizController extends Controller
             $quizzesResults = $query->with([
                 'quiz' => function ($query) {
                     $query->with(['quizQuestions', 'creator', 'webinar']);
-                }, 'user'
+                }, 'user',
             ])->orderBy('created_at', 'desc')
                 ->paginate(10);
 
@@ -573,7 +571,7 @@ class QuizController extends Controller
                 'quizAvgGrad' => $quizAvgGrad,
                 'waitingCount' => $waitingCount,
                 'quizzes' => $quizzes,
-                'allStudents' => $allStudents
+                'allStudents' => $allStudents,
             ];
 
             return view(getTemplate() . '.panel.quizzes.results', $data);
@@ -637,10 +635,10 @@ class QuizController extends Controller
                 $query->where('user_id', $user->id)
                     ->orWhereIn('quiz_id', $quizzesIds);
             })->with([
-                'quiz' => function ($query) {
-                    $query->with(['quizQuestions', 'webinar']);
-                }
-            ])->first();
+            'quiz' => function ($query) {
+                $query->with(['quizQuestions', 'webinar']);
+            },
+        ])->first();
 
         if (!empty($quizResult)) {
             $numberOfAttempt = QuizzesResult::where('quiz_id', $quizResult->quiz->id)
@@ -675,7 +673,7 @@ class QuizController extends Controller
             $quizResult->delete();
 
             return response()->json([
-                'code' => 200
+                'code' => 200,
             ], 200);
         }
 
@@ -696,9 +694,9 @@ class QuizController extends Controller
                         'quizQuestions' => function ($query) {
                             $query->orderBy('type', 'desc');
                         },
-                        'webinar'
+                        'webinar',
                     ]);
-                }
+                },
             ])->first();
 
         if (!empty($quizResult)) {
@@ -756,10 +754,10 @@ class QuizController extends Controller
 
                                     if ($question->type == 'descriptive') {
                                         if (!empty($result['status']) and $result['status']) {
-                                            $user_grade = $user_grade - (isset($result['grade']) ? (int)$result['grade'] : 0);
-                                            $user_grade = $user_grade + (isset($review['grade']) ? (int)$review['grade'] : (int)$question->grade);
+                                            $user_grade = $user_grade - (isset($result['grade']) ? (int) $result['grade'] : 0);
+                                            $user_grade = $user_grade + (isset($review['grade']) ? (int) $review['grade'] : (int) $question->grade);
                                         } else if (isset($result['status']) and !$result['status']) {
-                                            $user_grade = $user_grade + (isset($review['grade']) ? (int)$review['grade'] : (int)$question->grade);
+                                            $user_grade = $user_grade + (isset($review['grade']) ? (int) $review['grade'] : (int) $question->grade);
                                             $oldResults[$question_id]['grade'] = isset($review['grade']) ? $review['grade'] : $question->grade;
                                         }
 
@@ -779,7 +777,7 @@ class QuizController extends Controller
                                     ->first();
 
                                 if ($question and $question->type == 'descriptive') {
-                                    $user_grade += (isset($review['grade']) ? (int)$review['grade'] : 0);
+                                    $user_grade += (isset($review['grade']) ? (int) $review['grade'] : 0);
                                 }
                             }
                         }
