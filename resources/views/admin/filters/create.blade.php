@@ -38,7 +38,7 @@
                                                     @endforeach
                                                 </optgroup>
                                             @else
-                                                <option value="{{ $category->id }}" class="font-weight-bold" @if(!empty($filter) and $filter->category_id == $category->id) selected="selected" @endif>{{ $category->title }}</option>
+                                                <option value="{{ $category->id }}" class="font-weight-bold" @if(!empty($filter) and $filter->category_id == $category->id) selected="selected" @endif>{!! $category->title !!}</option>
                                             @endif
                                         @endforeach
                                     </select>
@@ -54,7 +54,7 @@
                                     <label>{{ trans('admin/main.title') }}</label>
                                     <input type="text" name="title"
                                            class="form-control  @error('title') is-invalid @enderror"
-                                           value="{{ !empty($filter) ? $filter->title : old('title') }}"
+                                           value="{!! !empty($filter) ? $filter->title : old('title') !!}"
                                            placeholder="{{ trans('admin/main.choose_title') }}"/>
 
                                     @error('title')

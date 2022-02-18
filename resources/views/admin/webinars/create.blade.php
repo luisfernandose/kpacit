@@ -61,7 +61,7 @@
 
                                             <div class="form-group mt-15">
                                                 <label class="input-label">{{ trans('public.title') }}</label>
-                                                <input type="text" name="title" value="{{ !empty($webinar) ? $webinar->title : old('title') }}" class="form-control @error('title')  is-invalid @enderror" placeholder="{{ trans('forms.maximum_50_characters') }}"/>
+                                                <input type="text" name="title" value="{!! !empty($webinar) ? $webinar->title : old('title') !!}" class="form-control @error('title')  is-invalid @enderror" placeholder="{{ trans('forms.maximum_50_characters') }}"/>
                                                 @error('title')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
@@ -87,7 +87,7 @@
                                                 <select name="teacher_id" class="form-control select2 @error('teacher_id')  is-invalid @enderror" data-placeholder="{{ trans('public.search_instructor') }}">
                                                     <option {{ !empty($webinar) ? '' : 'selected' }} disabled>{{ trans('public.select_a_teacher') }}</option>
                                                     @foreach($teachers as $teacher)
-                                                        <option value="{{ $teacher->id }}" @if(!empty($webinar) and $webinar->teacher_id == $teacher->id) selected @endif>{{ $teacher->full_name }}</option>
+                                                        <option value="{{ $teacher->id }}" @if(!empty($webinar) and $webinar->teacher_id == $teacher->id) selected @endif @if(old('teacher_id')== $teacher->id) selected @endif>{{ $teacher->full_name }}</option>
                                                     @endforeach
                                                 </select>
 
@@ -198,7 +198,7 @@
 
                                                 <div class="form-group mt-15 js-capacity {{ (!empty(old('type')) and old('type') != \App\Models\Webinar::$webinar) ? 'd-none' : '' }}">
                                                     <label class="input-label">{{ trans('public.capacity') }}</label>
-                                                    <input type="text" name="capacity" value="{{ !empty($webinar) ? $webinar->capacity : old('capacity') }}" class="form-control @error('capacity')  is-invalid @enderror"/>
+                                                    <input type="text" name="capacity" value="{{ !empty($webinar) ? $webinar->capacity : old('capacity') }}" class="form-control @error('capacity')  is-invalid @enderror only_number"/>
                                                     @error('capacity')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
@@ -240,7 +240,7 @@
                                                             </div>
 
 
-                                                            <input type="text" name="duration" value="{{ !empty($webinar) ? $webinar->duration : old('duration') }}" class="form-control @error('duration')  is-invalid @enderror"/>
+                                                            <input type="text" name="duration" value="{{ !empty($webinar) ? $webinar->duration : old('duration') }}" class="form-control only_number @error('duration')  is-invalid @enderror"/>
                                                             @error('duration')
                                                             <div class="invalid-feedback">
                                                                 {{ $message }}
@@ -295,7 +295,7 @@
 
                                             <div class="form-group mt-15">
                                                 <label class="input-label">{{ trans('public.price') }}</label>
-                                                <input type="text" name="price" value="{{ !empty($webinar) ? $webinar->price : old('price') }}" class="form-control @error('price')  is-invalid @enderror" placeholder="{{ trans('public.0_for_free') }}"/>
+                                                <input type="text" name="price" value="{{ !empty($webinar) ? $webinar->price : (old('price')?old('price'):'0.00') }}" class="form-control @error('price')  is-invalid @enderror money" placeholder="{{ trans('public.0_for_free') }}"/>
                                                 @error('price')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
@@ -328,11 +328,11 @@
                                                         @if(!empty($category->subCategories) and count($category->subCategories))
                                                             <optgroup label="{{  $category->title }}">
                                                                 @foreach($category->subCategories as $subCategory)
-                                                                    <option value="{{ $subCategory->id }}" {{ (!empty($webinar) and $webinar->category_id == $subCategory->id) ? 'selected' : '' }}>{{ $subCategory->title }}</option>
+                                                                    <option value="{{ $subCategory->id }}" {{ (!empty($webinar) and $webinar->category_id == $subCategory->id) ? 'selected' : '' }} @if(old('category_id')== $subCategory->id) selected @endif>{{ $subCategory->id }}</option>
                                                                 @endforeach
                                                             </optgroup>
                                                         @else
-                                                            <option value="{{ $category->id }}" {{ (!empty($webinar) and $webinar->category_id == $category->id) ? 'selected' : '' }}>{{ $category->title }}</option>
+                                                            <option value="{{ $category->id }}" {{ (!empty($webinar) and $webinar->category_id == $category->id) ? 'selected' : '' }}@if(old('category_id')== $category->id) selected @endif>{{ $category->title }}</option>
                                                         @endif
                                                     @endforeach
                                                 </select>
@@ -355,7 +355,7 @@
                                                 @foreach($webinarCategoryFilters as $filter)
                                                     <div class="col-12 col-md-3">
                                                         <div class="webinar-category-filters">
-                                                            <strong class="category-filter-title d-block">{{ $filter->title }}</strong>
+                                                            <strong class="category-filter-title d-block">{!! $filter->title !!}</strong>
                                                             <div class="py-10"></div>
 
                                                             @foreach($filter->options as $option)
@@ -803,6 +803,13 @@
     <script src="/assets/default/vendors/daterangepicker/daterangepicker.min.js"></script>
     <script src="/assets/default/vendors/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
     <script src="/assets/default/vendors/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+    <script src="/assets/default/vendors/jQuery-Mask-Plugin-master/dist/jquery.mask.min.js"></script>
     <script src="/assets/vendors/summernote/summernote-bs4.min.js"></script>
     <script src="/assets/admin/js/webinar.min.js"></script>
+    <script>
+        $(document).ready(()=>{
+            $('.only_number').mask('0#');
+            $('.money').mask('####0.00',{reverse: true});
+        });
+    </script>
 @endpush

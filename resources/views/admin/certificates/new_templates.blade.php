@@ -57,14 +57,14 @@
                             <dov class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label" for="inputDefault">{!! trans('admin/main.position_x') !!}</label>
-                                    <input type="text" name="position_x" class="form-control @error('position_x') is-invalid @enderror" value="{{ !empty($template) ? $template->position_x : old('position_x') }}">
+                                    <input type="text" name="position_x" class="only_number form-control @error('position_x') is-invalid @enderror" value="{{ !empty($template) ? $template->position_x : old('position_x') }}">
                                     <div class="invalid-feedback">@error('position_x') {{ $message }} @enderror</div>
                                 </div>
                             </dov>
                             <dov class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label" for="inputDefault">{!! trans('admin/main.position_y') !!}</label>
-                                    <input type="text" name="position_y" class="form-control @error('position_y') is-invalid @enderror" value="{{ !empty($template) ? $template->position_y : old('position_y') }}">
+                                    <input type="text" name="position_y" class="only_number form-control @error('position_y') is-invalid @enderror" value="{{ !empty($template) ? $template->position_y : old('position_y') }}">
                                     <div class="invalid-feedback">@error('position_y') {{ $message }} @enderror</div>
                                 </div>
                             </dov>
@@ -118,4 +118,11 @@
 
 @push('scripts_bottom')
     <script src="/assets/default/js/admin/certificates.min.js"></script>
+    <script src="/assets/default/vendors/jQuery-Mask-Plugin-master/dist/jquery.mask.min.js"></script>
+    <script>
+        $(document).ready(()=>{
+            $('.only_number').mask('0#');
+            $('.money').mask('####0.00',{reverse: true});
+        });
+    </script>
 @endpush

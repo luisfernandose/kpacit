@@ -7,21 +7,16 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Quiz;
 use App\Models\Role;
-use App\Models\Sale;
 use App\Models\SpecialOffer;
 use App\Models\Tag;
 use App\Models\Ticket;
+use App\Models\Webinar;
 use App\Models\WebinarFilterOption;
 use App\Models\WebinarPartnerTeacher;
-use App\Models\WebinarReport;
-use App\User;
-use App\Models\Webinar;
 use App\Services\AlegraService;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Facades\Excel;
 
 class WebinarController extends Controller
@@ -59,7 +54,7 @@ class WebinarController extends Controller
                 },
                 'sales' => function ($query) {
                     $query->whereNull('refund_at');
-                }
+                },
             ]);
 
         $webinars = $query->paginate(10);
@@ -235,7 +230,6 @@ class WebinarController extends Controller
             $query->orderBy('created_at', 'desc');
         }
 
-
         return $query;
     }
 
@@ -267,7 +261,7 @@ class WebinarController extends Controller
         $data = [
             'pageTitle' => trans('admin/main.webinar_new_page_title'),
             'teachers' => $teachers,
-            'categories' => $categories
+            'categories' => $categories,
         ];
 
         return view('admin.webinars.create', $data);
@@ -283,9 +277,9 @@ class WebinarController extends Controller
             'thumbnail' => 'required',
             'image_cover' => 'required',
             'description' => 'required',
-            'teacher_id' => 'required|exists:users,id',
+            'teacher_id' => 'required|exists:users,id|integer',
             'category_id' => 'required',
-            'duration' => 'required',
+            'duration' => 'required|integer',
             'start_date' => 'required_if:type,webinar',
             'capacity' => 'required_if:type,webinar',
         ]);
@@ -294,7 +288,7 @@ class WebinarController extends Controller
 
         $webinar = Webinar::create([
             'type' => $data['type'],
-            'title' => $data['title'],
+            'title' => clean($data['title']),
             'teacher_id' => $data['teacher_id'],
             'creator_id' => $data['teacher_id'],
             'seo_description' => $data['seo_description'],
@@ -321,7 +315,7 @@ class WebinarController extends Controller
             foreach ($filters as $filter) {
                 WebinarFilterOption::create([
                     'webinar_id' => $webinar->id,
-                    'filter_option_id' => $filter
+                    'filter_option_id' => $filter,
                 ]);
             }
         }
@@ -348,7 +342,6 @@ class WebinarController extends Controller
                 ]);
             }
         }
-
 
         return redirect('/admin/webinars/' . $webinar->id . '/edit');
     }
@@ -377,7 +370,7 @@ class WebinarController extends Controller
                     }]);
                 },
                 'tags',
-                'textLessons'
+                'textLessons',
             ])
             ->first();
 
@@ -446,6 +439,8 @@ class WebinarController extends Controller
 
         $this->validate($request, $rules);
 
+        $data['title'] = clean($data['title']);
+
         if (!empty($data['teacher_id'])) {
             $teacher = User::find($data['teacher_id']);
             $creator = $webinar->creator;
@@ -454,12 +449,11 @@ class WebinarController extends Controller
                 $toastData = [
                     'title' => trans('public.request_failed'),
                     'msg' => trans('admin/main.is_not_the_teacher_of_this_organization'),
-                    'status' => 'error'
+                    'status' => 'error',
                 ];
                 return back()->with(['toast' => $toastData]);
             }
         }
-
 
         $data['status'] = $publish ? Webinar::$active : ($reject ? Webinar::$inactive : ($isDraft ? Webinar::$isDraft : Webinar::$pending));
         $data['updated_at'] = time();
@@ -490,7 +484,7 @@ class WebinarController extends Controller
             foreach ($filters as $filter) {
                 WebinarFilterOption::create([
                     'webinar_id' => $webinar->id,
-                    'filter_option_id' => $filter
+                    'filter_option_id' => $filter,
                 ]);
             }
         }
@@ -533,7 +527,7 @@ class WebinarController extends Controller
                 $toastData = [
                     'title' => trans('public.request_failed'),
                     'msg' => 'No se pudo crear el item en el ERP',
-                    'status' => 'error'
+                    'status' => 'error',
                 ];
 
                 return back()->with(['toast' => $toastData]);
