@@ -6,7 +6,7 @@ return [
     |--------------------------------------------------------------------------
     | Panel
     |--------------------------------------------------------------------------
-    */
+     */
 
     'new_users' => 'New users',
     'user' => 'User',
@@ -34,6 +34,7 @@ return [
     'log_out' => 'Log out',
     'create_a_class' => 'Create a class',
     'create_a_webinar' => 'Create a class',
+    'quizz_message_grade' => 'All quizzes will be weighted based on 100, the “pass mark” field is the minimum amount to pass the quiz',
 
     'invited_classes' => 'Invited classes',
     'invited_teacher' => 'Invited instrcutor',
@@ -157,8 +158,8 @@ return [
     'total_conversations' => 'Total conversations',
     'messages_history' => 'Messages History',
     'support_summary' => 'Support summary',
-  	'classes_support' => 'Classes support',
-  	'support_tickets' => 'Tickets',
+    'classes_support' => 'Classes support',
+    'support_tickets' => 'Tickets',
     'staff' => 'Staff',
     'teacher' => 'Teacher',
     'open' => 'Open',
