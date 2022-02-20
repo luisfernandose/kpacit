@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Mail\SendNotifications;
 use App\Models\Role;
-use App\Providers\RouteServiceProvider;
 use App\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -25,7 +24,7 @@ class RegisterController extends Controller
     | validation and creation. By default this controller uses a trait to
     | provide this functionality without requiring any additional code.
     |
-    */
+     */
 
     use RegistersUsers;
 
@@ -58,7 +57,6 @@ class RegisterController extends Controller
             'pageDescription' => $pageDescription,
             'pageRobot' => $pageRobot,
         ];
-
         return view(getTemplate() . '.auth.register', $data);
     }
 
@@ -83,6 +81,8 @@ class RegisterController extends Controller
             'full_name' => 'required|string|min:3',
             'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required|same:password',
+            'document_id' => 'required|integer',
+            'document_type' => 'required|string',
         ]);
     }
 
@@ -102,12 +102,14 @@ class RegisterController extends Controller
 
         $user = User::create([
             'role_name' => Role::$user,
-            'role_id' => 1,//normal user
+            'role_id' => 1, //normal user
             $username => $data[$username],
             'full_name' => $data['full_name'],
             'status' => User::$pending,
             'password' => Hash::make($data['password']),
-            'created_at' => time()
+            'document_id' => $data['document_id'],
+            'document_type' => $data['document_type'],
+            'created_at' => time(),
         ]);
 
         return $user;
@@ -162,8 +164,8 @@ class RegisterController extends Controller
             }
 
             return $request->wantsJson()
-                ? new JsonResponse([], 201)
-                : redirect($this->redirectPath());
+            ? new JsonResponse([], 201)
+            : redirect($this->redirectPath());
         }
     }
 
@@ -194,7 +196,7 @@ class RegisterController extends Controller
             'term' => 'required',
         ]);
 
-        $data = (Object)$data;
+        $data = (Object) $data;
 
         $message = "
             <b>Empresa:<b> $data->organization_name
@@ -216,11 +218,11 @@ class RegisterController extends Controller
         $toastData = [
             'title' => '',
             'msg' => 'La solicitud de registro fue enviada con éxito.',
-            'status' => 'success'
+            'status' => 'success',
         ];
 
         return $request->wantsJson()
-            ? new JsonResponse([], 201)
-            : redirect($this->redirectPath())->with(['toast' => $toastData]);
+        ? new JsonResponse([], 201)
+        : redirect($this->redirectPath())->with(['toast' => $toastData]);
     }
 }

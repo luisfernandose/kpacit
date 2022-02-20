@@ -22,7 +22,28 @@
                 </div>
                 @enderror
             </div>
-
+            <div class="form-group">
+                <label class="input-label" >{{ trans('auth.document_type') }}:</label>
+                {{$user->document_type}}
+                <select name="document_type" class="form-control search-user-select2">
+                    <option value="CC" {{ $user && $user->document_type == 'CC' ? 'selected' : (old('document_type')=='CC'?'selected':'') }}>CC</option>
+                    <option value="CE" {{ $user && $user->document_type == 'CE' ? 'selected' : (old('document_type')=='CE'?'selected':'') }}>CE</option>
+                </select>
+                @error('document_type')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label class="input-label" >{{ trans('auth.document_id') }}:</label>
+                <input name="document_id" type="text" value="{{ (!empty($user) and empty($new_user)) ? $user->document_id : old('document_id') }}" class="form-control @error('document_id') is-invalid @enderror">
+                @error('document_id')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
             <div class="form-group">
                 <label class="input-label">{{ trans('auth.password') }}</label>
                 <input type="password" name="password" value="{{ old('password') }}" class="form-control @error('password')  is-invalid @enderror" placeholder=""/>
