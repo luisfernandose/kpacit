@@ -19,7 +19,7 @@ class QuizQuestionController extends Controller
         $rules = [
             'quiz_id' => 'required|exists:quizzes,id',
             'title' => 'required|max:255',
-            'grade' => ['required','integer', new GradeMax],
+            'grade' => ['required','integer','numeric', 'between:1,100', new GradeMax],
             'type' => 'required',
         ];
 
@@ -136,7 +136,7 @@ class QuizQuestionController extends Controller
         $rules = [
             'quiz_id' => 'required|exists:quizzes,id',
             'title' => 'required',
-            'grade' => 'required',
+            'grade' => ['required','integer','numeric', 'between:1,100', new GradeMax],
             'type' => 'required',
         ];
 

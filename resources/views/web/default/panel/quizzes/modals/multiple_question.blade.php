@@ -20,7 +20,7 @@
                     <div class="form-group">
                         <label class="input-label">{{ trans('quiz.grade') }}</label>
                         <input type="text" name="ajax[grade]" maxlength="3" class="js-ajax-grade form-control only_number" value="{{ !empty($question_edit) ? $question_edit->grade : '' }}"/>
-                        <span class="invalid-feedback"></span>
+                        <span class="invalid-feedback" data-label="{{ __('validation.max.numeric') }}"></span>
                     </div>
                 </div>
                 <div class="col-12">
