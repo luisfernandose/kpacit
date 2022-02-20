@@ -172,6 +172,19 @@
         $('body').on("keyup",'input[name="grade"]', function (e) {
             let maxPassMark = +$('input[name="pass_mark"]').val();
             let sumGrade= +event.target.value;
+
+            if(+event.target.value>100){                
+                let attribute = $(this).parent().find('.input-label').text().trim();                
+                let msgValidation = $(this).parent().find('.invalid-feedback').attr('data-label');
+                msgValidation = msgValidation.replace(':attribute', attribute).replace(':max','100');
+
+                $(this).parent().find('.invalid-feedback').text('');                
+                $(this).parent().find('.invalid-feedback').text(msgValidation);
+                $(this).addClass('is-invalid');
+                return;
+            }else{
+                $(this).removeClass('is-invalid');
+            }
             
             $('.question-infos').each(function () {  
                     sumGrade += +$(this).attr('data-question-grade')
