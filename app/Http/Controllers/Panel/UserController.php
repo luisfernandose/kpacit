@@ -27,7 +27,6 @@ class UserController extends Controller
 
         $occupations = $user->occupations->pluck('category_id')->toArray();
 
-
         $userLanguages = getGeneralSettings('user_languages');
         if (!empty($userLanguages) and is_array($userLanguages)) {
             $userLanguages = getLanguages($userLanguages);
@@ -78,6 +77,8 @@ class UserController extends Controller
                 'full_name' => 'required|string',
                 'email' => 'required|email|unique:users,email,' . $user->id,
                 'mobile' => 'required|numeric|unique:users,mobile,' . $user->id,
+                'document_id' => 'required|numeric',
+                'document_type' => 'required|string',
             ]);
         }
 
@@ -91,7 +92,7 @@ class UserController extends Controller
                 ]);
 
                 $user->update([
-                    'password' => User::generatePassword($data['password'])
+                    'password' => User::generatePassword($data['password']),
                 ]);
             }
 
@@ -104,6 +105,8 @@ class UserController extends Controller
                     'email' => $data['email'],
                     'full_name' => $data['full_name'],
                     'mobile' => $data['mobile'],
+                    'document_id' => $data['document_id'],
+                    'document_type' => $data['document_type'],
                     'language' => $data['language'],
                     'newsletter' => $joinNewsletter,
                     'public_message' => (!empty($data['public_messages']) and $data['public_messages'] == 'on'),
@@ -131,7 +134,7 @@ class UserController extends Controller
                     foreach ($data['occupations'] as $category_id) {
                         UserOccupation::create([
                             'user_id' => $user->id,
-                            'category_id' => $category_id
+                            'category_id' => $category_id,
                         ]);
                     }
                 }
@@ -154,7 +157,7 @@ class UserController extends Controller
                         ],
                         [
                             'jwt_token' => $data['zoom_jwt_token'],
-                            'created_at' => time()
+                            'created_at' => time(),
                         ]
                     );
                 }
@@ -180,7 +183,7 @@ class UserController extends Controller
             $toastData = [
                 'title' => trans('public.request_success'),
                 'msg' => trans('panel.user_setting_success'),
-                'status' => 'success'
+                'status' => 'success',
             ];
             return redirect($url)->with(['toast' => $toastData]);
         }
@@ -196,7 +199,7 @@ class UserController extends Controller
                 Newsletter::create([
                     'user_id' => $user_id,
                     'email' => $email,
-                    'created_at' => time()
+                    'created_at' => time(),
                 ]);
             } else {
                 $check->update([
@@ -245,7 +248,7 @@ class UserController extends Controller
             ]);
 
             return response()->json([
-                'code' => 200
+                'code' => 200,
             ], 200);
         }
 
@@ -268,16 +271,16 @@ class UserController extends Controller
 
                 if (!empty($meta)) {
                     $meta->update([
-                        'value' => $data['value']
+                        'value' => $data['value'],
                     ]);
 
                     return response()->json([
-                        'code' => 200
+                        'code' => 200,
                     ], 200);
                 }
 
                 return response()->json([
-                    'code' => 403
+                    'code' => 403,
                 ], 200);
             }
         }
@@ -301,7 +304,7 @@ class UserController extends Controller
                 $meta->delete();
 
                 return response()->json([
-                    'code' => 200
+                    'code' => 200,
                 ], 200);
             }
         }
@@ -427,6 +430,8 @@ class UserController extends Controller
                 'full_name' => 'required|string',
                 'mobile' => 'required|numeric|unique:users',
                 'password' => 'required|confirmed|min:6',
+                'document_id' => 'required|integer',
+                'document_type' => 'required|string',
             ]);
 
             $data = $request->all();
@@ -440,6 +445,8 @@ class UserController extends Controller
                 'organ_id' => $organization->id,
                 'password' => Hash::make($data['password']),
                 'full_name' => $data['full_name'],
+                'document_id' => $data['document_id'],
+                'document_type' => $data['document_type'],
                 'mobile' => $data['mobile'],
                 'language' => $data['language'],
                 'newsletter' => (!empty($data['join_newsletter']) and $data['join_newsletter'] == 'on'),
@@ -451,7 +458,7 @@ class UserController extends Controller
             // Envío de correo
             $message = 'Felicidades!<br>Se ha relizado un registro en Kpacit con tu correo electrónico,
             para ingresar puedes hacerlo ingresando a ' . route('user.login') . ' con la contraseña: ' . $data['password'] .
-            '<br><b>Te recomendamos cambiar la contraseña una vez inicies sesión.</b>';
+                '<br><b>Te recomendamos cambiar la contraseña una vez inicies sesión.</b>';
 
             \Mail::to($user->email)->send(new SendNotifications(['title' => 'Registro en plataforma Kpacit', 'message' => $message]));
 
@@ -518,7 +525,7 @@ class UserController extends Controller
                 ]);
 
             return response()->json([
-                'code' => 200
+                'code' => 200,
             ], 200);
         }
 
@@ -557,7 +564,7 @@ class UserController extends Controller
     public function contactInfo(Request $request)
     {
         $this->validate($request, [
-            'user_id' => 'required'
+            'user_id' => 'required',
         ]);
 
         $user = User::find($request->get('user_id'));
@@ -568,7 +575,7 @@ class UserController extends Controller
                 'avatar' => $user->getAvatar(),
                 'name' => $user->full_name,
                 'email' => !empty($user->email) ? $user->email : '-',
-                'phone' => !empty($user->mobile) ? $user->mobile : '-'
+                'phone' => !empty($user->mobile) ? $user->mobile : '-',
             ], 200);
         }
 
@@ -589,7 +596,7 @@ class UserController extends Controller
         $user->save();
 
         return response()->json([
-            'code' => 200
+            'code' => 200,
         ], 200);
     }
 }
