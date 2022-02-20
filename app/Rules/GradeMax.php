@@ -17,7 +17,7 @@ class GradeMax implements Rule
      */
     public function __construct()
     {
-        
+        $this->max_value = 100;
     }
 
     /**
@@ -35,8 +35,8 @@ class GradeMax implements Rule
         $quiz = Quiz::find($quiz_id);
        
         if($quiz){
-            $max = $quiz->pass_mark;
-            $this->max_value = $max;
+            $max =  $this->max_value;
+            
             $sum = QuizzesQuestion::where('quiz_id', $quiz_id)->pluck('grade')->sum();
             $sum = (int) $sum + (int) $value;
             if ($sum > $max) {

@@ -170,7 +170,7 @@
         $('.only_number').mask('0#');       
 
         $('body').on("keyup",'input[name="grade"]', function (e) {
-            let maxPassMark = +$('input[name="pass_mark"]').val();
+            let maxPassMark = 100;
             let sumGrade= +event.target.value;
 
             if(+event.target.value>100){                
