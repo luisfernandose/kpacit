@@ -5,10 +5,10 @@ namespace App\Services;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Log;
 
-class AlegraService {
+class AlegraService
+{
 
     private $baseUri = 'https://api.alegra.com/api/v1/';
-
 
     /**
      * Crea un item
@@ -16,7 +16,7 @@ class AlegraService {
      */
     public function createItem($name, $price)
     {
-        $result = (Object)[
+        $result = (Object) [
             'success' => false,
             'data' => null,
         ];
@@ -31,16 +31,16 @@ class AlegraService {
                 'Authorization' => 'Basic ' . $this->generateAuth(),
             ];
 
-            $body = (Object)[
+            $body = (Object) [
                 'name' => $name,
                 'price' => $price ?? 0,
             ];
 
             $request = $client->request('POST', 'items', [
-                    'headers' => $headers,
-                    'http_errors' => false,
-                    'body' => json_encode($body)
-                ]
+                'headers' => $headers,
+                'http_errors' => false,
+                'body' => json_encode($body),
+            ]
             );
 
             $response = json_decode($request->getBody()->getContents());
@@ -71,9 +71,9 @@ class AlegraService {
      * Crea un Contacto
      *
      */
-    public function createContact($name, $email, $mobile)
+    public function createContact($name, $email, $mobile, $document_id)
     {
-        $result = (Object)[
+        $result = (Object) [
             'success' => false,
             'data' => null,
         ];
@@ -88,18 +88,19 @@ class AlegraService {
                 'Authorization' => 'Basic ' . $this->generateAuth(),
             ];
 
-            $body = (Object)[
+            $body = (Object) [
                 'name' => $name,
                 'type' => 'client',
                 'email' => $email,
                 'mobile' => $mobile,
+                'identification' => $document_id,
             ];
 
             $request = $client->request('POST', 'contacts', [
-                    'headers' => $headers,
-                    'http_errors' => false,
-                    'body' => json_encode($body)
-                ]
+                'headers' => $headers,
+                'http_errors' => false,
+                'body' => json_encode($body),
+            ]
             );
 
             $response = json_decode($request->getBody()->getContents());
@@ -132,7 +133,7 @@ class AlegraService {
      */
     public function createInvoice($clientId, $items, $anotation, $total)
     {
-        $result = (Object)[
+        $result = (Object) [
             'success' => false,
             'data' => null,
         ];
@@ -148,16 +149,16 @@ class AlegraService {
             ];
 
             $payment = [
-                (Object)[
+                (Object) [
                     'date' => date('Y-m-d'),
-                    'account' => (Object)[
+                    'account' => (Object) [
                         'id' => config('alegra.bank_account'),
                     ],
                     'amount' => $total,
                 ],
             ];
 
-            $body = (Object)[
+            $body = (Object) [
                 'date' => date('Y-m-d'),
                 'dueDate' => date('Y-m-d'),
                 'client' => $clientId,
@@ -165,14 +166,14 @@ class AlegraService {
                 'payments' => $payment,
                 'anotation' => $anotation,
                 'paymentForm' => 'CASH',
-                'paymentMethod' => 'MUTUAL_AGREEMENT'
+                'paymentMethod' => 'MUTUAL_AGREEMENT',
             ];
 
             $request = $client->request('POST', 'invoices', [
-                    'headers' => $headers,
-                    'http_errors' => false,
-                    'body' => json_encode($body)
-                ]
+                'headers' => $headers,
+                'http_errors' => false,
+                'body' => json_encode($body),
+            ]
             );
 
             $response = json_decode($request->getBody()->getContents());

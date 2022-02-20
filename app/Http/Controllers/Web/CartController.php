@@ -5,14 +5,11 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Discount;
-use App\Models\DiscountUser;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\PaymentChannel;
 use App\Models\ReserveMeeting;
-use App\Models\Setting;
 use App\Models\Webinar;
-use App\PaymentChannels\ChannelManager;
 use App\Services\AlegraService;
 use App\User;
 use Illuminate\Http\Request;
@@ -29,10 +26,10 @@ class CartController extends Controller
                 'reserveMeeting' => function ($query) {
                     $query->with([
                         'meeting',
-                        'meetingTime'
+                        'meetingTime',
                     ]);
                 },
-                'ticket'
+                'ticket',
             ])
             ->get();
 
@@ -91,14 +88,14 @@ class CartController extends Controller
                 ], [
                     'ticket_id' => $ticket_id,
                     'special_offer_id' => !empty($activeSpecialOffer) ? $activeSpecialOffer->id : null,
-                    'created_at' => time()
+                    'created_at' => time(),
                 ]);
             }
 
             $toastData = [
                 'title' => trans('cart.cart_add_success_title'),
                 'msg' => trans('cart.cart_add_success_msg'),
-                'status' => 'success'
+                'status' => 'success',
             ];
             return back()->with(['toast' => $toastData]);
         }
@@ -127,7 +124,7 @@ class CartController extends Controller
             $cart->delete();
 
             return response()->json([
-                'code' => 200
+                'code' => 200,
             ], 200);
         }
 
@@ -184,7 +181,6 @@ class CartController extends Controller
 
             return $price;
         });
-
 
         if (!empty($discountCoupon)) {
             $couponAmount = $subTotal * $discountCoupon->percent / 100;
@@ -260,14 +256,14 @@ class CartController extends Controller
 
                     $alegraService = new AlegraService();
 
-                    $serviceResult = $alegraService->createContact($user->full_name, $user->email, $user->mobile);
+                    $serviceResult = $alegraService->createContact($user->full_name, $user->email, $user->mobile, $user->document_type . "" . $user->document_id);
 
                     if (!$serviceResult->success || empty($serviceResult->data->id)) {
 
                         $toastData = [
                             'title' => trans('public.request_failed'),
                             'msg' => 'No se pudo crear el contacto en el ERP',
-                            'status' => 'error'
+                            'status' => 'error',
                         ];
 
                         return back()->with(['toast' => $toastData]);
@@ -301,7 +297,7 @@ class CartController extends Controller
                     'order' => $order,
                     'count' => $carts->count(),
                     'userCharge' => $user->getAccountingCharge(),
-                    'razorpay' => $razorpay
+                    'razorpay' => $razorpay,
                 ];
 
                 return view(getTemplate() . '.cart.payment', $data);
@@ -401,7 +397,7 @@ class CartController extends Controller
     private function handlePaymentOrderWithZeroTotalAmount($order)
     {
         $order->update([
-            'payment_method' => Order::$paymentChannel
+            'payment_method' => Order::$paymentChannel,
         ]);
 
         $paymentController = new PaymentController();
@@ -409,7 +405,7 @@ class CartController extends Controller
         $paymentController->setPaymentAccounting($order);
 
         $order->update([
-            'status' => Order::$paid
+            'status' => Order::$paid,
         ]);
 
         return redirect('/payments/status?order_id=' . $order->id);

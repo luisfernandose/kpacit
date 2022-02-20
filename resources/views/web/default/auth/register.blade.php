@@ -77,6 +77,33 @@
                             </div>
                             @enderror
                         </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="input-label" >{{ trans('auth.document_type') }}:</label>
+                                    <select name="document_type" class="form-control search-user-select2">
+                                        <option value="CC">CC</option>
+                                        <option value="CE">CE</option>
+                                    </select>
+                                    @error('document_type')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="input-label" >{{ trans('auth.document_id') }}:</label>
+                                    <input name="document_id" type="text" value="{{ old('document_id') }}" class="form-control @error('document_id') is-invalid @enderror">
+                                    @error('document_id')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <label class="input-label" for="password">{{ trans('auth.password') }}:</label>
