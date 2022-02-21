@@ -186,6 +186,42 @@
         })
 
     });
+
+
+    $('body').on('click', '#statusSwitch', function (e) {
+        e.preventDefault();
+        const edit = {!! (!empty($quiz) ? 'true' : 'false'  )!!}
+        console.log(edit);
+
+/*         $.post(action, data, function (result) {
+            if (result && result.code === 200) {
+                Swal.fire({
+                    icon: 'success',
+                    html: '<h3 class="font-20 text-center text-dark-blue py-25">' + saveSuccessLang + '</h3>',
+                    showConfirmButton: false,
+                    width: '25rem',
+                });
+
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500)
+            }
+        }).fail(err => {
+            $this.removeClass('loadingbar primary').prop('disabled', false);
+            var errors = err.responseJSON;
+            if (errors && errors.errors) {
+                Object.keys(errors.errors).forEach((key) => {
+                    const error = errors.errors[key];
+                    let element = form.find('.js-ajax-' + key);
+                    element.addClass('is-invalid');
+                    element.parent().find('.invalid-feedback').text(error[0]);
+                });
+            }
+        }) */
+    });
+
+
+
     </script>
 
 
