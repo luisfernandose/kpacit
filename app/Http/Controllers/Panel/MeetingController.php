@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Panel;
 use App\Http\Controllers\Controller;
 use App\Models\Meeting;
 use App\Models\MeetingTime;
-use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use \Illuminate\Http\Request;
 
 class MeetingController extends Controller
 {
@@ -16,14 +16,14 @@ class MeetingController extends Controller
 
         $meeting = Meeting::where('creator_id', $user->id)
             ->with([
-                'meetingTimes'
+                'meetingTimes',
             ])
             ->first();
 
         if (empty($meeting)) {
             $meeting = Meeting::create([
                 'creator_id' => $user->id,
-                'created_at' => time()
+                'created_at' => time(),
             ]);
         }
 
@@ -81,7 +81,7 @@ class MeetingController extends Controller
             ]);
 
             return response()->json([
-                'code' => 200
+                'code' => 200,
             ], 200);
         }
 
@@ -119,12 +119,12 @@ class MeetingController extends Controller
                         ]);
 
                         return response()->json([
-                            'code' => 200
+                            'code' => 200,
                         ], 200);
                     }
                 } else {
                     return response()->json([
-                        'error' => 'contradiction'
+                        'error' => 'contradiction',
                     ], 422);
                 }
             }
@@ -172,7 +172,7 @@ class MeetingController extends Controller
             ]);
 
             return response()->json([
-                'code' => 200
+                'code' => 200,
             ], 200);
         }
 

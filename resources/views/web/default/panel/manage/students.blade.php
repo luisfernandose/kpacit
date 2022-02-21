@@ -58,6 +58,8 @@
                                 <tr>
                                     <th class="text-left text-gray">{{ trans('auth.name') }}</th>
                                     <th class="text-left text-gray">{{ trans('auth.email') }}</th>
+                                    <th class="text-left text-gray">{{ trans('auth.document_type') }}</th>
+                                    <th class="text-left text-gray">{{ trans('auth.document_id') }}</th>
                                     <th class="text-center text-gray">{{ trans('public.phone') }}</th>
                                     <th class="text-center text-gray">{{ trans('webinars.webinars') }}</th>
                                     <th class="text-center text-gray">{{ trans('quiz.quizzes') }}</th>
@@ -86,6 +88,12 @@
                                                 <span class="d-block text-dark-blue font-weight-500">{{ $user->email }}</span>
                                                 <span class="mt-5 d-block font-12 text-gray">id : {{ $user->id }}</span>
                                             </div>
+                                        </td>
+                                        <td class="align-middle">
+                                            <span class="text-dark-blue font-weight-500">{{ $user->document_type }}</span>
+                                        </td>
+                                        <td class="align-middle">
+                                            <span class="text-dark-blue font-weight-500">{{ $user->document_id }}</span>
                                         </td>
                                         <td class="align-middle">
                                             <span class="text-dark-blue font-weight-500">{{ $user->mobile }}</span>

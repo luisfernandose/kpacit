@@ -147,7 +147,7 @@
        
 
         $('body').on("keyup",'input[name="ajax[grade]"]', function (e) {
-            let maxPassMark = +$('input[name="ajax[pass_mark]"').val();
+            let maxPassMark = 100;
             let sumGrade= +event.target.value;
 
             if(+event.target.value>100){                
