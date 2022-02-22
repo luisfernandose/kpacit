@@ -1,10 +1,8 @@
 (function ($) {
     $.fn.filemanager = function (type, options) {
-        console.log("pasando");
         type = type || "file";
 
         this.on("click", function (e) {
-            console.log("pasando 2");
             var route_prefix =
                 options && options.prefix ? options.prefix : "/filemanager";
             var target_input = $("#" + $(this).data("input"));
@@ -39,7 +37,6 @@
                 // trigger change event
                 target_preview.trigger("change");
             };
-            console.log("pasando 3");
             return false;
         });
         this.trigger("click");
