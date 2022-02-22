@@ -100,11 +100,20 @@
                                             <div class="form-group mt-4 d-flex align-items-center justify-content-between">
                                                 <label class="cursor-pointer" for="statusSwitch">{{ trans('quiz.active_quiz') }}</label>
                                                 <div class="custom-control custom-switch">
-                                                    <input type="checkbox" name="status" class="custom-control-input" id="statusSwitch" {{ !empty($quiz) && $quiz->status ? 'checked' : ''}}>
+                                                    <input type="checkbox" name="status" class="custom-control-input @error('status')  is-invalid @enderror" id="statusSwitch" {{ (!empty($quiz) && $quiz->status==='active') || old('status')==='on' ? 'checked' : ''}}>
                                                     <label class="custom-control-label" for="statusSwitch"></label>
                                                 </div>
                                             </div>
-
+                                            <div id="errorStatus" class="invalid-feedback  @error('status')  d-block @enderror">
+                                                @if ($errors->first('status'))
+                                                    @error('status')
+                                                        {{ $message }}
+                                                    @enderror
+                                                @else
+                                                    {{trans('validation.can_active_quiz')}}
+                                                @endif
+                                                            
+                                            </div>
                                         </div>
                                     </div>
                                 </section>
@@ -208,6 +217,49 @@
             $('.save-question').prop('disabled',false);
         })
  
+       /*  $('body').on('change', 'input[type="checkbox"]', function (e) {
+
+            const input = $(this).attr('name');
+            
+            if(input == 'status' && e.target.checked){
+            
+                let form = $('#webinarForm');
+                let url = form.attr('action');
+                let action = form.attr('action').split('/');
+                let data ={
+                    'status': 'on'
+                }
+                let actionCase = action[action.length -1];
+
+                switch (actionCase) {
+            
+                    case 'update':
+                        url = url.replace('update','active');
+
+                        $.post(url, data, function (result) {
+
+                        }).fail(err => {
+                            $(this).prop('checked',false);
+                            var errors = err.responseJSON;
+                            let errorMsg = 'Cannot active quiz';
+                            if(errors && errors.errors){
+                                errorMsg =errors.errors['status'];
+                            }
+                            Swal.fire({
+                                    icon: 'error',
+                                    html: '<h3 class="font-20 text-center text-dark-blue">' + errorMsg + '</h3>',
+                                    showConfirmButton: true,
+                                    width: '25rem',
+                            }); 
+
+                        }) 
+                        break;
+                }
+
+
+            }
+
+        }); */ 
     });
     </script>
 @endpush
