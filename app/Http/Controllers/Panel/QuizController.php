@@ -117,7 +117,7 @@ class QuizController extends Controller
             'pageTitle' => trans('quiz.new_quiz_page_title'),
             'webinars' => $webinars,
         ];
-        
+
         return view(getTemplate() . '.panel.quizzes.create', $data);
     }
 
@@ -547,11 +547,21 @@ class QuizController extends Controller
 
             $studentsIds = $query->pluck('user_id')->toArray();
             $allStudents = User::select('id', 'full_name')->whereIn('id', $studentsIds)->get();
+            $quizResultsCount = QuizzesResult::whereIn('id',
+                QuizzesResult::select(\DB::raw('MAX(id) AS id'), 'user_grade')->whereIn('quiz_id', $quizzesIds)->groupBy('quiz_id', 'user_id')->get()->pluck('id')
+            )->count();
 
-            $quizResultsCount = $query->count();
-            $quizAvgGrad = round($query->avg('user_grade'), 2);
+            $quizAvgGrad = round(QuizzesResult::whereIn('id',
+                QuizzesResult::select(\DB::raw('MAX(id) AS id'), 'user_grade')->whereIn('quiz_id', $quizzesIds)->groupBy('quiz_id', 'user_id')->get()->pluck('id')
+            )->avg('user_grade'), 2);
+
+            //dd(QuizzesResult::select(\DB::raw('MAX(id) AS id'), 'user_grade')->whereIn('quiz_id', $quizzesIds)->groupBy('quiz_id', 'user_id')->avg('user_grade'));
+
             $waitingCount = deepClone($query)->where('status', \App\Models\QuizzesResult::$waiting)->count();
-            $passedCount = deepClone($query)->where('status', \App\Models\QuizzesResult::$passed)->count();
+            $passedCount = QuizzesResult::whereIn('id',
+                QuizzesResult::select(\DB::raw('MAX(id) AS id'), 'user_grade')->whereIn('quiz_id', $quizzesIds)->where('status', \App\Models\QuizzesResult::$passed)->groupBy('quiz_id', 'user_id')->get()->pluck('id')
+            )->count();
+
             $successRate = ($quizResultsCount > 0) ? round($passedCount / $quizResultsCount * 100) : 0;
 
             $query = $this->resultFilters($request, deepClone($query));
@@ -566,7 +576,7 @@ class QuizController extends Controller
             $data = [
                 'pageTitle' => trans('quiz.results'),
                 'quizzesResults' => $quizzesResults,
-                'quizResultsCount' => $quizResultsCount,
+                'quizResultsCount' => $query->count(),
                 'successRate' => $successRate,
                 'quizAvgGrad' => $quizAvgGrad,
                 'waitingCount' => $waitingCount,
