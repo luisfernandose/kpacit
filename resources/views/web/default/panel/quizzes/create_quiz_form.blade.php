@@ -65,20 +65,32 @@
                     </div>
 
                     <div class="form-group mt-20 d-flex align-items-center justify-content-between">
-                        <label class="cursor-pointer input-label" for="certificateSwitch{{ $quiz ?? '' }}">{{ trans('quiz.certificate_included') }}</label>
+                        <label class="cursor-pointer input-label" for="certificateSwitch{{ !empty($quiz) ? $quiz->id : '' }}">{{ trans('quiz.certificate_included') }}</label>
                         <div class="custom-control custom-switch">
-                            <input type="checkbox" name="ajax[certificate]" class="js-ajax-certificate custom-control-input" id="certificateSwitch{{ $quiz ?? '' }}" {{ !empty($quiz) && $quiz->certificate ? 'checked' : ''}}>
-                            <label class="custom-control-label" for="certificateSwitch{{ $quiz ?? '' }}"></label>
+                            <input type="checkbox" name="ajax[certificate]" class="js-ajax-certificate custom-control-input" id="certificateSwitch{{ !empty($quiz) ? $quiz->id : '' }}" {{ !empty($quiz) && $quiz->certificate ? 'checked' : ''}}>
+                            <label class="custom-control-label" for="certificateSwitch{{ !empty($quiz) ? $quiz->id : '' }}"></label>
                         </div>
                     </div>
-
+                    @if ( !empty($quiz))
                     <div class="form-group mt-20 d-flex align-items-center justify-content-between">
-                        <label class="cursor-pointer input-label" for="statusSwitch{{ $quiz ?? '' }}">{{ trans('quiz.active_quiz') }}</label>
+                        <label class="cursor-pointer input-label" for="statusSwitch{{ !empty($quiz) ? $quiz->id : '' }}">{{ trans('quiz.active_quiz') }}</label>
                         <div class="custom-control custom-switch">
-                            <input type="checkbox" name="ajax[status]" class="js-ajax-status custom-control-input" id="statusSwitch{{ $quiz ?? '' }}" {{ !empty($quiz) && $quiz->status ? 'checked' : ''}}>
-                            <label class="custom-control-label" for="statusSwitch{{ $quiz ?? '' }}"></label>
+                            <input type="checkbox" name="ajax[status]" class="js-ajax-status custom-control-input " id="statusSwitch{{ !empty($quiz) ? $quiz->id : '' }}" {{ (!empty($quiz) && $quiz->status==='active') || old('status')==='on' ? 'checked' : ''}}>
+                            <label class="custom-control-label" for="statusSwitch{{ !empty($quiz) ? $quiz->id : '' }}"></label>
                         </div>
+
                     </div>
+                    <div id="errorStatus" class="invalid-feedback  @error('status')  d-block @enderror">
+                        @if ($errors->first('status'))
+                            @error('status')
+                                {{ $message }}
+                            @enderror
+                        @else
+                            {{trans('validation.can_active_quiz')}}
+                        @endif
+                                    
+                    </div>
+                    @endif
 
                 </div>
             </div>
@@ -188,37 +200,51 @@
     });
 
 
-    $('body').on('click', '#statusSwitch', function (e) {
-        e.preventDefault();
-        const edit = {!! (!empty($quiz) ? 'true' : 'false'  )!!}
-        console.log(edit);
 
-/*         $.post(action, data, function (result) {
-            if (result && result.code === 200) {
-                Swal.fire({
-                    icon: 'success',
-                    html: '<h3 class="font-20 text-center text-dark-blue py-25">' + saveSuccessLang + '</h3>',
-                    showConfirmButton: false,
-                    width: '25rem',
-                });
+    $('body').on('change', 'input[type="checkbox"]', function (e) {
 
-                setTimeout(() => {
-                    window.location.reload();
-                }, 500)
+        const input = $(this).attr('name');
+
+        
+        if(input == 'ajax[status]' && e.target.checked){
+          
+            let form = $(this).closest('.quiz-form');
+            let url = form.attr('data-action');
+            let action = form.attr('data-action').split('/');
+            let data ={
+                'status': 'on'
             }
-        }).fail(err => {
-            $this.removeClass('loadingbar primary').prop('disabled', false);
-            var errors = err.responseJSON;
-            if (errors && errors.errors) {
-                Object.keys(errors.errors).forEach((key) => {
-                    const error = errors.errors[key];
-                    let element = form.find('.js-ajax-' + key);
-                    element.addClass('is-invalid');
-                    element.parent().find('.invalid-feedback').text(error[0]);
-                });
+            let actionCase = action[action.length -1];
+
+            switch (actionCase) {
+           
+                case 'update':
+                    url = url.replace('update','active');
+
+                    $.post(url, data, function (result) {
+
+                    }).fail(err => {
+                        $(this).prop('checked',false);
+                        var errors = err.responseJSON;
+                        let errorMsg = 'Cannot active quiz';
+                        if(errors && errors.errors){
+                            errorMsg =errors.errors['status'];
+                        }
+                        Swal.fire({
+                                icon: 'error',
+                                html: '<h3 class="font-20 text-center text-dark-blue">' + errorMsg + '</h3>',
+                                showConfirmButton: true,
+                                width: '25rem',
+                        }); 
+
+                    }) 
+                    break;
             }
-        }) */
-    });
+
+
+        }
+
+    }); 
 
 
 

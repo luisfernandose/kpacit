@@ -147,4 +147,5 @@ return [
 
     'attributes' => [],
     'max_grade' => 'The :attribute may not be greater than :max value.',
+    'can_active_quiz' => 'The quizz cannot active, please complete all questions for a total score of 100.',
 ];

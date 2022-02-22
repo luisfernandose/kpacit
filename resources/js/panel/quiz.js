@@ -201,7 +201,8 @@
         $this.addClass('loadingbar primary').prop('disabled', true);
         form.find('input').removeClass('is-invalid');
         form.find('textarea').removeClass('is-invalid');
-
+        $('#errorStatus').hide();
+        
         $.post(action, data, function (result) {
             if (result && result.code === 200) {
                 Swal.fire({
@@ -223,6 +224,9 @@
             var errors = err.responseJSON;
             if (errors && errors.errors) {
                 Object.keys(errors.errors).forEach((key) => {
+                    if(key=='status'){
+                        $('#errorStatus').show();
+                    }
                     const error = errors.errors[key];
                     let element = form.find('.js-ajax-' + key);
                     element.addClass('is-invalid');
