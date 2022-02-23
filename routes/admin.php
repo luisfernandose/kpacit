@@ -226,6 +226,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'web'
             Route::get('/{id}/edit', 'QuizController@edit');
             Route::post('/{id}/update', 'QuizController@update');
             Route::get('/{id}/delete', 'QuizController@delete');
+            Route::post('/{id}/active', 'QuizController@active');
             Route::get('/{id}/results', 'QuizController@results');
             Route::get('/{id}/results/excel', 'QuizController@resultsExportExcel');
             Route::get('/result/{result_id}/delete', 'QuizController@resultDelete');

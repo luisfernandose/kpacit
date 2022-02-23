@@ -65,20 +65,32 @@
                     </div>
 
                     <div class="form-group mt-20 d-flex align-items-center justify-content-between">
-                        <label class="cursor-pointer input-label" for="certificateSwitch{{ $quiz ?? '' }}">{{ trans('quiz.certificate_included') }}</label>
+                        <label class="cursor-pointer input-label" for="certificateSwitch{{ !empty($quiz) ? $quiz->id : '' }}">{{ trans('quiz.certificate_included') }}</label>
                         <div class="custom-control custom-switch">
-                            <input type="checkbox" name="ajax[certificate]" class="js-ajax-certificate custom-control-input" id="certificateSwitch{{ $quiz ?? '' }}" {{ !empty($quiz) && $quiz->certificate ? 'checked' : ''}}>
-                            <label class="custom-control-label" for="certificateSwitch{{ $quiz ?? '' }}"></label>
+                            <input type="checkbox" name="ajax[certificate]" class="js-ajax-certificate custom-control-input" id="certificateSwitch{{ !empty($quiz) ? $quiz->id : '' }}" {{ !empty($quiz) && $quiz->certificate ? 'checked' : ''}}>
+                            <label class="custom-control-label" for="certificateSwitch{{ !empty($quiz) ? $quiz->id : '' }}"></label>
                         </div>
                     </div>
-
+                    @if ( !empty($quiz))
                     <div class="form-group mt-20 d-flex align-items-center justify-content-between">
-                        <label class="cursor-pointer input-label" for="statusSwitch{{ $quiz ?? '' }}">{{ trans('quiz.active_quiz') }}</label>
+                        <label class="cursor-pointer input-label" for="statusSwitch{{ !empty($quiz) ? $quiz->id : '' }}">{{ trans('quiz.active_quiz') }}</label>
                         <div class="custom-control custom-switch">
-                            <input type="checkbox" name="ajax[status]" class="js-ajax-status custom-control-input" id="statusSwitch{{ $quiz ?? '' }}" {{ !empty($quiz) && $quiz->status ? 'checked' : ''}}>
-                            <label class="custom-control-label" for="statusSwitch{{ $quiz ?? '' }}"></label>
+                            <input type="checkbox" name="ajax[status]" class="js-ajax-status custom-control-input " id="statusSwitch{{ !empty($quiz) ? $quiz->id : '' }}" {{ (!empty($quiz) && $quiz->status==='active') || old('status')==='on' ? 'checked' : ''}}>
+                            <label class="custom-control-label" for="statusSwitch{{ !empty($quiz) ? $quiz->id : '' }}"></label>
                         </div>
+
                     </div>
+                    <div id="errorStatus" class="invalid-feedback  @error('status')  d-block @enderror">
+                        @if ($errors->first('status'))
+                            @error('status')
+                                {{ $message }}
+                            @enderror
+                        @else
+                            {{trans('validation.can_active_quiz')}}
+                        @endif
+                                    
+                    </div>
+                    @endif
 
                 </div>
             </div>
@@ -139,54 +151,7 @@
 @endif
 
 @push('scripts_bottom')
-    <script src="/assets/default/vendors/jQuery-Mask-Plugin-master/dist/jquery.mask.min.js"></script>
-    <script>
-    $(document).ready(()=>{
-       
-        $('.only_number').mask('0#');
-       
 
-        $('body').on("keyup",'input[name="ajax[grade]"]', function (e) {
-            let maxPassMark = 100;
-            let sumGrade= +event.target.value;
-
-            if(+event.target.value>100){                
-                let attribute = $(this).parent().find('.input-label').text().trim();                
-                let msgValidation = $(this).parent().find('.invalid-feedback').attr('data-label');
-                msgValidation = msgValidation.replace(':attribute', attribute).replace(':max','100');
-
-                $(this).parent().find('.invalid-feedback').text('');                
-                $(this).parent().find('.invalid-feedback').text(msgValidation);
-                $(this).addClass('is-invalid');
-                return;
-            }else{
-                $(this).removeClass('is-invalid');
-            }
-            $('.question-infos').each(function () {  
-                    sumGrade += +$(this).attr('data-question-grade')
-            });
-
-            if(sumGrade > maxPassMark){
-               let msg = $('.invalid-grade-max').attr('data-label')
-               msg = msg.replace('value', maxPassMark);
-               $('.invalid-grade-max').html(msg);
-               $('.invalid-grade-max').show();
-               $('.save-question').prop('disabled',true);
-            }else{
-                $('.invalid-grade-max').html('');
-                $('.invalid-grade-max').hide();
-                $('.save-question').prop('disabled',false);
-            }        
-        });
-        
-        $('body').on("click",'.close-swl', function (e) {
-            $('.invalid-grade-max').html('');
-            $('.invalid-grade-max').hide();
-            $('.save-question').prop('disabled',false);
-        })
-
-    });
-    </script>
 
 
 @endpush
