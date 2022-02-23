@@ -44,7 +44,7 @@
                                         <div class="col-12 col-md-5">
 
                                             <div class="form-group mt-15 ">
-                                                <label class="input-label d-block">{{ trans('panel.course_type') }}</label>
+                                                <label class="input-label d-block">{{ trans('panel.course_type') }}asdasd</label>
 
                                                 <select name="type" class="custom-select @error('type')  is-invalid @enderror">
                                                     <option value="webinar" @if((!empty($webinar) and $webinar->isWebinar()) or old('type') == \App\Models\Webinar::$webinar) selected @endif>{{ trans('webinars.webinar') }}</option>
@@ -252,13 +252,7 @@
                                             </div>
 
                                             @if(!empty($webinar) and $webinar->creator->isOrganization())
-                                                <div class="form-group mt-30 d-flex align-items-center justify-content-between">
-                                                    <label class="" for="privateSwitch">{{ trans('webinars.private') }}</label>
-                                                    <div class="custom-control custom-switch">
-                                                        <input type="checkbox" name="private" class="custom-control-input" id="privateSwitch" {{ (!empty($webinar) and $webinar->private) ? 'checked' :  '' }}>
-                                                        <label class="custom-control-label" for="privateSwitch"></label>
-                                                    </div>
-                                                </div>
+                                                        <input type="hidden" name="private" value="on">
                                             @endif
 
                                             <div class="form-group mt-30 d-flex align-items-center justify-content-between">

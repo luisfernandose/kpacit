@@ -51,7 +51,7 @@
                                     <option value="">{{ trans('public.all') }}</option>
                                     <option value="webinar" @if(request()->get('type') == 'webinar') selected @endif>{{ trans('webinars.webinar') }}</option>
                                     <option value="course" @if(request()->get('type') == 'course') selected @endif>{{ trans('product.course') }}</option>
-                                    <option value="text_lesson" @if(request()->get('type') == 'text_lesson') selected @endif>{{ trans('webinars.text_lesson') }}</option>
+                                    {{-- <option value="text_lesson" @if(request()->get('type') == 'text_lesson') selected @endif>{{ trans('webinars.text_lesson') }}</option> --}}
                                 </select>
                             </div>
                         </div>
