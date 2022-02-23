@@ -36,8 +36,7 @@ class CanActiveQuiz implements Rule
             $max = $quiz->pass_mark;
             $this->max_value = $max;
             $sum = QuizzesQuestion::where('quiz_id', $this->quiz_id)->pluck('grade')->sum();
-           
-            if ($sum != $max) {
+            if ((int)$sum < (int)$max) {
                 return false;
             }
         }else{
