@@ -51,6 +51,7 @@
         $('body').on("keyup",'input[name="ajax[grade]"]', function (e) {
             let maxPassMark = 100;
             let sumGrade= +event.target.value;
+            let id = $(this).closest('.quiz-questions-form').find('input[name="ajax[quiz_id]"]').val();
 
             if(+event.target.value>100){                
                 let attribute = $(this).parent().find('.input-label').text().trim();                
@@ -64,7 +65,7 @@
             }else{
                 $(this).removeClass('is-invalid');
             }
-            $('.question-infos').each(function () {  
+            $(`#collapseQuiz${id}`).find('.question-infos').each(function () {  
                     sumGrade += +$(this).attr('data-question-grade')
             });
 
