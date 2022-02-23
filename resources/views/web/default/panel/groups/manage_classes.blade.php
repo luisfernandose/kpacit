@@ -17,8 +17,7 @@
                 <div class="form-group mt-20">
                     <label class="input-label d-block">{{ trans('public.select_a_class') }}</label>
 
-                    <select name="webinar_id" class="custom-select @error('webinar_id')  is-invalid @enderror">
-                        <option selected disabled>{{ trans('public.select_a_class') }}</option>
+                    <select name="webinar_id" title="{{trans('public.select_a_class')}}" data-size="25" data-live-search="true" class="col-12 selectpicker @error('webinar_id')  is-invalid @enderror">
                         @foreach($webinars as $webinar)
                             <option value="{{ $webinar->id }}">{{ $webinar->title }}</option>
                         @endforeach
@@ -95,3 +94,15 @@
         </section>
     @endif
 @endsection
+@push('scripts_bottom')
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+<script>
+$(document).ready(()=>{
+    $('.selectpicker').selectpicker({
+        size: false
+}); 
+});
+</script>
+@endpush
