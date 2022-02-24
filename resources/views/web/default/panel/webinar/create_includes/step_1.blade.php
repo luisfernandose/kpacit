@@ -147,7 +147,20 @@
 </div>
 
 @if($isOrganization)
-<input type="hidden" name="private" value="on">
+    <div class="row">
+        <div class="col-6">
+
+            <div class="form-group mt-30 d-flex align-items-center">
+                <label class="cursor-pointer mb-0 input-label" for="privateSwitch">{{ trans('webinars.private') }}</label>
+                <div class="ml-30 custom-control custom-switch">
+                    <input type="checkbox" name="private" class="custom-control-input" id="privateSwitch" {{ (!empty($webinar) and $webinar->private) || !isset($webinar) ? 'checked' :  '' }}>
+                    <label class="custom-control-label" for="privateSwitch"></label>
+                </div>
+            </div>
+
+            <p class="text-gray font-12">{{ trans('webinars.create_private_course_hint') }}</p>
+        </div>
+    </div>
 @endif
 
 @push('scripts_bottom')
