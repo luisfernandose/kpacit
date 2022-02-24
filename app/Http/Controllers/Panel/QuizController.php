@@ -9,6 +9,7 @@ use App\Models\QuizzesQuestionsAnswer;
 use App\Models\QuizzesResult;
 use App\Models\Role;
 use App\Models\Webinar;
+use App\Rules\CanActiveQuiz;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -183,6 +184,42 @@ class QuizController extends Controller
             return redirect()->route('panel_edit_quiz', ['id' => $quiz->id]);
         }
     }
+    public function active(Request $request, $id)
+    {
+
+        $quiz = Quiz::find($id);
+
+        if (empty($quiz)) {
+            abort(404);
+        }
+
+        $data = $request->all();
+
+        $rules = [
+            'status' => ['in:on', new CanActiveQuiz($id)],
+        ];
+
+        $validate = Validator::make($data, $rules);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'code' => 422,
+                'errors' => $validate->errors(),
+            ], 422);
+        }
+
+        $user = auth()->user();
+
+        if ($request->ajax()) {
+
+            return response()->json([
+                'code' => 200,
+            ]);
+
+        } else {
+            return redirect()->route('panel_edit_quiz', ['id' => $quiz->id]);
+        }
+    }
 
     public function edit($id)
     {
@@ -220,6 +257,7 @@ class QuizController extends Controller
             'title' => 'required|max:255',
             'webinar_id' => 'nullable',
             'pass_mark' => 'required|numeric|between:1,100',
+            'status' => ['nullable', new CanActiveQuiz($id)],
         ];
         $data = $request->get('ajax');
 

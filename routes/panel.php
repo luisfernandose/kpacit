@@ -88,6 +88,7 @@ Route::group(['namespace' => 'Panel', 'prefix' => 'panel', 'middleware' => ['imp
             Route::get('/{id}/edit', 'QuizController@edit')->name('panel_edit_quiz');
             Route::post('/{id}/update', 'QuizController@update');
             Route::get('/{id}/delete', 'QuizController@destroy');
+            Route::post('/{id}/active', 'QuizController@active');
 
         });
         Route::get('/{id}/start', 'QuizController@start');

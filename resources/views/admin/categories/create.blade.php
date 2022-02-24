@@ -28,7 +28,7 @@
                                   method="Post">
                                 {{ csrf_field() }}
 
-                                <div class="form-group">s
+                                <div class="form-group">
                                     <label>{{ trans('/admin/main.title') }}</label>
                                     <input type="text" name="title"
                                            class="form-control  @error('title') is-invalid @enderror"
