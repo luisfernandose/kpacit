@@ -9,10 +9,10 @@ use App\Models\QuizzesQuestionsAnswer;
 use App\Models\QuizzesResult;
 use App\Models\Role;
 use App\Models\Webinar;
+use App\Rules\CanActiveQuiz;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Rules\CanActiveQuiz;
 
 class QuizController extends Controller
 {
@@ -192,13 +192,12 @@ class QuizController extends Controller
         if (empty($quiz)) {
             abort(404);
         }
-        
+
         $data = $request->all();
 
         $rules = [
-            'status' => ['in:on',new CanActiveQuiz($id)]            
+            'status' => ['in:on', new CanActiveQuiz($id)],
         ];
-
 
         $validate = Validator::make($data, $rules);
 
@@ -214,12 +213,12 @@ class QuizController extends Controller
         if ($request->ajax()) {
 
             return response()->json([
-                'code' => 200,               
+                'code' => 200,
             ]);
 
         } else {
             return redirect()->route('panel_edit_quiz', ['id' => $quiz->id]);
-        } 
+        }
     }
 
     public function edit($id)
@@ -258,7 +257,7 @@ class QuizController extends Controller
             'title' => 'required|max:255',
             'webinar_id' => 'nullable',
             'pass_mark' => 'required|numeric|between:1,100',
-            'status' => ['nullable',new CanActiveQuiz($id)],
+            'status' => ['nullable', new CanActiveQuiz($id)],
         ];
         $data = $request->get('ajax');
 
@@ -587,7 +586,7 @@ class QuizController extends Controller
             $studentsIds = $query->pluck('user_id')->toArray();
             $allStudents = User::select('id', 'full_name')->whereIn('id', $studentsIds)->get();
             $quizResultsCount = QuizzesResult::whereIn('id',
-                QuizzesResult::select(\DB::raw('MAX(id) AS id'), 'user_grade')->whereIn('quiz_id', $quizzesIds)->groupBy('quiz_id', 'user_id')->get()->pluck('id')
+                QuizzesResult::select(\DB::raw('MAX(id) AS id'), 'user_grade')->whereIn('quiz_id', $quizzesIds)->where('status', \App\Models\QuizzesResult::$passed)->groupBy('quiz_id', 'user_id')->get()->pluck('id')
             )->count();
 
             $quizAvgGrad = round(QuizzesResult::whereIn('id',
