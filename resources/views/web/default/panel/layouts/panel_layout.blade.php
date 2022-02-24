@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="/assets/default/vendors/toast/jquery.toast.min.css">
     <link rel="stylesheet" href="/assets/default/vendors/simplebar/simplebar.css">
     <link rel="stylesheet" href="/assets/default/css/app.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="/assets/default/css/panel.css">
 
     @if($isRtl)
