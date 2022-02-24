@@ -153,7 +153,7 @@
             <div class="form-group mt-30 d-flex align-items-center">
                 <label class="cursor-pointer mb-0 input-label" for="privateSwitch">{{ trans('webinars.private') }}</label>
                 <div class="ml-30 custom-control custom-switch">
-                    <input type="checkbox" name="private" class="custom-control-input" id="privateSwitch" {{ (!empty($webinar) and $webinar->private) ? 'checked' :  '' }}>
+                    <input type="checkbox" name="private" class="custom-control-input" id="privateSwitch" {{ (!empty($webinar) and $webinar->private) || !isset($webinar) ? 'checked' :  '' }}>
                     <label class="custom-control-label" for="privateSwitch"></label>
                 </div>
             </div>
