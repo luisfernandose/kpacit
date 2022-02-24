@@ -587,7 +587,7 @@ class QuizController extends Controller
             $allStudents = User::select('id', 'full_name')->whereIn('id', $studentsIds)->get();
             $quizResultsCount = QuizzesResult::whereIn('id',
                 QuizzesResult::select(\DB::raw('MAX(id) AS id'), 'user_grade')->whereIn('quiz_id', $quizzesIds)->where('status', \App\Models\QuizzesResult::$passed)->groupBy('quiz_id', 'user_id')->get()->pluck('id')
-            )->count();
+            )->where('status', \App\Models\QuizzesResult::$passed)->count();
 
             $quizAvgGrad = round(QuizzesResult::whereIn('id',
                 QuizzesResult::select(\DB::raw('MAX(id) AS id'), 'user_grade')->whereIn('quiz_id', $quizzesIds)->groupBy('quiz_id', 'user_id')->get()->pluck('id')
