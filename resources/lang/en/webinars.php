@@ -6,7 +6,7 @@ return [
     |--------------------------------------------------------------------------
     | Classes
     |--------------------------------------------------------------------------
-    */
+     */
 
     'webinars_list_page_title' => 'Classes list',
     'webinars_purchases_page_title' => 'Purchased classes list',
@@ -14,8 +14,8 @@ return [
     'new_page_title_step' => 'New class - Step :step',
     'webinar' => 'Live class',
     'webinars' => 'Live Classes',
-  	'class' => 'class',
-  	'classes' => 'Classes',
+    'class' => 'class',
+    'classes' => 'Classes',
     'webinar_page' => 'Class page',
     'title' => 'Title',
     'start_date' => 'Start Date',
@@ -38,10 +38,10 @@ return [
     'video_demo' => 'Demo Video',
     'webinar_demo' => 'Class demo',
     'support' => 'Support',
-  	'supported_class' => 'This is a supported class',
+    'supported_class' => 'This is a supported class',
     'partner_instructor' => 'Partner Instructor',
     'subscribe' => 'Subscribe',
-  	'include_subscribe' => 'Enable subscription',
+    'include_subscribe' => 'Enable subscription',
     'create_field_title_placeholder' => '.',
     'new_page_lead' => 'You can create a new class.',
     'page_lists_lead' => 'List of webinars. You can edit or delete any row.',
@@ -68,7 +68,7 @@ return [
     'next' => 'Next',
     'save_and_next' => 'Save and Next',
     'course' => 'Course',
-  	'video_course' => 'Video course',
+    'video_course' => 'Video course',
     'text_lesson' => 'Text course',
     'text_lessons' => 'Text courses',
     'progress_step' => 'Step :step/:count',
@@ -135,9 +135,9 @@ return [
     'organization_class' => 'Organization class',
     'create_organization_class_hint' => 'If you enable this option the class will be crated as organization class.',
 
-
     'invoice_page_title' => 'Invoice',
 
     'your_zoom_settings_are_not_complete' => 'Please complete your Zoom settings to create live sessions.',
     'zoom_jwt_token_invalid' => 'Your Zoom JWT token is invalid.',
+    'go_to_class' => 'Go to the class',
 ];

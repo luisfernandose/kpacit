@@ -42,7 +42,12 @@
                         <div class="d-flex flex-column align-items-center text-center">
                             <img src="/assets/default/img/activity/clock.svg" width="64" height="64" alt="">
                             <strong class="font-30 font-weight-bold text-secondary mt-5">
+                                @if ($quiz->time && (int)$quiz->time > 0)
+                                    
                                 <div class="d-flex align-items-center timer" data-minutes-left="{{ $quiz->time }}"></div>
+                                @else
+                                    {{trans('public.unlimited')}}
+                                @endif
                             </strong>
                             <span class="font-16 text-gray">{{ trans('quiz.remaining_time') }}</span>
                         </div>

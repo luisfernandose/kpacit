@@ -431,6 +431,7 @@
             <div class="row">
                 <div class="col-12">
                     @foreach($course->quizzes as $quiz)
+                        @if ($quiz->status===\App\Models\Quiz::ACTIVE)
                         <div class="rounded-sm shadow-lg border mt-20 p-15">
                             <div class="row align-items-center">
                                 <div class="col-7 col-md-3 d-flex flex-column">
@@ -471,6 +472,8 @@
                                 </div>
                             </div>
                         </div>
+                            
+                        @endif
                     @endforeach
                 </div>
             </div>
