@@ -286,4 +286,7 @@ return [
     'noticeboard_success_send_to' => 'New noticeboard successful send for :users_count',
 
     'more_info' => 'More info',
+    'categories' => 'Categories',
+    'categories_list' => 'List',
+    'categories_new' => 'New',
 ];

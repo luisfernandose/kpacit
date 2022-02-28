@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
@@ -10,41 +10,37 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $this->authorize('admin_categories_list');
-
-        $categories = Category::where('parent_id', null)->where('organ_id', null)
+        $categories = Category::where('parent_id', null)->where('organ_id', auth()->user()->id)
             ->orderBy('id', 'desc')
             ->paginate(10);
 
         $data = [
-            'pageTitle' => trans('admin/pages/categories.categories_list_page_title'),
+            'pageTitle' => trans('pa/pages/categories.categories_list_page_title'),
             'categories' => $categories,
         ];
 
-        return view('admin.categories.lists', $data);
+        return view(getTemplate() . '.panel.categories.lists', $data);
     }
 
     public function create()
     {
-        $this->authorize('admin_categories_create');
 
         $data = [
             'pageTitle' => trans('admin/main.category_new_page_title'),
         ];
 
-        return view('admin.categories.create', $data);
+        return view(getTemplate() . '.panel.categories.create', $data);
     }
 
     public function store(Request $request)
     {
-        $this->authorize('admin_categories_create');
-
         $this->validate($request, [
             'title' => 'required|min:3|max:128',
             'icon' => 'required',
         ]);
 
         $category = Category::create([
+            'organ_id' => auth()->user()->id,
             'title' => clean($request->input('title')),
             'icon' => $request->input('icon'),
         ]);
@@ -54,13 +50,11 @@ class CategoryController extends Controller
 
         cache()->forget(Category::$cacheKey);
 
-        return redirect('/admin/categories');
+        return redirect('/panel/categories');
     }
 
     public function edit($id)
     {
-        $this->authorize('admin_categories_edit');
-
         $category = Category::findOrFail($id);
         $subCategories = Category::where('parent_id', $category->id)
             ->orderBy('order', 'asc')
@@ -72,13 +66,11 @@ class CategoryController extends Controller
             'subCategories' => $subCategories,
         ];
 
-        return view('admin.categories.create', $data);
+        return view(getTemplate() . '.panel.categories.create', $data);
     }
 
     public function update(Request $request, $id)
     {
-        $this->authorize('admin_categories_edit');
-
         $this->validate($request, [
             'title' => 'required|min:3|max:128',
             'icon' => 'required',
@@ -95,13 +87,11 @@ class CategoryController extends Controller
 
         cache()->forget(Category::$cacheKey);
 
-        return redirect('/admin/categories');
+        return redirect('/panel/categories');
     }
 
     public function destroy(Request $request, $id)
     {
-        $this->authorize('admin_categories_delete');
-
         $category = Category::where('id', $id)->first();
 
         if (!empty($category)) {
@@ -113,7 +103,7 @@ class CategoryController extends Controller
 
         cache()->forget(Category::$cacheKey);
 
-        return redirect('/admin/categories');
+        return redirect('/panel/categories');
     }
 
     public function setSubCategory(Category $category, $subCategories, $hasSubCategories)

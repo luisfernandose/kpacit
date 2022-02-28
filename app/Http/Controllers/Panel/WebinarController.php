@@ -356,7 +356,7 @@ class WebinarController extends Controller
                 'tags',
             ]);
 
-            $categories = Category::where('parent_id', null)
+            $categories = Category::where('parent_id', null)->where('organ_id', auth()->user()->role_name == "organization" ? auth()->user()->id : (auth()->user()->organ_id ? auth()->user()->organ_id : null))
                 ->with('subCategories')
                 ->get();
 
