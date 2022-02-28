@@ -38,6 +38,7 @@ class UserController extends Controller
             'pageTitle' => trans('panel.settings'),
             'user' => $user,
             'categories' => $categories,
+
             'educations' => $userMetas->where('name', 'education'),
             'experiences' => $userMetas->where('name', 'experience'),
             'occupations' => $occupations,
