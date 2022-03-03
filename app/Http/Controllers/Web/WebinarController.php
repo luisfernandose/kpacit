@@ -12,6 +12,7 @@ use App\Models\TextLesson;
 use App\Models\CourseLearning;
 use App\Models\WebinarReport;
 use App\Models\Webinar;
+use App\Models\Quiz;
 use App\Http\Responses\S3FileStream;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -166,7 +167,7 @@ class WebinarController extends Controller
             $webinarContentCount += $course->textLessons->count();
         }
         if (!empty($course->quizzes)) {
-            $webinarContentCount += $course->quizzes->count();
+            $webinarContentCount += $course->quizzes->where('status',Quiz::ACTIVE)->count();
         }
 
         $advertisingBanners = AdvertisingBanner::where('published', true)

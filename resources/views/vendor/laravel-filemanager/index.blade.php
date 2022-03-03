@@ -41,9 +41,6 @@
         <span class="d-none d-lg-inline">{{ trans('laravel-filemanager::lfm.menu-multiple') }}</span>
       </a>
     </div>
-    <a class="navbar-toggler collapsed border-0 px-1 py-2 m-0" data-toggle="collapse" data-target="#nav-buttons">
-      <i class="fas fa-cog fa-fw"></i>
-    </a>
     <div class="collapse navbar-collapse flex-grow-0" id="nav-buttons">
       <ul class="navbar-nav">
         <li class="nav-item">
@@ -296,12 +293,16 @@
 
           const span = $(this)[0];
 
+
+
           $(`#percentage_span_${i}`).remove();
 
           const e = document.createElement('span');
           e.id = `percentage_span_${i}`;
-          e.innerText = span.style.width;
+          let value = span.style.width;
 
+          value = value.replace('%','');
+          e.innerText = parseFloat(value).toFixed(2)+'%';
           span.parentElement.previousElementSibling.appendChild(e);
 
         });

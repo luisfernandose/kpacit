@@ -38,6 +38,7 @@ return [
     'multiple_choice_question' => 'Multiple choice question',
     'question_title' => 'Question title',
     'question_grade' => 'Question grade',
+    'question_grade_error' => 'Incorrect all grades cannot exceed value',
 
     'add_an_answer' => 'Add an answer',
     'answer_title' => 'Answer title',

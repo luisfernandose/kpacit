@@ -7,7 +7,6 @@ use App\Models\NotificationTemplate;
 use App\Models\PaymentChannel;
 use App\Models\Setting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class SettingsController extends Controller
 {
@@ -34,7 +33,7 @@ class SettingsController extends Controller
 
         $data = [
             'pageTitle' => trans('admin/main.settings_title'),
-            'settings' => $settings
+            'settings' => $settings,
         ];
 
         if ($page == 'notifications') {
@@ -113,7 +112,7 @@ class SettingsController extends Controller
         }
 
         if (!empty($newValues)) {
-            $values = array_merge((array)$values, $newValues);
+            $values = array_merge((array) $values, $newValues);
         }
 
         Setting::updateOrCreate(
@@ -212,7 +211,7 @@ class SettingsController extends Controller
             }
             $key = str_replace(' ', '_', $data['value']['title']);
             $newValue[$key] = $data['value'];
-            $values = array_merge((array)$values, $newValue);
+            $values = array_merge((array) $values, $newValue);
         }
 
         Setting::updateOrCreate(
@@ -253,7 +252,7 @@ class SettingsController extends Controller
         }
 
         if (!empty($newValues)) {
-            $values = array_merge((array)$values, $newValues);
+            $values = array_merge((array) $values, $newValues);
         }
 
         if (!empty($values)) {

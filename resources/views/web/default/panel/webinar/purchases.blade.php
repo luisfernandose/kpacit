@@ -68,7 +68,8 @@
                 <div class="row mt-30">
                     <div class="col-12">
                         <div class="webinar-card webinar-list d-flex">
-                            <div class="image-box">
+                            <a href="{{ $webinar->getUrl() }}" target="_blank">
+                                <div class="image-box">
                                 <img src="{{ $webinar->getImage() }}" class="img-cover" alt="">
 
                                 @if($webinar->type == 'webinar')
@@ -103,6 +104,7 @@
                                     <span class="progress-bar" style="width: {{ $percent }}%"></span>
                                 </div>
                             </div>
+                        </a>
 
                             <div class="webinar-card-body w-100 d-flex flex-column">
                                 <div class="d-flex align-items-center justify-content-between">
@@ -110,6 +112,7 @@
                                         <h3 class="webinar-title font-weight-bold font-16 text-dark-blue">
                                             {{ $webinar->title }}
                                             <span class="badge badge-dark ml-10 status-badge-dark">{{ trans('webinars.'.$webinar->type) }}</span>
+                                            <span class="badge badge-secondary ml-10">{{ trans('webinars.go_to_class') }}</span>
                                         </h3>
                                     </a>
 

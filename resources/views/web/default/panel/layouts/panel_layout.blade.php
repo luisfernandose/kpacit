@@ -17,8 +17,9 @@
     <link rel="stylesheet" href="/assets/default/vendors/toast/jquery.toast.min.css">
     <link rel="stylesheet" href="/assets/default/vendors/simplebar/simplebar.css">
     <link rel="stylesheet" href="/assets/default/css/app.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="/assets/default/css/panel.css">
-
+    <link rel="stylesheet" href="/assets/vendors/fontawesome/css/all.min.css"/>
     @if($isRtl)
         <link rel="stylesheet" href="/assets/default/css/rtl-app.css">
     @endif
@@ -96,6 +97,7 @@
 <script src="/assets/default/js//parts/main.min.js"></script>
 
 <script src="/assets/default/js/panel/public.min.js"></script>
+<script src="/vendor/laravel-filemanager/js/stand-alone-button-company.js"></script>
 
 <script>
     {!! !empty(getCustomCssAndJs('js')) ? getCustomCssAndJs('js') : '' !!}

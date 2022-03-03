@@ -32,7 +32,7 @@
                                     <label>{{ trans('/admin/main.title') }}</label>
                                     <input type="text" name="title"
                                            class="form-control  @error('title') is-invalid @enderror"
-                                           value="{{ !empty($category) ? $category->title : old('title') }}"
+                                           value="{!! !empty($category) ? $category->title : old('title') !!}"
                                            placeholder="{{ trans('admin/main.choose_title') }}"/>
                                     @error('title')
                                     <div class="invalid-feedback">

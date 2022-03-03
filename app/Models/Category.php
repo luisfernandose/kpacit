@@ -17,6 +17,11 @@ class Category extends Model
         return $this->belongsTo('App\Models\Category', 'parent_id', 'id');
     }
 
+    public function organization()
+    {
+        return $this->belongsTo('App\Models\User', 'organ_id', 'id');
+    }
+
     public function subCategories()
     {
         return $this->hasMany($this, 'parent_id', 'id')->orderBy('order', 'asc');
@@ -42,7 +47,7 @@ class Category extends Model
         return '/categories/' . str_replace(' ', '-', $this->title);
     }
 
-    static function getCategories()
+    public static function getCategories()
     {
         $categories = cache()->remember(self::$cacheKey, 24 * 60 * 60, function () {
             return self::whereNull('parent_id')

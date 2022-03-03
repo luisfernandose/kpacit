@@ -12,13 +12,13 @@ class CategoryController extends Controller
     {
         $this->authorize('admin_categories_list');
 
-        $categories = Category::where('parent_id', null)
+        $categories = Category::where('parent_id', null)->where('organ_id', null)
             ->orderBy('id', 'desc')
             ->paginate(10);
 
         $data = [
             'pageTitle' => trans('admin/pages/categories.categories_list_page_title'),
-            'categories' => $categories
+            'categories' => $categories,
         ];
 
         return view('admin.categories.lists', $data);
@@ -27,7 +27,6 @@ class CategoryController extends Controller
     public function create()
     {
         $this->authorize('admin_categories_create');
-
 
         $data = [
             'pageTitle' => trans('admin/main.category_new_page_title'),
@@ -46,7 +45,7 @@ class CategoryController extends Controller
         ]);
 
         $category = Category::create([
-            'title' => $request->input('title'),
+            'title' => clean($request->input('title')),
             'icon' => $request->input('icon'),
         ]);
 
@@ -70,7 +69,7 @@ class CategoryController extends Controller
         $data = [
             'pageTitle' => trans('admin/pages/categories.edit_page_title'),
             'category' => $category,
-            'subCategories' => $subCategories
+            'subCategories' => $subCategories,
         ];
 
         return view('admin.categories.create', $data);
@@ -87,13 +86,12 @@ class CategoryController extends Controller
 
         $category = Category::findOrFail($id);
         $category->update([
-            'title' => $request->input('title'),
+            'title' => clean($request->input('title')),
             'icon' => $request->input('icon'),
         ]);
 
         $hasSubCategories = (!empty($request->get('has_sub')) and $request->get('has_sub') == 'on');
         $this->setSubCategory($category, $request->get('sub_categories'), $hasSubCategories);
-
 
         cache()->forget(Category::$cacheKey);
 

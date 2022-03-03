@@ -89,6 +89,29 @@
                 </div>
             </li>
 
+            <li class="sidenav-item{{ (request()->is('panel/categories*')) ? 'sidenav-item-active' : '' }}">
+                <a class="d-flex align-items-center" data-toggle="collapse" href="#categoriesCollapse" role="button" aria-expanded="false" aria-controls="categoriesCollapse">
+                <span class="sidenav-item-icon mr-10">
+                    @include('web.default.panel.includes.sidebar_icons.setting')
+                </span>
+                <span class="font-14 text-dark-blue font-weight-500">{{ trans('panel.categories') }}</span>
+                </a>
+
+                <div class="collapse {{ (request()->is('panel/categories*')) ? 'show' : '' }}" id="categoriesCollapse">
+                    <ul class="sidenav-item-collapse">
+                        <li class="{{ (request()->is('panel/categories')) ? 'active' : '' }}">
+                            <a class="nav-link" href="/panel/categories">{{ trans('panel.categories_list') }}</a>
+
+                        <li class="{{ (request()->is('panel/categories/create')) ? 'active' : '' }}">
+                            <a class="nav-link" href="/panel/categories/create">{{ trans('panel.categories_new') }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+
+
+
             <li class="sidenav-item {{ (request()->is('panel/students') or request()->is('panel/manage/students*')) ? 'sidenav-item-active' : '' }}">
                 <a class="d-flex align-items-center" data-toggle="collapse" href="#studentsCollapse" role="button" aria-expanded="false" aria-controls="studentsCollapse">
                 <span class="sidenav-item-icon mr-10">

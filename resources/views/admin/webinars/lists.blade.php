@@ -259,7 +259,7 @@
                                         <tr class="text-center">
                                             <td>{{ $webinar->id }}</td>
                                             <td width="18%" class="text-left">
-                                                <a class="text-primary mt-0 mb-1 font-weight-bold" href="{{ $webinar->getUrl() }}">{{ $webinar->title }}</a>
+                                                <a class="text-primary mt-0 mb-1 font-weight-bold" href="{{ $webinar->getUrl() }}">{!! $webinar->title !!}</a>
                                                 @if(!empty($webinar->category->title))
                                                 <div class="text-small">{{ $webinar->category->title }}</div>
                                                 @else

@@ -30,8 +30,8 @@
                                     </tr>
                                     @foreach($filters as $filter)
                                         <tr>
-                                            <td>{{ $filter->title }}</td>
-                                            <td class="text-left">{{ $filter->category->title }}</td>
+                                            <td>{!! $filter->title !!}</td>
+                                            <td class="text-left">{!! $filter->category->title !!}</td>
                                             <td>
                                                 @can('admin_filters_edit')
                                                     <a href="/admin/filters/{{ $filter->id }}/edit"

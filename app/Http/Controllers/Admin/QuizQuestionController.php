@@ -7,6 +7,7 @@ use App\Models\QuizzesQuestion;
 use App\Models\QuizzesQuestionsAnswer;
 use Illuminate\Http\Request;
 use App\Models\Quiz;
+use App\Rules\GradeMax;
 
 class QuizQuestionController extends Controller
 {
@@ -15,7 +16,7 @@ class QuizQuestionController extends Controller
         $this->validate($request, [
             'quiz_id' => 'required|exists:quizzes,id',
             'title' => 'required|max:255',
-            'grade' => 'required|integer',
+            'grade' => ['required','integer','numeric', 'between:1,100' ,new GradeMax],
             'type' => 'required',
         ]);
 
@@ -74,6 +75,15 @@ class QuizQuestionController extends Controller
                 }
             }
 
+            $status =  $quiz->status;
+
+            if($quiz->quizQuestions->pluck('grade')->sum() < 100){
+                $status = Quiz::INACTIVE;
+            }
+            $quiz->update([
+                'status' => $status,
+            ]);
+
             return response()->json([
                 'code' => 200
             ], 200);
@@ -118,7 +128,7 @@ class QuizQuestionController extends Controller
         $this->validate($request, [
             'quiz_id' => 'required|exists:quizzes,id',
             'title' => 'required',
-            'grade' => 'required',
+            'grade' => ['required','integer','numeric', 'between:1,100' ,new GradeMax],
             'type' => 'required',
         ]);
 
@@ -195,6 +205,14 @@ class QuizQuestionController extends Controller
                         }
                     }
                 }
+                $status =  $quiz->status;
+
+                if($quiz->quizQuestions->pluck('grade')->sum() < 100){
+                    $status = Quiz::INACTIVE;
+                }
+                $quiz->update([
+                    'status' => $status,
+                ]);
 
                 return response()->json([
                     'code' => 200

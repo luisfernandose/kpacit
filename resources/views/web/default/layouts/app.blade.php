@@ -77,7 +77,7 @@ setInterval(function() {
  
     currentHtmlContent= innerHtml; 
  
-    console.log(element); 
+    
  
     console.clear();  
  

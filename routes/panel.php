@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 | User Panel Routes
 |--------------------------------------------------------------------------
-*/
+ */
 
 Route::group(['namespace' => 'Panel', 'prefix' => 'panel', 'middleware' => ['impersonate', 'panel', 'share', 'user.validate.sesion']], function () {
 
@@ -16,6 +16,15 @@ Route::group(['namespace' => 'Panel', 'prefix' => 'panel', 'middleware' => ['imp
         Route::post('/search', 'UserController@search');
         Route::post('/contact-info', 'UserController@contactInfo');
         Route::post('/offlineToggle', 'UserController@offlineToggle');
+    });
+
+    Route::group(['prefix' => 'categories'], function () {
+        Route::get('/', 'CategoryController@index');
+        Route::get('/create', 'CategoryController@create');
+        Route::post('/store', 'CategoryController@store');
+        Route::get('/{id}/edit', 'CategoryController@edit')->name('panel.categories.edit');
+        Route::post('/{id}/update', 'CategoryController@update');
+        Route::get('/{id}/delete', 'CategoryController@destroy')->name('panel.categories.delete');
     });
 
     Route::group(['prefix' => 'webinars'], function () {
@@ -78,7 +87,6 @@ Route::group(['namespace' => 'Panel', 'prefix' => 'panel', 'middleware' => ['imp
         Route::get('/{course_group_list_id}/manager/classes/{group_class_id}/delete', 'CourseGroupController@manageClassesDestroy')->name('panel.courseGroups.manage.classes.delete');
     });
 
-
     Route::group(['prefix' => 'quizzes'], function () {
         Route::group(['middleware' => 'user.not.access'], function () {
 
@@ -88,6 +96,7 @@ Route::group(['namespace' => 'Panel', 'prefix' => 'panel', 'middleware' => ['imp
             Route::get('/{id}/edit', 'QuizController@edit')->name('panel_edit_quiz');
             Route::post('/{id}/update', 'QuizController@update');
             Route::get('/{id}/delete', 'QuizController@destroy');
+            Route::post('/{id}/active', 'QuizController@active');
 
         });
         Route::get('/{id}/start', 'QuizController@start');
@@ -108,7 +117,6 @@ Route::group(['namespace' => 'Panel', 'prefix' => 'panel', 'middleware' => ['imp
 
         Route::get('/{quizResultId}/edit-result', 'QuizController@editResult');
         Route::post('/{quizResultId}/update-result', 'QuizController@updateResult');
-
 
     });
 
@@ -171,7 +179,6 @@ Route::group(['namespace' => 'Panel', 'prefix' => 'panel', 'middleware' => ['imp
         Route::post('/{id}/update', 'WebinarQuizController@update');
         Route::get('/{id}/delete', 'WebinarQuizController@destroy');
     });
-
 
     Route::group(['prefix' => 'certificates'], function () {
         Route::get('/', 'CertificateController@lists');
@@ -267,5 +274,3 @@ Route::group(['namespace' => 'Panel', 'prefix' => 'panel', 'middleware' => ['imp
         Route::get('/{user_type}/{user_id}/remove', 'UserController@removeUserFromOrganization');
     });
 });
-
-

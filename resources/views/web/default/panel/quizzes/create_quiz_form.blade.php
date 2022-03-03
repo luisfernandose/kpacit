@@ -6,6 +6,9 @@
 
             <div class="row">
                 <div class="col-12 col-md-4">
+                    <div class="alert alert-warning" role="alert">
+                        {{trans('panel.quizz_message_grade')}}
+                      </div>
 
                     @if(empty($selectedWebinar))
                         <div class="form-group mt-25">
@@ -53,8 +56,8 @@
 
                     <div class="form-group">
                         <label class="input-label">{{ trans('quiz.pass_mark') }}</label>
-                        <input type="text" name="ajax[pass_mark]" value="{{ !empty($quiz) ? $quiz->pass_mark : old('pass_mark') }}" class="js-ajax-pass_mark form-control @error('pass_mark')  is-invalid @enderror" placeholder=""/>
-                        <div class="invalid-feedback">
+                        <input type="text" name="ajax[pass_mark]" value="{{ !empty($quiz) ? $quiz->pass_mark : old('pass_mark') }}" maxlength="3" class="js-ajax-pass_mark only_number form-control @error('pass_mark')  is-invalid @enderror" placeholder=""/>
+                        <div class="invalid-feedback" data-label="{{ __('validation.max.numeric') }}">
                             @error('pass_mark')
                             {{ $message }}
                             @enderror
@@ -62,20 +65,32 @@
                     </div>
 
                     <div class="form-group mt-20 d-flex align-items-center justify-content-between">
-                        <label class="cursor-pointer input-label" for="certificateSwitch{{ $quiz ?? '' }}">{{ trans('quiz.certificate_included') }}</label>
+                        <label class="cursor-pointer input-label" for="certificateSwitch{{ !empty($quiz) ? $quiz->id : '' }}">{{ trans('quiz.certificate_included') }}</label>
                         <div class="custom-control custom-switch">
-                            <input type="checkbox" name="ajax[certificate]" class="js-ajax-certificate custom-control-input" id="certificateSwitch{{ $quiz ?? '' }}" {{ !empty($quiz) && $quiz->certificate ? 'checked' : ''}}>
-                            <label class="custom-control-label" for="certificateSwitch{{ $quiz ?? '' }}"></label>
+                            <input type="checkbox" name="ajax[certificate]" class="js-ajax-certificate custom-control-input" id="certificateSwitch{{ !empty($quiz) ? $quiz->id : '' }}" {{ !empty($quiz) && $quiz->certificate ? 'checked' : ''}}>
+                            <label class="custom-control-label" for="certificateSwitch{{ !empty($quiz) ? $quiz->id : '' }}"></label>
                         </div>
                     </div>
-
+                    @if ( !empty($quiz))
                     <div class="form-group mt-20 d-flex align-items-center justify-content-between">
-                        <label class="cursor-pointer input-label" for="statusSwitch{{ $quiz ?? '' }}">{{ trans('quiz.active_quiz') }}</label>
+                        <label class="cursor-pointer input-label" for="statusSwitch{{ !empty($quiz) ? $quiz->id : '' }}">{{ trans('quiz.active_quiz') }}</label>
                         <div class="custom-control custom-switch">
-                            <input type="checkbox" name="ajax[status]" class="js-ajax-status custom-control-input" id="statusSwitch{{ $quiz ?? '' }}" {{ !empty($quiz) && $quiz->status ? 'checked' : ''}}>
-                            <label class="custom-control-label" for="statusSwitch{{ $quiz ?? '' }}"></label>
+                            <input type="checkbox" name="ajax[status]" class="js-ajax-status custom-control-input " id="statusSwitch{{ !empty($quiz) ? $quiz->id : '' }}" {{ (!empty($quiz) && $quiz->status==='active') || old('status')==='on' ? 'checked' : ''}}>
+                            <label class="custom-control-label" for="statusSwitch{{ !empty($quiz) ? $quiz->id : '' }}"></label>
                         </div>
+
                     </div>
+                    <div id="errorStatus" class="invalid-feedback  @error('status')  d-block @enderror">
+                        @if ($errors->first('status'))
+                            @error('status')
+                                {{ $message }}
+                            @enderror
+                        @else
+                            {{trans('validation.can_active_quiz')}}
+                        @endif
+                                    
+                    </div>
+                    @endif
 
                 </div>
             </div>
@@ -97,7 +112,7 @@
                         <div class="quiz-question-card d-flex align-items-center mt-20">
                             <div class="flex-grow-1">
                                 <h4 class="question-title">{{ $question->title }}</h4>
-                                <div class="font-12 mt-5 question-infos">
+                                <div class="font-12 mt-5 question-infos" data-question-id="{{ $question->id }}" data-question-grade="{{ $question->grade }}">
                                     <span>{{ $question->type === App\Models\QuizzesQuestion::$multiple ? trans('quiz.multiple_choice') : trans('quiz.descriptive') }} | {{ trans('quiz.grade') }}: {{ $question->grade }}</span>
                                 </div>
                             </div>
@@ -134,3 +149,4 @@
     @include(getTemplate() .'.panel.quizzes.modals.multiple_question',['quiz' => $quiz])
     @include(getTemplate() .'.panel.quizzes.modals.descriptive_question',['quiz' => $quiz])
 @endif
+

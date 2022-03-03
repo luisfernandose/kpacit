@@ -75,46 +75,49 @@
                 <div class="row mt-30">
                     <div class="col-12">
                         <div class="webinar-card webinar-list d-flex">
-                            <div class="image-box">
-                                <img src="{{ $webinar->getImage() }}" class="img-cover" alt="">
+                            <a href="{{ $webinar->getUrl() }}" target="_blank">
+                                <div class="image-box">
+                                    <img src="{{ $webinar->getImage() }}" class="img-cover" alt="">
 
-                                @switch($webinar->status)
-                                    @case(\App\Models\Webinar::$active)
-                                    @if($webinar->isWebinar())
-                                        @if($webinar->start_date > time())
-                                            <span class="badge badge-primary">{{  trans('panel.not_conducted') }}</span>
-                                        @elseif($webinar->isProgressing())
-                                            <span class="badge badge-secondary">{{ trans('webinars.in_progress') }}</span>
+                                    @switch($webinar->status)
+                                        @case(\App\Models\Webinar::$active)
+                                        @if($webinar->isWebinar())
+                                            @if($webinar->start_date > time())
+                                                <span class="badge badge-primary">{{  trans('panel.not_conducted') }}</span>
+                                            @elseif($webinar->isProgressing())
+                                                <span class="badge badge-secondary">{{ trans('webinars.in_progress') }}</span>
+                                            @else
+                                                <span class="badge badge-secondary">{{ trans('public.finished') }}</span>
+                                            @endif
                                         @else
-                                            <span class="badge badge-secondary">{{ trans('public.finished') }}</span>
+                                            <span class="badge badge-secondary">{{ trans('webinars.'.$webinar->type) }}</span>
                                         @endif
-                                    @else
-                                        <span class="badge badge-secondary">{{ trans('webinars.'.$webinar->type) }}</span>
-                                    @endif
-                                    @break
-                                    @case(\App\Models\Webinar::$isDraft)
-                                    <span class="badge badge-danger">{{ trans('public.draft') }}</span>
-                                    @break
-                                    @case(\App\Models\Webinar::$pending)
-                                    <span class="badge badge-warning">{{ trans('public.waiting') }}</span>
-                                    @break
-                                    @case(\App\Models\Webinar::$inactive)
-                                    <span class="badge badge-danger">{{ trans('public.rejected') }}</span>
-                                    @break
-                                @endswitch
+                                        @break
+                                        @case(\App\Models\Webinar::$isDraft)
+                                        <span class="badge badge-danger">{{ trans('public.draft') }}</span>
+                                        @break
+                                        @case(\App\Models\Webinar::$pending)
+                                        <span class="badge badge-warning">{{ trans('public.waiting') }}</span>
+                                        @break
+                                        @case(\App\Models\Webinar::$inactive)
+                                        <span class="badge badge-danger">{{ trans('public.rejected') }}</span>
+                                        @break
+                                    @endswitch
 
-                                @if($webinar->isWebinar())
-                                    <div class="progress">
-                                        <span class="progress-bar" style="width: {{ $webinar->getProgress() }}%"></span>
-                                    </div>
-                                @endif
-                            </div>
+                                    @if($webinar->isWebinar())
+                                        <div class="progress">
+                                            <span class="progress-bar" style="width: {{ $webinar->getProgress() }}%"></span>
+                                        </div>
+                                    @endif
+                                </div>
+                            </a>
 
                             <div class="webinar-card-body w-100 d-flex flex-column">
                                 <div class="d-flex align-items-center justify-content-between">
                                     <a href="{{ $webinar->getUrl() }}" target="_blank">
                                         <h3 class="font-16 text-dark-blue font-weight-bold">{{ $webinar->title }}
                                             <span class="badge badge-dark ml-10 status-badge-dark">{{ trans('webinars.'.$webinar->type) }}</span>
+                                            <span class="badge badge-secondary ml-10">{{ trans('webinars.go_to_class') }}</span>
                                         </h3>
                                     </a>
 

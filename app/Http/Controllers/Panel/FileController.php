@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Panel;
 use App\Http\Controllers\Controller;
 use App\Models\File;
 use Illuminate\Http\Request;
-use \Illuminate\Support\Facades\File as FacadeFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Validator;
@@ -64,7 +63,7 @@ class FileController extends Controller
             'downloadable' => !empty($data['downloadable']) ? true : false,
             'description' => $data['description'],
             'module_id' => $data['module_id'],
-            'created_at' => time()
+            'created_at' => time(),
         ]);
 
         return response()->json([
@@ -127,7 +126,7 @@ class FileController extends Controller
                 'downloadable' => !empty($data['downloadable']) ? true : false,
                 'description' => $data['description'],
                 'module_id' => $data['module_id'],
-                'updated_at' => time()
+                'updated_at' => time(),
             ]);
 
             return response()->json([
@@ -178,7 +177,7 @@ class FileController extends Controller
         }
 
         return response()->json([
-            'code' => 200
+            'code' => 200,
         ], 200);
     }
 }

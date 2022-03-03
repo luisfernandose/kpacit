@@ -15,10 +15,10 @@ use App\Models\Session;
 use App\Models\Tag;
 use App\Models\TextLesson;
 use App\Models\Ticket;
-use App\User;
 use App\Models\Webinar;
-use App\Models\WebinarPartnerTeacher;
 use App\Models\WebinarFilterOption;
+use App\Models\WebinarPartnerTeacher;
+use App\User;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Validator;
@@ -46,7 +46,6 @@ class WebinarController extends Controller
 
         return view(getTemplate() . '.panel.webinar.index', $data);
     }
-
 
     public function invitations(Request $request)
     {
@@ -141,7 +140,7 @@ class WebinarController extends Controller
                 $query->with([
                     'reviews' => function ($query) {
                         $query->where('status', 'active');
-                    }
+                    },
                 ])->get()
                     ->sortBy(function ($qu) {
                         return $qu->reviews->avg('rates');
@@ -178,7 +177,7 @@ class WebinarController extends Controller
             'sales' => function ($query) {
                 $query->where('type', 'webinar')
                     ->whereNull('refund_at');
-            }
+            },
         ])->orderBy('updated_at', 'desc');
 
         $webinarsCount = $query->count();
@@ -357,7 +356,7 @@ class WebinarController extends Controller
                 'tags',
             ]);
 
-            $categories = Category::where('parent_id', null)
+            $categories = Category::where('parent_id', null)->where('organ_id', auth()->user()->role_name == "organization" ? auth()->user()->id : (auth()->user()->organ_id ? auth()->user()->organ_id : null))
                 ->with('subCategories')
                 ->get();
 
@@ -380,7 +379,7 @@ class WebinarController extends Controller
                     }])->orderBy('order', 'asc');
                 },
             ])
-            ->with('modules');
+                ->with('modules');
         } elseif ($step == 5) {
             $query->with([
                 'prerequisites' => function ($query) {
@@ -390,13 +389,13 @@ class WebinarController extends Controller
                                 $q->select('id', 'full_name');
                             }]);
                     }])->orderBy('order', 'asc');
-                }
+                },
             ]);
         } elseif ($step == 6) {
             $query->with([
                 'faqs' => function ($query) {
                     $query->orderBy('order', 'asc');
-                }
+                },
             ]);
         } elseif ($step == 7) {
             $query->with(['quizzes']);
@@ -408,7 +407,6 @@ class WebinarController extends Controller
 
             $data['teacherQuizzes'] = $teacherQuizzes;
         }
-
 
         $webinar = $query->first();
 
@@ -426,7 +424,6 @@ class WebinarController extends Controller
 
         $data['webinar'] = $webinar;
 
-
         if ($step == 2) {
             $data['webinarTags'] = $webinar->tags->pluck('title')->toArray();
         }
@@ -434,7 +431,6 @@ class WebinarController extends Controller
         if ($step == 3) {
             $data['sumTicketsCapacities'] = $webinar->tickets->sum('capacity');
         }
-
 
         return view(getTemplate() . '.panel.webinar.create', $data);
     }
@@ -494,7 +490,6 @@ class WebinarController extends Controller
 
         $this->validate($request, $rules);
 
-
         $data['status'] = ($isDraft or $webinarRulesRequired) ? Webinar::$isDraft : Webinar::$pending;
         $data['updated_at'] = time();
 
@@ -532,7 +527,7 @@ class WebinarController extends Controller
             foreach ($filters as $filter) {
                 WebinarFilterOption::create([
                     'webinar_id' => $webinar->id,
-                    'filter_option_id' => $filter
+                    'filter_option_id' => $filter,
                 ]);
             }
         }
@@ -641,7 +636,7 @@ class WebinarController extends Controller
 
         return response()->json([
             'code' => 200,
-            'redirect_to' => $request->get('redirect_to')
+            'redirect_to' => $request->get('redirect_to'),
         ], 200);
     }
 
@@ -698,7 +693,7 @@ class WebinarController extends Controller
                 ->with([
                     'buyer' => function ($query) {
                         $query->select('id', 'full_name', 'email', 'mobile');
-                    }
+                    },
                 ])->get();
 
             if (!empty($sales) and !$sales->isEmpty()) {
@@ -709,7 +704,7 @@ class WebinarController extends Controller
             $toastData = [
                 'title' => trans('public.request_failed'),
                 'msg' => trans('webinars.export_list_error_not_student'),
-                'status' => 'error'
+                'status' => 'error',
             ];
             return back()->with(['toast' => $toastData]);
         }
@@ -736,7 +731,7 @@ class WebinarController extends Controller
                 ->with(['teacher' => function ($query) {
                     $query->select('id', 'full_name');
                 }])
-                //->where('creator_id', $user->id)
+            //->where('creator_id', $user->id)
                 ->get();
 
             foreach ($webinars as $webinar) {
@@ -795,7 +790,7 @@ class WebinarController extends Controller
                                 $query->select('id', 'full_name');
                             },
                         ]);
-                    }
+                    },
                 ])
                 ->first();
 
@@ -803,7 +798,7 @@ class WebinarController extends Controller
                 $data = [
                     'pageTitle' => trans('webinars.invoice_page_title'),
                     'sale' => $sale,
-                    'webinar' => $webinar
+                    'webinar' => $webinar,
                 ];
 
                 return view(getTemplate() . '.panel.webinar.invoice', $data);
@@ -851,7 +846,7 @@ class WebinarController extends Controller
             ->withCount([
                 'sales' => function ($query) {
                     $query->whereNull('refund_at');
-                }
+                },
             ])
             ->orderBy('created_at', 'desc')
             ->orderBy('updated_at', 'desc')
@@ -875,7 +870,7 @@ class WebinarController extends Controller
             'webinars' => $webinars,
             'allWebinarsCount' => $allWebinarsCount,
             'hours' => $hours,
-            'upComing' => $upComing
+            'upComing' => $upComing,
         ];
 
         return view(getTemplate() . '.panel.webinar.purchases', $data);
@@ -912,7 +907,7 @@ class WebinarController extends Controller
 
                         return response()->json([
                             'code' => 200,
-                            'session' => $session
+                            'session' => $session,
                         ], 200);
                     }
                 }

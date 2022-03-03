@@ -1,5 +1,4 @@
 @extends(getTemplate() .'.panel.layouts.panel_layout')
-
 @section('content')
 
     <div class="row">
@@ -14,11 +13,9 @@
 
         <div class="row">
             <div class="col-12 col-lg-4">
-                <div class="form-group mt-20">
+                <div class="form-group search mt-20 ">
                     <label class="input-label d-block">{{ trans('public.select_a_student') }}</label>
-
-                    <select name="student_id" class="custom-select @error('student_id')  is-invalid @enderror">
-                        <option selected disabled>{{ trans('public.select_a_student') }}</option>
+                    <select title="Choose one of the following..." name="student_id" data-size="25" data-live-search="true" class="col-12 selectpicker @error('student_id')  is-invalid @enderror">
                         @foreach($students as $student)
                             <option value="{{ $student->id }}">{{ $student->full_name }}</option>
                         @endforeach
@@ -95,3 +92,15 @@
         </section>
     @endif
 @endsection
+@push('scripts_bottom')
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+<script>
+$(document).ready(()=>{
+    $('.selectpicker').selectpicker({
+        size: false
+}); 
+});
+</script>
+@endpush

@@ -6,13 +6,13 @@ return [
     |--------------------------------------------------------------------------
     | Authentication
     |--------------------------------------------------------------------------
-    */
+     */
     'admin_login_title' => 'Admin login',
     'failed' => 'Usuario o contraseña incorrectos o el usuario no existe',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'admin_panel' => 'Panel de Administrador',
     'welcome' => 'Bienvenido a',
-    'admin_tagline' => 'Please login to control and manage everything!',  
+    'admin_tagline' => 'Please login to control and manage everything!',
     'email' => 'Email',
     'mobile' => 'Telefono',
     'country' => 'Pais',
@@ -30,8 +30,8 @@ return [
     'forget_password' => 'Recuperar Password',
     'forget_your_password' => 'Olvidó su password?',
     'dont_have_account' => 'Don\'t have an account?',
-    'hint_password'=>'Please type your password.',
-    'hint_email'=>'Please type your email.',
+    'hint_password' => 'Please type your password.',
+    'hint_email' => 'Please type your email.',
 
     'role_admin' => 'Admin',
     'role_normal' => 'User',
@@ -40,7 +40,6 @@ return [
     'or' => 'or',
     'google_login' => 'Ingresar con Google',
     'facebook_login' => 'Ingresar con Facebook',
-
 
     'i_agree_with' => 'Acepto los',
     'terms_and_rules' => 'terminos & condiciones',
@@ -85,6 +84,7 @@ return [
     'click_here' => 'Click aqui',
 
     'verification_link_has_been_sent_to_your_email' => 'Se ha enviado un nuevo enlace de verificación a su dirección de correo electrónico.',
-
     'login_failed_your_account_is_not_verified' => 'Error en el inicio de sesión. Su correo electrónico/teléfono no ha sido verificado.',
+    'document_type' => 'Tipo de documento',
+    'document_id' => 'Cédula de Identidad',
 ];
