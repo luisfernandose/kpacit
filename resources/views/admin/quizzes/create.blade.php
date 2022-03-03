@@ -82,11 +82,11 @@
                                             <div class="form-group">
                                                 <label class="input-label">{{ trans('quiz.pass_mark') }}</label>
                                                 <input type="text" name="pass_mark" value="{{ !empty($quiz) ? $quiz->pass_mark : old('pass_mark') }}" class="form-control @error('pass_mark')  is-invalid @enderror" placeholder=""/>
-                                                @error('pass_mark')
-                                                <div class="invalid-feedback">
+                                                <div class="invalid-feedback" data-label="{{ __('validation.max.numeric') }}">  @error('pass_mark')
                                                     {{ $message }}
+                                                    @enderror
                                                 </div>
-                                                @enderror
+                                               
                                             </div>
 
                                             <div class="form-group mt-4 d-flex align-items-center justify-content-between">
@@ -178,6 +178,21 @@
        
         $('.only_number').mask('0#');       
 
+        $('body').on("keyup", 'input[name="pass_mark"]', function(e){
+
+            if(+event.target.value>100){                
+                let attribute = $(this).parent().find('.input-label').text().trim();                
+                let msgValidation = $(this).parent().find('.invalid-feedback').attr('data-label');
+                msgValidation = msgValidation.replace(':attribute', attribute).replace(':max','100');
+
+                $(this).parent().find('.invalid-feedback').text('');                
+                $(this).parent().find('.invalid-feedback').text(msgValidation);
+                $(this).addClass('is-invalid');
+                return;
+            }else{
+                $(this).removeClass('is-invalid');
+            }
+        });
         $('body').on("keyup",'input[name="grade"]', function (e) {
           
             let maxPassMark = 100;

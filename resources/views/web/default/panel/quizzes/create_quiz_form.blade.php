@@ -57,7 +57,7 @@
                     <div class="form-group">
                         <label class="input-label">{{ trans('quiz.pass_mark') }}</label>
                         <input type="text" name="ajax[pass_mark]" value="{{ !empty($quiz) ? $quiz->pass_mark : old('pass_mark') }}" maxlength="3" class="js-ajax-pass_mark only_number form-control @error('pass_mark')  is-invalid @enderror" placeholder=""/>
-                        <div class="invalid-feedback">
+                        <div class="invalid-feedback" data-label="{{ __('validation.max.numeric') }}">
                             @error('pass_mark')
                             {{ $message }}
                             @enderror

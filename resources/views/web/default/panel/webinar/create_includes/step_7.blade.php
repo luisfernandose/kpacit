@@ -47,7 +47,21 @@
 
         $('.only_number').mask('0#');
        
+        $('body').on("keyup", 'input[name="ajax[pass_mark]"]', function(e){
 
+            if(+event.target.value>100){                
+                let attribute = $(this).parent().find('.input-label').text().trim();                
+                let msgValidation = $(this).parent().find('.invalid-feedback').attr('data-label');
+                msgValidation = msgValidation.replace(':attribute', attribute).replace(':max','100');
+
+                $(this).parent().find('.invalid-feedback').text('');                
+                $(this).parent().find('.invalid-feedback').text(msgValidation);
+                $(this).addClass('is-invalid');
+                return;
+            }else{
+                $(this).removeClass('is-invalid');
+            }
+        });
         $('body').on("keyup",'input[name="ajax[grade]"]', function (e) {
             let maxPassMark = 100;
             let sumGrade= +event.target.value;
