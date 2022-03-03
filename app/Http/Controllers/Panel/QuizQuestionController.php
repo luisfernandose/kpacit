@@ -86,7 +86,15 @@ class QuizQuestionController extends Controller
                     }
                 }
             }
+            $status =  $quiz->status;
 
+            if($quiz->quizQuestions->pluck('grade')->sum() < 100){
+                $status = Quiz::INACTIVE;
+            }
+            $quiz->update([
+                'status' => $status,
+            ]);
+            
             return response()->json([
                 'code' => 200
             ], 200);
@@ -209,6 +217,15 @@ class QuizQuestionController extends Controller
                         }
                     }
                 }
+
+                $status =  $quiz->status;
+
+                if($quiz->quizQuestions->pluck('grade')->sum() < 100){
+                    $status = Quiz::INACTIVE;
+                }
+                $quiz->update([
+                    'status' => $status,
+                ]);
 
                 return response()->json([
                     'code' => 200

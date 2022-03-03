@@ -286,6 +286,12 @@ class QuizController extends Controller
         }
 
         $quiz = Quiz::find($id);
+
+        $status = (!empty($data['status']) and $data['status'] == 'on') ? Quiz::ACTIVE : Quiz::INACTIVE;
+
+        if($quiz->quizQuestions->pluck('grade')->sum() < 100){
+            $status = Quiz::INACTIVE;
+        }
         $quiz->update([
             'title' => $data['title'],
             'webinar_id' => !empty($webinar) ? $webinar->id : null,
@@ -293,7 +299,7 @@ class QuizController extends Controller
             'attempt' => $data['attempt'] ?? null,
             'pass_mark' => $data['pass_mark'],
             'time' => $data['time'] ?? null,
-            'status' => (!empty($data['status']) and $data['status'] == 'on') ? Quiz::ACTIVE : Quiz::INACTIVE,
+            'status' =>  $status,
             'certificate' => (!empty($data['certificate']) and $data['certificate'] == 'on') ? true : false,
             'updated_at' => time(),
         ]);
