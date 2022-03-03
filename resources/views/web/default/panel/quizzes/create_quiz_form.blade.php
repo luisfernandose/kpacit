@@ -112,7 +112,7 @@
                         <div class="quiz-question-card d-flex align-items-center mt-20">
                             <div class="flex-grow-1">
                                 <h4 class="question-title">{{ $question->title }}</h4>
-                                <div class="font-12 mt-5 question-infos" data-question-grade="{{ $question->grade }}">
+                                <div class="font-12 mt-5 question-infos" data-question-id="{{ $question->id }}" data-question-grade="{{ $question->grade }}">
                                     <span>{{ $question->type === App\Models\QuizzesQuestion::$multiple ? trans('quiz.multiple_choice') : trans('quiz.descriptive') }} | {{ trans('quiz.grade') }}: {{ $question->grade }}</span>
                                 </div>
                             </div>
@@ -150,8 +150,3 @@
     @include(getTemplate() .'.panel.quizzes.modals.descriptive_question',['quiz' => $quiz])
 @endif
 
-@push('scripts_bottom')
-
-
-
-@endpush

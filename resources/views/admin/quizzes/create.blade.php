@@ -129,7 +129,7 @@
                                                 <div class="quiz-question-card d-flex align-items-center mt-4">
                                                     <div class="flex-grow-1">
                                                         <h4 class="question-title">{{ $question->title }}</h4>
-                                                        <div class="font-12 mt-3 question-infos" data-question-grade="{{ $question->grade }}">
+                                                        <div class="font-12 mt-3 question-infos" data-question-id="{{ $question->id }}" data-question-grade="{{ $question->grade }}">
                                                             <span>{{ $question->type === App\Models\QuizzesQuestion::$multiple ? trans('quiz.multiple_choice') : trans('quiz.descriptive') }} | {{ trans('quiz.grade') }}: {{ $question->grade }}</span>
                                                         </div>
                                                     </div>
@@ -179,8 +179,13 @@
         $('.only_number').mask('0#');       
 
         $('body').on("keyup",'input[name="grade"]', function (e) {
+          
             let maxPassMark = 100;
             let sumGrade= +event.target.value;
+            let id = $(this).closest('form').find('input[name="ajax[quiz_id]"]').val();
+            let form = $(this).closest('form').attr('action').split('/');
+            let action = form[form.length - 1];
+            let idQuestion = (action == 'update' ?  form[3] : '');
 
             if(+event.target.value>100){                
                 let attribute = $(this).parent().find('.input-label').text().trim();                
@@ -196,7 +201,11 @@
             }
             
             $('.question-infos').each(function () {  
+
+                if((action == 'store' ) || ( action == 'update' && +$(this).attr('data-question-id') != +idQuestion)){
                     sumGrade += +$(this).attr('data-question-grade')
+
+                }
             });
             if(sumGrade > maxPassMark){
                let msg = $('.invalid-grade-max').attr('data-label')

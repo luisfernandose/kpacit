@@ -172,7 +172,7 @@
 
         $('body').on('click', '.save-module', function (e) {
 
-            console.log('object')
+
 
             const $this = $(this);
             let form = $this.closest('.module-form');

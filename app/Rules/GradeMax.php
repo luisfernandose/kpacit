@@ -33,11 +33,11 @@ class GradeMax implements Rule
         
         $quiz_id = request()->input('ajax') ? request()->input('ajax.quiz_id') : request()->input('quiz_id');
         $quiz = Quiz::find($quiz_id);
-       
+        $question_id = request()->route('id');
         if($quiz){
             $max =  $this->max_value;
             
-            $sum = QuizzesQuestion::where('quiz_id', $quiz_id)->pluck('grade')->sum();
+            $sum = QuizzesQuestion::where('quiz_id', $quiz_id)->whereNotIn('id', [$question_id])->pluck('grade')->sum();
             $sum = (int) $sum + (int) $value;
             if ($sum > $max) {
                 return false;

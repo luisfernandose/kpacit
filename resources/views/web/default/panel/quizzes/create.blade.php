@@ -23,8 +23,10 @@
         $('body').on("keyup",'input[name="ajax[grade]"]', function (e) {
             let maxPassMark = 100;
             let sumGrade= +event.target.value;
-
-            if(+event.target.value>100){                
+            let form = $(this).closest('.quiz-questions-form').attr('data-action').split('/');
+            let action = form[form.length - 1];
+            let id = (action == 'update' ?  form[3] : '');
+            if(+event.target.value > 100){                
                 let attribute = $(this).parent().find('.input-label').text().trim();                
                 let msgValidation = $(this).parent().find('.invalid-feedback').attr('data-label');
                 msgValidation = msgValidation.replace(':attribute', attribute).replace(':max','100');
@@ -36,8 +38,11 @@
             }else{
                 $(this).removeClass('is-invalid');
             }
+
             $('.question-infos').each(function () {  
+                if(action == 'store'  || ( action == 'update' && +$(this).attr('data-question-id') != +id)){                
                     sumGrade += +$(this).attr('data-question-grade')
+                }
             });
 
             if(sumGrade > maxPassMark){

@@ -293,14 +293,14 @@
 
           const span = $(this)[0];
 
-          console.log(span);
+
 
           $(`#percentage_span_${i}`).remove();
 
           const e = document.createElement('span');
           e.id = `percentage_span_${i}`;
           let value = span.style.width;
-          console.log(span.style.width);
+
           value = value.replace('%','');
           e.innerText = parseFloat(value).toFixed(2)+'%';
           span.parentElement.previousElementSibling.appendChild(e);
