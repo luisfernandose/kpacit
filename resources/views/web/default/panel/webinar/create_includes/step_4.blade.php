@@ -108,7 +108,6 @@
     @include('web.default.panel.webinar.create_includes.accordions.file',['webinar' => $webinar])
 </div>
 
-@if($webinar->isTextCourse())
     <section class="mt-50">
         <div class="">
             <h2 class="section-title after-line">{{ trans('public.test_lesson') }} ({{ trans('public.optional') }})</h2>
@@ -144,7 +143,6 @@
         @include('web.default.panel.webinar.create_includes.accordions.text-lesson',['webinar' => $webinar])
     </div>
 
-@endif
 
 @push('scripts_bottom')
     <script src="/assets/default/vendors/select2/select2.min.js"></script>

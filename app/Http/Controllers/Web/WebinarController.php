@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Responses\S3FileStream;
 use App\Models\AdvertisingBanner;
+use App\Models\CourseLearning;
 use App\Models\Favorite;
 use App\Models\File;
+use App\Models\Quiz;
 use App\Models\QuizzesResult;
 use App\Models\Sale;
 use App\Models\TextLesson;
-use App\Models\CourseLearning;
-use App\Models\WebinarReport;
 use App\Models\Webinar;
-use App\Models\Quiz;
-use App\Http\Responses\S3FileStream;
+use App\Models\WebinarReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -60,9 +60,9 @@ class WebinarController extends Controller
                                 ->with([
                                     'learningStatus' => function ($query) use ($user) {
                                         $query->where('user_id', !empty($user) ? $user->id : null);
-                                    }
+                                    },
                                 ]);
-                        }
+                        },
                     ]);
                 },
                 'textLessons' => function ($query) use ($user) {
@@ -71,7 +71,7 @@ class WebinarController extends Controller
                         ->with([
                             'learningStatus' => function ($query) use ($user) {
                                 $query->where('user_id', !empty($user) ? $user->id : null);
-                            }
+                            },
                         ]);
                 },
                 'sessions' => function ($query) use ($user) {
@@ -79,7 +79,7 @@ class WebinarController extends Controller
                         ->with([
                             'learningStatus' => function ($query) use ($user) {
                                 $query->where('user_id', !empty($user) ? $user->id : null);
-                            }
+                            },
                         ]);
                 },
                 'tickets' => function ($query) {
@@ -94,7 +94,7 @@ class WebinarController extends Controller
                         'comments',
                         'creator' => function ($qu) {
                             $qu->select('id', 'full_name', 'avatar');
-                        }
+                        },
                     ]);
                 },
                 'comments' => function ($query) {
@@ -109,9 +109,9 @@ class WebinarController extends Controller
                             $query->with([
                                 'user' => function ($query) {
                                     $query->select('id', 'full_name', 'role_name', 'role_id', 'avatar');
-                                }
+                                },
                             ]);
-                        }
+                        },
                     ]);
                     $query->orderBy('created_at', 'desc');
                 },
@@ -119,7 +119,7 @@ class WebinarController extends Controller
             ->withCount([
                 'sales' => function ($query) {
                     $query->whereNull('refund_at');
-                }
+                },
             ])
             ->where('status', 'active')
             ->first();
@@ -129,13 +129,13 @@ class WebinarController extends Controller
         }
 
         $course->files_without_module = File::with([
-                                                'learningStatus' => function ($query) use ($user) {
-                                                    $query->where('user_id', !empty($user) ? $user->id : null);
-                                                }
-                                            ])
-                                            ->where('webinar_id', '=', $course->id)
-                                            ->whereNull('module_id')
-                                            ->get();
+            'learningStatus' => function ($query) use ($user) {
+                $query->where('user_id', !empty($user) ? $user->id : null);
+            },
+        ])
+            ->where('webinar_id', '=', $course->id)
+            ->whereNull('module_id')
+            ->get();
 
         $isPrivate = $course->private;
         if (!empty($user) and ($user->id == $course->creator_id or $user->organ_id == $course->creator_id or $user->isAdmin())) {
@@ -167,7 +167,7 @@ class WebinarController extends Controller
             $webinarContentCount += $course->textLessons->count();
         }
         if (!empty($course->quizzes)) {
-            $webinarContentCount += $course->quizzes->where('status',Quiz::ACTIVE)->count();
+            $webinarContentCount += $course->quizzes->where('status', Quiz::ACTIVE)->count();
         }
 
         $advertisingBanners = AdvertisingBanner::where('published', true)
@@ -258,7 +258,7 @@ class WebinarController extends Controller
                     $toastData = [
                         'title' => trans('public.not_access_toast_lang'),
                         'msg' => trans('public.not_access_toast_msg_lang'),
-                        'status' => 'error'
+                        'status' => 'error',
                     ];
                     return back()->with(['toast' => $toastData]);
                 }
@@ -268,7 +268,8 @@ class WebinarController extends Controller
         return back();
     }
 
-    public function getFileStream(Request $request, $slug, $file_id) {
+    public function getFileStream(Request $request, $slug, $file_id)
+    {
 
         $id = decrypt($file_id);
 
@@ -311,7 +312,7 @@ class WebinarController extends Controller
     public function getFilePath(Request $request)
     {
         $this->validate($request, [
-            'file_id' => 'required'
+            'file_id' => 'required',
         ]);
 
         $file_id = $request->get('file_id');
@@ -362,8 +363,8 @@ class WebinarController extends Controller
                     return response()->json([
                         'code' => 200,
                         'storage' => $file->storage,
-                        'path' =>  $path,
-                        'storageService' => $storageService
+                        'path' => $path,
+                        'storageService' => $storageService,
                     ], 200);
                 }
             }
@@ -381,7 +382,6 @@ class WebinarController extends Controller
         }
 
         $course = Webinar::where('slug', $slug)
-            ->where('private', false)
             ->where('status', 'active')
             ->with(['teacher', 'textLessons' => function ($query) {
                 $query->orderBy('order', 'asc');
@@ -397,7 +397,7 @@ class WebinarController extends Controller
                     },
                     'learningStatus' => function ($query) use ($user) {
                         $query->where('user_id', !empty($user) ? $user->id : null);
-                    }
+                    },
                 ])
                 ->first();
 
@@ -448,7 +448,7 @@ class WebinarController extends Controller
                 $toastData = [
                     'title' => trans('cart.fail_purchase'),
                     'msg' => trans('cart.course_not_free'),
-                    'status' => 'error'
+                    'status' => 'error',
                 ];
                 return back()->with(['toast' => $toastData]);
             }
@@ -467,7 +467,7 @@ class WebinarController extends Controller
             $toastData = [
                 'title' => '',
                 'msg' => trans('cart.success_pay_msg_for_free_course'),
-                'status' => 'success'
+                'status' => 'success',
             ];
             return back()->with(['toast' => $toastData]);
         }
@@ -498,17 +498,17 @@ class WebinarController extends Controller
                     'webinar_id' => $webinar->id,
                     'reason' => $data['reason'],
                     'message' => $data['message'],
-                    'created_at' => time()
+                    'created_at' => time(),
                 ]);
 
                 return response()->json([
-                    'code' => 200
+                    'code' => 200,
                 ], 200);
             }
         }
 
         return response()->json([
-            'code' => 401
+            'code' => 401,
         ], 200);
     }
 
@@ -534,7 +534,7 @@ class WebinarController extends Controller
                     CourseLearning::create([
                         'user_id' => $user->id,
                         $item => $item_id,
-                        'created_at' => time()
+                        'created_at' => time(),
                     ]);
                 }
 
