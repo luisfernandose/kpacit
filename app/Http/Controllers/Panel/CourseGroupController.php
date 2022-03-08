@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\CourseGroupList;
 use App\Models\CourseGroups;
 use App\Models\CourseGroupUsers;
+use App\Models\Sale;
+use App\Models\Webinar;
 use Illuminate\Http\Request;
 
 class CourseGroupController extends Controller
@@ -215,7 +217,28 @@ class CourseGroupController extends Controller
             'course_group_list_id' => $data->group_id,
             'user_id' => $data->student_id,
         ]);
+        $courses = CourseGroups::where('course_group_list_id',$data->group_id)->pluck('webinar_id');
 
+        $webinars = Webinar::whereIn('id', $courses)->get();
+
+        if (!empty($webinars)) {
+            foreach($webinars as $course){
+                $student = Sale::where('webinar_id',$course->id)->where('buyer_id',$data->student_id)->first();
+                if(empty($student)){
+                    Sale::create([
+                        'buyer_id' => $data->student_id,
+                        'seller_id' => $course->creator_id,
+                        'webinar_id' => $course->id,
+                        'type' => Sale::$webinar,
+                        'payment_method' => Sale::$credit,
+                        'amount' => 0,
+                        'total_amount' => 0,
+                        'created_at' => time(),
+                    ]);
+                }
+            }
+
+        }
         $toastData = [
             'title' => trans('public.request_success'),
             'msg' => trans('panel.group_student_store_success'),
