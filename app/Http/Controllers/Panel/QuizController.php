@@ -344,6 +344,11 @@ class QuizController extends Controller
         $user = auth()->user();
 
         if ($quiz) {
+            $progress_course = $quiz->webinar->getProgress(FALSE);
+
+            if($progress_course != 100){
+                return back()->with('msg', trans('quiz.cant_start_quiz'));
+            }
             $userQuizDone = QuizzesResult::where('quiz_id', $quiz->id)
                 ->where('user_id', $user->id)
                 ->get();

@@ -101,8 +101,12 @@
                             </div>
                         @endif
                     </div>
-
-                    <div class="@if(!$course->isCourse()) mt-35 @else mt-40 pt-40 @endif">
+                    @if(!empty(session()->has('msg')))
+                        <div class="alert alert-success my-25">
+                            {{ session()->get('msg') }}
+                        </div>
+                    @endif
+                    <div class="@if(!$course->isCourse()) mt-35 @else mt-40 @if(empty(session()->has('msg'))) pt-40 @endif @endif">
                         <ul class="nav nav-tabs bg-secondary rounded-sm p-15 d-flex align-items-center justify-content-between" id="tabs-tab" role="tablist">
                             <li class="nav-item">
                                 <a class="position-relative font-14 text-white {{ (empty(request()->get('tab','')) or request()->get('tab','') == 'information') ? 'active' : '' }}" id="information-tab"
