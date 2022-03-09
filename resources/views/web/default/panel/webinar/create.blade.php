@@ -15,6 +15,7 @@
             <input type="hidden" name="draft" value="no" id="forDraft"/>
             <input type="hidden" name="get_next" value="no" id="getNext"/>
             <input type="hidden" name="get_step" value="0" id="getStep"/>
+            <input type="hidden" name="save_course" value="0" id="saveCourse"/>
 
 
             @if($currentStep == 1)
@@ -39,6 +40,12 @@
             </div>
 
             <div class="mt-20 mt-md-0">
+         
+                @if(auth()->user()->isOrganization() and $currentStep == 7)
+                    <button type="button" id="saveCourseOrganization" class="btn btn-sm btn-primary">{{ trans('public.finish') }}</button>
+                @endif
+
+
                 <button type="button" id="sendForReview" class="btn btn-sm btn-primary">{{ trans('public.send_for_review') }}</button>
 
                 <button type="button" id="saveAsDraft" class=" btn btn-sm btn-primary">{{ trans('public.save_as_draft') }}</button>
