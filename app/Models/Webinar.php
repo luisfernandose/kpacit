@@ -290,9 +290,11 @@ class Webinar extends Model
         return $hasBought;
     }
 
-    public function getProgress()
+    public function getProgress($with_quizzes = true)
     {
         $progress = 0;
+        $quizzes_count = 0; 
+        
         if ($this->isWebinar() and !empty($this->capacity)) {
             if ($this->isProgressing() and $this->checkUserHasBought()) {
                 $user_id = auth()->id();
@@ -321,19 +323,23 @@ class Webinar extends Model
                     }
                 }
 
-                foreach ($quizzes as $quiz) {
-                    $status = QuizzesResult::where('user_id', $user_id)
-                        ->where('quiz_id',$quiz->id)
-                        ->where('status', QuizzesResult::$passed)
-                        ->first();
+                if($with_quizzes === TRUE){
 
-                    if (!empty($status)) {
-                        $passed += 1;
+                    foreach ($quizzes as $quiz) {
+                        $status = QuizzesResult::where('user_id', $user_id)
+                            ->where('quiz_id',$quiz->id)
+                            ->where('status', QuizzesResult::$passed)
+                            ->first();
+    
+                        if (!empty($status)) {
+                            $passed += 1;
+                        }
                     }
+                    $quizzes_count = $quizzes->count();
                 }
-
+                
                 if ($passed > 0) {
-                    $progress = ($passed * 100) / ($sessions->count() + $files->count() + $quizzes->count());
+                    $progress = ($passed * 100) / ($sessions->count() + $files->count() + $quizzes_count);
                 }
             } else {
                 $salesCount = !empty($this->sales_count) ? $this->sales_count : $this->sales()->count();
@@ -368,19 +374,22 @@ class Webinar extends Model
                     $passed += 1;
                 }
             }
-            foreach ($quizzes as $quiz) {
-                $status = QuizzesResult::where('user_id', $user_id)
-                    ->where('quiz_id',$quiz->id)
-                    ->where('status', QuizzesResult::$passed)
-                    ->first();
+            if($with_quizzes === TRUE){
+                foreach ($quizzes as $quiz) {
+                    $status = QuizzesResult::where('user_id', $user_id)
+                        ->where('quiz_id',$quiz->id)
+                        ->where('status', QuizzesResult::$passed)
+                        ->first();
 
-                if (!empty($status)) {
-                    $passed += 1;
+                    if (!empty($status)) {
+                        $passed += 1;
+                    }
                 }
+                $quizzes_count = $quizzes->count();
             }
 
             if ($passed > 0) {
-                $progress = ($passed * 100) / ($files->count() + $textLessons->count() + $quizzes->count());
+                $progress = ($passed * 100) / ($files->count() + $textLessons->count() + $quizzes_count);
             }
         }
 

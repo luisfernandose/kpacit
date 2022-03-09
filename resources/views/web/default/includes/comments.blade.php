@@ -16,11 +16,7 @@
         </form>
     </div>
 
-    @if(!empty(session()->has('msg')))
-        <div class="alert alert-success my-25">
-            {{ session()->get('msg') }}
-        </div>
-    @endif
+
 
     @if($comments)
         @foreach($comments as $comment)
