@@ -603,7 +603,7 @@ class WebinarController extends Controller
             $url = '/panel/webinars/' . $webinar->id . '/step/' . (($nextStep <= 8) ? $nextStep : 8);
         }
 
-        if ($webinarRulesRequired) {
+        if ($webinarRulesRequired and !$user->isOrganization()) {
             $url = '/panel/webinars/' . $webinar->id . '/step/8';
 
             return redirect($url)->withErrors(['rules' => trans('validation.required', ['attribute' => 'rules'])]);
@@ -613,6 +613,9 @@ class WebinarController extends Controller
             sendNotification('course_created', ['[c.title]' => $webinar->title], $user->id);
         }
 
+        if($user->isOrganization() && $data['save_course']=='si'){
+            $url = '/panel/webinars';
+        }
         return redirect($url);
     }
 
