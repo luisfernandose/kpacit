@@ -16,6 +16,7 @@ use App\Models\Section;
 use App\Models\Webinar;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -117,7 +118,7 @@ class User extends Authenticatable
         if (!empty($this->cover_img)) {
             $path = str_replace('/storage', '', $this->cover_img);
 
-            $imgUrl = url($path);
+            $imgUrl = Storage::url($path);
         } else {
             $imgUrl = getPageBackgroundSettings('user_cover');
         }

@@ -47,7 +47,7 @@
                                         <i class="fa fa-upload"></i>
                                     </button>
                                 </div>
-                                <input type="text" name="image" id="image" value="{{ !empty($template) ? $template->image : old('image') }}" class="form-control @error('image') is-invalid @enderror"/>
+                                <input type="text" name="image" id="image" value="{{ !empty($template) ? $template->image : old('image') }}" class="form-control validate-path @error('image') is-invalid @enderror"/>
                                 <div class="invalid-feedback">@error('image') {{ $message }} @enderror</div>
                             </div>
                             <div class="invalid-feedback">@error('image') {{ $message }} @enderror</div>

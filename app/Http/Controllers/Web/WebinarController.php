@@ -297,9 +297,14 @@ class WebinarController extends Controller
                     }
 
                     $path = str_replace(config('filesystems.aws_url'), '', $file->file);
+                    if (strpos($file->storage, 'local')) {
+                        $storageService = 'local';
+                        $path = Storage::url($path);
+                    }
                     $fileName = array_reverse(explode('/', $path))[0] ?? '_filename.nfd';
 
                     $filestream = new S3FileStream($path, config('filesystems.default'), $fileName);
+
                     return $filestream->output();
 
                 }
@@ -342,18 +347,12 @@ class WebinarController extends Controller
                     $path = '';
 
                     if ($file->storage == 'local') {
+                        $storageService = 's3';
+                    
+                        
+                        $path = route('maskVideo', [$webinar->slug, encrypt($file_id)]);
+                        
 
-                        $s3 = str_contains($file->file, config('filesystems.aws_url'));
-
-                        if ($s3) {
-
-                            $path = route('maskVideo', [$webinar->slug, encrypt($file_id)]);
-
-                        } else {
-
-                            $path = url($file->file);
-
-                        }
 
                     } else {
 
@@ -365,6 +364,7 @@ class WebinarController extends Controller
                         'storage' => $file->storage,
                         'path' => $path,
                         'storageService' => $storageService,
+                        'type' => $file->file_type,
                     ], 200);
                 }
             }

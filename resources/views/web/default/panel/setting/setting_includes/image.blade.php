@@ -37,7 +37,7 @@
                                 <i data-feather="arrow-up" width="18" height="18" class="text-white"></i>
                             </button>
                         </div>
-                        <input type="text" name="cover_img" id="cover_img" value="{{ !empty($user) ? $user->cover_img : old('cover_img') }}" class="form-control " placeholder="{{ trans('forms.course_cover_size') }}"/>
+                        <input type="text" readonly name="cover_img" id="cover_img" value="{{ !empty($user) ? $user->cover_img : old('cover_img') }}" class="form-control validate-path" placeholder="{{ trans('forms.course_cover_size') }}"/>
                     </div>
                 </div>
             </div>

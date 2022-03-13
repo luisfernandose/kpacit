@@ -58,7 +58,7 @@
                                             <span class="mr-2">{{ dateTimeFormat($conversations->created_at,'Y M j | H:i') }}</span>
 
                                             @if(!empty($conversations->attach))
-                                                <a href="{{ url($conversations->attach) }}" target="_blank" class="text-success"><i class="fa fa-paperclip"></i> {{ trans('admin/main.open_attach') }}</a>
+                                                <a href="{{ $conversations->attach }}" target="_blank" class="text-success"><i class="fa fa-paperclip"></i> {{ trans('admin/main.open_attach') }}</a>
                                             @endif
                                         </div>
                                     </div>

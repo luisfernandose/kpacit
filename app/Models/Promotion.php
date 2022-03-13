@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Promotion extends Model
 {
@@ -15,4 +16,10 @@ class Promotion extends Model
     {
         return $this->hasMany('App\Models\Sale', 'promotion_id', 'id')->whereNull('refund_at');
     }
+
+    public function getIconAttribute($value)
+    {
+        return Storage::url($value);
+    }
+    
 }
