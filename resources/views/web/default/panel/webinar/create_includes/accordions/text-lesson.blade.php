@@ -49,7 +49,7 @@
                                         <i data-feather="arrow-up" width="18" height="18" class="text-white"></i>
                                     </button>
                                 </div>
-                                <input type="text" name="ajax[{{ !empty($textLesson) ? $textLesson->id : 'new' }}][image]" id="image{{ !empty($textLesson) ? $textLesson->id :'record' }}" value="{{ !empty($textLesson) ? $textLesson->image : '' }}" class="js-ajax-image form-control"/>
+                                <input type="text" readonly name="ajax[{{ !empty($textLesson) ? $textLesson->id : 'new' }}][image]" id="image{{ !empty($textLesson) ? $textLesson->id :'record' }}" value="{{ !empty($textLesson) ? $textLesson->image : '' }}" class="js-ajax-image form-control validate-path"/>
                                 <div class="invalid-feedback"></div>
                             </div>
                         </div>

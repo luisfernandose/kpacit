@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Jorenvh\Share\ShareFacade;
 use Spatie\CalendarLinks\Link;
+use Illuminate\Support\Facades\Storage;
 
 class Webinar extends Model
 {
@@ -398,12 +399,19 @@ class Webinar extends Model
 
     public function getImageCover()
     {
-        return config('app_url') . $this->image_cover;
+        if(strpos($this->image_cover, "http://") !== false || strpos($this->image_cover, "https://") !== false){
+            return config('app_url') . $this->image_cover;
+           
+        }
+        return Storage::url($this->image_cover);
     }
 
     public function getImage()
     {
-        return config('app_url') . $this->thumbnail;
+        if(strpos($this->thumbnail, "http://") !== false || strpos($this->thumbnail, "https://") !== false){
+            return config('app_url') . $this->thumbnail;
+        }
+        return  Storage::url($this->thumbnail);
     }
 
     public function getUrl()
@@ -515,5 +523,10 @@ class Webinar extends Model
         }
 
         return $link;
+    }
+
+    public function getVideoDemoAttribute($value)
+    {
+        return Storage::url($value);
     }
 }

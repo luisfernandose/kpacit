@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class TrendCategory extends Model
 {
@@ -21,6 +22,6 @@ class TrendCategory extends Model
      */
     public function getIcon()
     {
-        return $this->icon;
+        return Storage::url($this->icon);
     }
 }

@@ -86,7 +86,7 @@
                         <i data-feather="arrow-up" width="18" height="18" class="text-white"></i>
                     </button>
                 </div>
-                <input type="text" name="thumbnail" id="thumbnail" value="{{ !empty($webinar) ? $webinar->thumbnail : old('thumbnail') }}" class="form-control @error('thumbnail')  is-invalid @enderror" placeholder="{{ trans('forms.course_thumbnail_size') }}"/>
+                <input type="text" readonly name="thumbnail" id="thumbnail" value="{{ !empty($webinar) ? $webinar->thumbnail : old('thumbnail') }}" class="form-control validate-path @error('thumbnail')  is-invalid @enderror" placeholder="{{ trans('forms.course_thumbnail_size') }}"/>
                 @error('thumbnail')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -103,7 +103,7 @@
                         <i data-feather="arrow-up" width="18" height="18" class="text-white"></i>
                     </button>
                 </div>
-                <input type="text" name="image_cover" id="cover_image" value="{{ !empty($webinar) ? $webinar->image_cover : old('image_cover') }}" placeholder="{{ trans('forms.course_cover_size') }}" class="form-control @error('image_cover')  is-invalid @enderror"/>
+                <input type="text" readonly name="image_cover" id="cover_image" value="{{ !empty($webinar) ? $webinar->image_cover : old('image_cover') }}" placeholder="{{ trans('forms.course_cover_size') }}" class="form-control validate-path @error('image_cover')  is-invalid @enderror"/>
                 @error('image_cover')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -120,7 +120,7 @@
                         <i data-feather="arrow-up" width="18" height="18" class="text-white"></i>
                     </button>
                 </div>
-                <input type="text" name="video_demo" id="demo_video" value="{{ !empty($webinar) ? $webinar->video_demo : old('video_demo') }}" class="form-control @error('video_demo')  is-invalid @enderror"/>
+                <input type="text" readonly name="video_demo" id="demo_video" value="{{ !empty($webinar) ? $webinar->video_demo : old('video_demo') }}" class="form-control validate-path @error('video_demo')  is-invalid @enderror"/>
                 @error('video_demo')
                 <div class="invalid-feedback">
                     {{ $message }}

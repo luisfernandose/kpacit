@@ -285,7 +285,7 @@
                                                         <i data-feather="arrow-up" width="18" height="18" class="text-white"></i>
                                                     </button>
                                                 </div>
-                                                <input type="text" name="attach" id="attach" value="{{ old('attach') }}" class="form-control"/>
+                                                <input type="text" readonly name="attach" id="attach" value="{{ old('attach') }}" class="form-control validate-path"/>
                                             </div>
                                         </div>
 

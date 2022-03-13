@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use phpDocumentor\Reflection\Types\Self_;
+use Illuminate\Support\Facades\Storage;
 
 class Badge extends Model
 {
@@ -180,5 +181,12 @@ class Badge extends Model
             'result' => $result,
             'nextBadge' => $nextBadge
         ];
+    }
+    public function getImageAttribute($value)
+    {
+        if(strpos($value, "/store/") !== false){
+            return $value;
+        }
+        return Storage::url($value);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class SupportConversation extends Model
 {
@@ -21,4 +22,8 @@ class SupportConversation extends Model
         return $this->belongsTo('App\User', 'supporter_id', 'id');
     }
 
+    public function getAttachAttribute($value)
+    {
+        return Storage::url($value);
+    }
 }

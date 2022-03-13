@@ -22,7 +22,7 @@
                             <i class="fa fa-arrow-up" class="text-white"></i>
                         </button>
                     </div>
-                    <input id="file{{ !empty($answer) ? $answer->id : '' }}" type="text" name="answers[{{ !empty($answer) ? $answer->id : 'record' }}][file]" value="{{ !empty($answer) ? $answer->image : '' }}" class="form-control lfm-input"/>
+                    <input id="file{{ !empty($answer) ? $answer->id : '' }}" readonly type="text" name="answers[{{ !empty($answer) ? $answer->id : 'record' }}][file]" value="{{ !empty($answer) ? $answer->image : '' }}" class="form-control validate-path lfm-input"/>
                 </div>
             </div>
         </div>

@@ -75,7 +75,7 @@
                                                 <i class="fa fa-chevron-up"></i>
                                             </button>
                                         </div>
-                                        <input type="text" name="icon" id="icon" value="{{ !empty($promotion->icon) ? $promotion->icon : old('icon') }}" class="form-control @error('icon') is-invalid @enderror"/>
+                                        <input type="text" readonly name="icon" id="icon" value="{{ !empty($promotion->icon) ? $promotion->icon : old('icon') }}" class="form-control validate-path @error('icon') is-invalid @enderror"/>
                                         <div class="input-group-append">
                                             <button type="button" class="input-group-text admin-file-view" data-input="icon">
                                                 <i class="fa fa-eye"></i>
