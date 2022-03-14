@@ -9,7 +9,6 @@ use App\Models\ReserveMeeting;
 use App\Models\Sale;
 use App\Models\Support;
 use App\Models\Webinar;
-use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
 class DashboardController extends Controller
@@ -22,7 +21,7 @@ class DashboardController extends Controller
 
         $data = [
             'pageTitle' => trans('panel.dashboard'),
-            'nextBadge' => $nextBadge
+            'nextBadge' => $nextBadge,
         ];
 
         if (!$user->isUser()) {
@@ -40,8 +39,8 @@ class DashboardController extends Controller
                 ->get();
 
             $time = time();
-            $firstDayMonth = strtotime(date('Y-m-01', $time));// First day of the month.
-            $lastDayMonth = strtotime(date('Y-m-t', $time));// Last day of the month.
+            $firstDayMonth = strtotime(date('Y-m-01', $time)); // First day of the month.
+            $lastDayMonth = strtotime(date('Y-m-t', $time)); // Last day of the month.
 
             $monthlySales = Sale::where('seller_id', $user->id)
                 ->whereNull('refund_at')
@@ -81,7 +80,6 @@ class DashboardController extends Controller
             $data['monthlyChart'] = $this->getMonthlySalesOrPurchase($user);
         }
 
-
         return view(getTemplate() . '.panel.dashboard', $data);
     }
 
@@ -118,7 +116,7 @@ class DashboardController extends Controller
 
         return [
             'months' => $months,
-            'data' => $data
+            'data' => $data,
         ];
     }
 }

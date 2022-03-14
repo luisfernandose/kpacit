@@ -273,4 +273,8 @@ Route::group(['namespace' => 'Panel', 'prefix' => 'panel', 'middleware' => ['imp
         Route::get('/{user_type}/{user_id}/edit/step/{step?}', 'UserController@editUser');
         Route::get('/{user_type}/{user_id}/remove', 'UserController@removeUserFromOrganization');
     });
+
+    Route::group(['prefix' => 'reports'], function () {
+        Route::get('/courses', 'ReportController@courses');
+    });
 });
