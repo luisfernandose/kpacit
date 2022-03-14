@@ -286,4 +286,9 @@ return [
     'noticeboard_success_send_to' => 'New noticeboard successful send for :users_count',
 
     'more_info' => 'More info',
+    'reports' => 'Reportes',
+    'courses' => 'Cursos y clases',
+    'active_e_inactive_courses' => 'Reporte cursos activos e inactivos',
+    'active_courses' => 'Cursos activos ',
+    'inactive_courses' => 'Cursos inactivos ',
 ];

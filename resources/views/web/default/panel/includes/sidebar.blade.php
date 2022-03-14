@@ -131,6 +131,22 @@
                     </ul>
                 </div>
             </li>
+            <li class="sidenav-item {{ request()->is('panel/reports')  ? 'sidenav-item-active' : '' }}">
+                <a class="d-flex align-items-center" data-toggle="collapse" href="#reportsCollapse" role="button" aria-expanded="false" aria-controls="reportsCollapse">
+                <span class="sidenav-item-icon mr-10">
+                    @include('web.default.panel.includes.sidebar_icons.students')
+                </span>
+                    <span class="font-14 text-dark-blue font-weight-500">{{ trans('panel.reports') }}</span>
+                </a>
+
+                <div class="collapse {{ request()->is('panel/courses') ? 'show' : '' }}" id="reportsCollapse">
+                    <ul class="sidenav-item-collapse">
+                        <li class="mt-5 {{ (request()->is('/panel/reports/courses')) ? 'active' : '' }}">
+                            <a href="/panel/reports/courses">{{ trans('panel.courses') }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
         @endif
 
         <li class="sidenav-item {{ (request()->is('panel/webinars') or request()->is('panel/webinars/*')) ? 'sidenav-item-active' : '' }}">
