@@ -34,11 +34,11 @@
                                             @if(!empty($category->subCategories) and count($category->subCategories))
                                                 <optgroup label="{{  $category->title }}">
                                                     @foreach($category->subCategories as $subCategory)
-                                                        <option value="{{ $subCategory->id }}" @if(!empty($filter) and $filter->category_id == $subCategory->id) selected="selected" @endif>{{ $subCategory->title }}</option>
+                                                        <option value="{{ $subCategory->id }}" @if( (!empty($filter) and $filter->category_id == $subCategory->id) || old('category_id')==$subCategory->id ) selected="selected" @endif>{{ $subCategory->title }}</option>
                                                     @endforeach
                                                 </optgroup>
                                             @else
-                                                <option value="{{ $category->id }}" class="font-weight-bold" @if(!empty($filter) and $filter->category_id == $category->id) selected="selected" @endif>{!! $category->title !!}</option>
+                                                <option value="{{ $category->id }}" class="font-weight-bold" @if( (!empty($filter) and $filter->category_id == $category->id) || old('category_id')==$category->id) selected="selected" @endif>{!! $category->title !!}</option>
                                             @endif
                                         @endforeach
                                     </select>

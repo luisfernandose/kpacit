@@ -67,7 +67,7 @@
                                         @if(empty($role) or !$role->isDefaultRole())
                                             <div class="form-group mb-1">
                                                 <label class="custom-switch pl-0">
-                                                    <input id="isAdmin" type="checkbox" name="is_admin" class="custom-switch-input section-parent" {{ (!empty($role) && $role->is_admin) ? 'checked' : '' }}>
+                                                    <input id="isAdmin" type="checkbox" name="is_admin" class="custom-switch-input section-parent" {{ ((!empty($role) && $role->is_admin)|| !empty(old('is_admin'))) ? 'checked' : '' }}>
                                                     <span class="custom-switch-indicator"></span>
                                                     <span class="custom-switch-description">{{ trans('admin/main.is_admin') }}</span>
                                                 </label>

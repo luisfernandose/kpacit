@@ -29,7 +29,7 @@
                 <select name="teacher_id" class="custom-select @error('teacher_id')  is-invalid @enderror">
                     <option {{ !empty($webinar) ? '' : 'selected' }} disabled>{{ trans('public.choose_instructor') }}</option>
                     @foreach($teachers as $teacher)
-                        <option value="{{ $teacher->id }}" {{ !empty($webinar) && $webinar->teacher_id === $teacher->id? 'selected' : '' }}>{{ $teacher->full_name }}</option>
+                        <option value="{{ $teacher->id }}" {{ !empty($webinar) && $webinar->teacher_id === $teacher->id? 'selected' : '' }} @if(old('teacher_id')== $teacher->id) selected @endif>{{ $teacher->full_name }}</option>
                     @endforeach
                 </select>
 

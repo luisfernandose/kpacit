@@ -110,7 +110,7 @@
                                 <div class="form-group custom-switches-stacked">
                                     <label class="custom-switch pl-0">
                                         <input type="hidden" name="is_popular" value="0">
-                                        <input type="checkbox" name="is_popular" id="isPopular" value="1" {{ (!empty($subscribe) and $subscribe->is_popular) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
+                                        <input type="checkbox" name="is_popular" id="isPopular" value="1" {{ ((!empty($subscribe) and $subscribe->is_popular) || !empty(old('is_popular'))) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
                                         <span class="custom-switch-indicator"></span>
                                         <label class="custom-switch-description mb-0 cursor-pointer" for="isPopular">{{ trans('admin/pages/financial.is_popular') }}</label>
                                     </label>

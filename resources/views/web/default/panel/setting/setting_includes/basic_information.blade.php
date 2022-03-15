@@ -92,7 +92,7 @@
             <div class="form-group mt-30 d-flex align-items-center justify-content-between">
                 <label class="cursor-pointer input-label" for="newsletterSwitch">{{ trans('auth.join_newsletter') }}</label>
                 <div class="custom-control custom-switch">
-                    <input type="checkbox" name="join_newsletter" class="custom-control-input" id="newsletterSwitch" {{ (!empty($user) and $user->newsletter) ? 'checked' : '' }}>
+                    <input type="checkbox" name="join_newsletter" class="custom-control-input" id="newsletterSwitch" {{ ( (!empty($user) and $user->newsletter) || (old('join_newsletter')=='on')) ? 'checked' : '' }}>
                     <label class="custom-control-label" for="newsletterSwitch"></label>
                 </div>
             </div>
@@ -100,7 +100,7 @@
             <div class="form-group mt-30 d-flex align-items-center justify-content-between">
                 <label class="cursor-pointer input-label" for="publicMessagesSwitch">{{ trans('auth.public_messages') }}</label>
                 <div class="custom-control custom-switch">
-                    <input type="checkbox" name="public_messages" class="custom-control-input" id="publicMessagesSwitch" {{ (!empty($user) and $user->public_message) ? 'checked' : '' }}>
+                    <input type="checkbox" name="public_messages" class="custom-control-input" id="publicMessagesSwitch" {{ ( (!empty($user) and $user->public_message) ||  (old('public_messages')=='on') ) ? 'checked' : '' }}>
                     <label class="custom-control-label" for="publicMessagesSwitch"></label>
                 </div>
             </div>

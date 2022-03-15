@@ -63,7 +63,7 @@
                                                         <label class="custom-switch pl-0 d-flex align-items-center">
                                                             <label class="custom-switch-description mb-0 mr-2">{{ trans('admin/main.no_index') }}</label>
                                                             <input type="hidden" name="value[{{ $page }}][robot]" value="noindex">
-                                                            <input type="checkbox" name="value[{{ $page }}][robot]" id="{{ $page }}Robot" value="index" {{ (!empty($itemValue) and !empty($itemValue[$page]) and (empty($itemValue[$page]['robot']) or $itemValue[$page]['robot'] != 'noindex')) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
+                                                            <input type="checkbox" name="value[{{ $page }}][robot]" id="{{ $page }}Robot" value="index" {{ ((!empty($itemValue) and !empty($itemValue[$page]) and (empty($itemValue[$page]['robot']) or $itemValue[$page]['robot'] != 'noindex')) || !empty(old('value[$page][robot]')) ) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
                                                             <span class="custom-switch-indicator"></span>
                                                             <label class="custom-switch-description mb-0 cursor-pointer" for="{{ $page }}Robot">{{ trans('admin/main.index') }}</label>
                                                         </label>

@@ -107,7 +107,7 @@
                 <div class="form-group custom-switches-stacked">
                     <label class="custom-switch pl-0">
                         <input type="hidden" name="value[rtl_layout]" value="0">
-                        <input type="checkbox" name="value[rtl_layout]" id="rtlSwitch" value="1" {{ (!empty($itemValue) and !empty($itemValue['rtl_layout']) and $itemValue['rtl_layout']) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
+                        <input type="checkbox" name="value[rtl_layout]" id="rtlSwitch" value="1" {{ ((!empty($itemValue) and !empty($itemValue['rtl_layout']) and $itemValue['rtl_layout'])|| !empty(old('value[rtl_layout]'))) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
                         <span class="custom-switch-indicator"></span>
                         <label class="custom-switch-description mb-0 cursor-pointer" for="rtlSwitch">{{ trans('admin/main.rtl_layout') }}</label>
                     </label>
@@ -116,7 +116,7 @@
                 <div class="form-group custom-switches-stacked">
                     <label class="custom-switch pl-0">
                         <input type="hidden" name="value[preloading]" value="0">
-                        <input type="checkbox" name="value[preloading]" id="preloadingSwitch" value="1" {{ (!empty($itemValue) and !empty($itemValue['preloading']) and $itemValue['preloading']) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
+                        <input type="checkbox" name="value[preloading]" id="preloadingSwitch" value="1" {{ ((!empty($itemValue) and !empty($itemValue['preloading']) and $itemValue['preloading'])|| !empty(old('value[preloading]'))) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
                         <span class="custom-switch-indicator"></span>
                         <label class="custom-switch-description mb-0 cursor-pointer" for="preloadingSwitch">{{ trans('admin/main.preloading') }}</label>
                     </label>
@@ -125,7 +125,7 @@
                 <div class="form-group custom-switches-stacked">
                     <label class="custom-switch pl-0">
                         <input type="hidden" name="value[hero_section1]" value="0">
-                        <input type="checkbox" name="value[hero_section1]" id="heroSection1" value="1" {{ (!empty($itemValue) and !empty($itemValue['hero_section1']) and $itemValue['hero_section1']) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
+                        <input type="checkbox" name="value[hero_section1]" id="heroSection1" value="1" {{ ((!empty($itemValue) and !empty($itemValue['hero_section1']) and $itemValue['hero_section1'])|| !empty(old('value[hero_section1]'))) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
                         <span class="custom-switch-indicator"></span>
                         <label class="custom-switch-description mb-0 cursor-pointer" for="heroSection1">{{ trans('admin/main.main_home_hero') }}</label>
                     </label>
@@ -134,7 +134,7 @@
                 <div class="form-group custom-switches-stacked">
                     <label class="custom-switch pl-0">
                         <input type="hidden" name="value[hero_section2]" value="0">
-                        <input type="checkbox" name="value[hero_section2]" id="heroSection2" value="1" {{ (!empty($itemValue) and !empty($itemValue['hero_section2']) and $itemValue['hero_section2']) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
+                        <input type="checkbox" name="value[hero_section2]" id="heroSection2" value="1" {{ ((!empty($itemValue) and !empty($itemValue['hero_section2']) and $itemValue['hero_section2'])|| !empty(old('value[hero_section2]'))) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
                         <span class="custom-switch-indicator"></span>
                         <label class="custom-switch-description mb-0 cursor-pointer" for="heroSection2">{{ trans('admin/main.main_home_hero2') }}</label>
                     </label>

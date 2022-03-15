@@ -106,7 +106,7 @@
                                 <div class="form-group custom-switches-stacked">
                                     <label class="custom-switch pl-0">
                                         <input type="hidden" name="published" value="0">
-                                        <input type="checkbox" name="published" id="published" value="1" {{ (!empty($banner) and $banner->published) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
+                                        <input type="checkbox" name="published" id="published" value="1" {{ ((!empty($banner) and $banner->published) || old('published')=='publish') ? 'checked="checked"' : '' }} class="custom-switch-input"/>
                                         <span class="custom-switch-indicator"></span>
                                         <label class="custom-switch-description mb-0 cursor-pointer" for="published">{{ trans('admin/main.published') }}</label>
                                     </label>
