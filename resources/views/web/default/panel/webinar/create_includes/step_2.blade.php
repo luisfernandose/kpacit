@@ -53,7 +53,7 @@
                         </div>
 
 
-                        <input type="text" name="duration" value="{{ !empty($webinar) ? $webinar->duration : old('duration') }}" class="form-control @error('duration')  is-invalid @enderror"/>
+                        <input type="text" name="duration" value="{{ !empty($webinar) && $webinar->duration !='' ? $webinar->duration : old('duration') }}" class="form-control @error('duration')  is-invalid @enderror"/>
                         @error('duration')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -67,7 +67,7 @@
         <div class="form-group mt-30 d-flex align-items-center justify-content-between">
             <label class="cursor-pointer input-label" for="supportSwitch">{{ trans('webinars.supported_class') }}</label>
             <div class="custom-control custom-switch">
-                <input type="checkbox" name="support" class="custom-control-input" id="supportSwitch" {{ !empty($webinar) && $webinar->support ? 'checked' :  '' }}>
+                <input type="checkbox" name="support" class="custom-control-input" id="supportSwitch" {{ ( (!empty($webinar) && $webinar->support) || old('support')=='on' ) ? 'checked' :  '' }}>
                 <label class="custom-control-label" for="supportSwitch"></label>
             </div>
         </div>
@@ -75,7 +75,7 @@
         <div class="form-group mt-30 d-flex align-items-center justify-content-between">
             <label class="cursor-pointer input-label" for="downloadableSwitch">{{ trans('home.downloadable') }}</label>
             <div class="custom-control custom-switch">
-                <input type="checkbox" name="downloadable" class="custom-control-input" id="downloadableSwitch" {{ !empty($webinar) && $webinar->downloadable ? 'checked' : '' }}>
+                <input type="checkbox" name="downloadable" class="custom-control-input" id="downloadableSwitch" {{ ( (!empty($webinar) && $webinar->downloadable)|| old('downloadable')=='on' ) ? 'checked' : '' }}>
                 <label class="custom-control-label" for="downloadableSwitch"></label>
             </div>
         </div>
@@ -83,13 +83,13 @@
         <div class="form-group mt-30 d-flex align-items-center justify-content-between">
             <label class="cursor-pointer input-label" for="partnerInstructorSwitch">{{ trans('public.partner_instructor') }}</label>
             <div class="custom-control custom-switch">
-                <input type="checkbox" name="partner_instructor" class="custom-control-input" id="partnerInstructorSwitch" {{ !empty($webinar) && $webinar->partner_instructor ? 'checked' : ''  }}>
+                <input type="checkbox" name="partner_instructor" class="custom-control-input" id="partnerInstructorSwitch" {{ ((!empty($webinar) && $webinar->partner_instructor) || old('partner_instructor')=='on' ) ? 'checked' : ''  }}>
                 <label class="custom-control-label" for="partnerInstructorSwitch"></label>
             </div>
         </div>
 
 
-        <div id="partnerInstructorInput" class="form-group mt-15 {{ !empty($webinar) && $webinar->partner_instructor ? '' : 'd-none' }}">
+        <div id="partnerInstructorInput" class="form-group mt-15 {{ ((!empty($webinar) && $webinar->partner_instructor) || old('partner_instructor')=='on' ) ? '' : 'd-none' }}">
             <label class="input-label d-block">{{ trans('public.select_a_partner_teacher') }}</label>
 
             <select name="partners[]" class="form-control panel-search-user-select2" multiple="" data-search-option="just_teachers" data-placeholder="{{ trans('public.search_instructor') }}">
@@ -104,7 +104,7 @@
 
         <div class="form-group mt-15">
             <label class="input-label d-block">{{ trans('public.tags') }}</label>
-            <input type="text" name="tags" data-max-tag="5" value="{{ !empty($webinar) ? implode(',',$webinarTags) : '' }}" class="form-control inputtags" placeholder="{{ trans('public.type_tag_name_and_press_enter') }} ({{ trans('forms.max') }} : 5)"/>
+            <input type="text" name="tags" data-max-tag="5" value="{{ (!empty($webinar) && !empty($webinarTags) ? implode(',',$webinarTags) :  (!empty(old('tags'))  ? old('tags'): '') ) }}" class="form-control inputtags" placeholder="{{ trans('public.type_tag_name_and_press_enter') }} ({{ trans('forms.max') }} : 5)"/>
         </div>
 
 
@@ -117,11 +117,11 @@
                     @if(!empty($category->subCategories) and $category->subCategories->count() > 0)
                         <optgroup label="{{  $category->title }}">
                             @foreach($category->subCategories as $subCategory)
-                                <option value="{{ $subCategory->id }}" {{ (!empty($webinar) and $webinar->category_id == $subCategory->id) ? 'selected' : '' }}>{{ $subCategory->title }}</option>
+                                <option value="{{ $subCategory->id }}" {{ ( (!empty($webinar) and $webinar->category_id == $subCategory->id) || old('category_id')== $subCategory->id) ? 'selected' : '' }}>{{ $subCategory->title }}</option>
                             @endforeach
                         </optgroup>
                     @else
-                        <option value="{{ $category->id }}" {{ (!empty($webinar) and $webinar->category_id == $category->id) ? 'selected' : '' }}>{{ $category->title }}</option>
+                        <option value="{{ $category->id }}" {{ ( (!empty($webinar) and $webinar->category_id == $category->id)|| old('category_id')== $category->id ) ? 'selected' : '' }}>{{ $category->title }}</option>
                     @endif
                 @endforeach
             </select>
