@@ -8,6 +8,7 @@ use App\Models\Quiz;
 use App\Models\QuizzesResult;
 use App\Models\Webinar;
 use App\User;
+use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
