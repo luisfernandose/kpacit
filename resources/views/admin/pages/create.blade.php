@@ -95,7 +95,7 @@
                                     <label class="custom-switch pl-0">
                                         <label class="custom-switch-description mb-0 mr-2">{{ trans('admin/main.draft') }}</label>
                                         <input type="hidden" name="status" value="draft">
-                                        <input type="checkbox" name="status" id="pageStatus" value="publish" {{ (!empty($page) and $page->status == 'publish') ? 'checked="checked"' : '' }} class="custom-switch-input"/>
+                                        <input type="checkbox" name="status" id="pageStatus" value="publish" {{ ((!empty($page) and $page->status == 'publish') || !empty(old('status'))) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
                                         <span class="custom-switch-indicator"></span>
                                         <label class="custom-switch-description mb-0 cursor-pointer" for="pageStatus">{{ trans('admin/main.publish') }}</label>
                                     </label>
@@ -106,7 +106,7 @@
                                     <label class="custom-switch pl-0">
                                         <label class="custom-switch-description mb-0 mr-2">{{ trans('admin/main.no_follow') }}</label>
                                         <input type="hidden" name="robot" value="0">
-                                        <input type="checkbox" name="robot" id="pageRobot" value="1" {{ (!empty($page) and $page->robot) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
+                                        <input type="checkbox" name="robot" id="pageRobot" value="1" {{ ((!empty($page) and $page->robot) || || !empty(old('robot'))) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
                                         <span class="custom-switch-indicator"></span>
                                         <label class="custom-switch-description mb-0 cursor-pointer" for="pageRobot">{{ trans('admin/main.follow') }}</label>
                                     </label>

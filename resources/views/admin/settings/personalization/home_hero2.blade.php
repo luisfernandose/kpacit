@@ -43,7 +43,7 @@
                 <div class="form-group custom-switches-stacked">
                     <label class="custom-switch pl-0">
                         <input type="hidden" name="value[has_lottie]" value="0">
-                        <input type="checkbox" name="value[has_lottie]" id="hasLottie" value="1" {{ (!empty($itemValue) and !empty($itemValue['has_lottie']) and $itemValue['has_lottie']) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
+                        <input type="checkbox" name="value[has_lottie]" id="hasLottie" value="1" {{ ((!empty($itemValue) and !empty($itemValue['has_lottie']) and $itemValue['has_lottie'])|| !empty(old('value[has_lottie]'))) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
                         <span class="custom-switch-indicator"></span>
                         <label class="custom-switch-description mb-0 cursor-pointer" for="hasLottie">{{ trans('admin/main.has_lottie') }}</label>
                     </label>

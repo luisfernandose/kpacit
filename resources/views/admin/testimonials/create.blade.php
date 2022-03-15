@@ -109,7 +109,7 @@
                                 <div class="form-group custom-switches-stacked">
                                     <label class="custom-switch pl-0">
                                         <input type="hidden" name="status" value="disable">
-                                        <input type="checkbox" name="status" id="testimonialStatus" value="active" {{ (!empty($testimonial) and $testimonial->status == 'active') ? 'checked="checked"' : '' }} class="custom-switch-input"/>
+                                        <input type="checkbox" name="status" id="testimonialStatus" value="active" {{ ((!empty($testimonial) and $testimonial->status == 'active')|| !empty(old('status'))) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
                                         <span class="custom-switch-indicator"></span>
                                         <label class="custom-switch-description mb-0 cursor-pointer" for="testimonialStatus">{{ trans('admin/main.active') }}</label>
                                     </label>
