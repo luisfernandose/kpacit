@@ -474,7 +474,7 @@ class WebinarController extends Controller
         if ($currentStep == 2) {
             $rules = [
                 'category_id' => 'required',
-                'duration' => 'required',
+                'duration' => 'required|integer',
             ];
 
             if ($webinar->isWebinar()) {

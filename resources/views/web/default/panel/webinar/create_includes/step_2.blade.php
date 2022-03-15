@@ -53,7 +53,7 @@
                         </div>
 
 
-                        <input type="text" name="duration" value="{{ !empty($webinar) && $webinar->duration !='' ? $webinar->duration : old('duration') }}" class="form-control @error('duration')  is-invalid @enderror"/>
+                        <input type="text" name="duration" value="{{ !empty($webinar) && $webinar->duration !='' ? $webinar->duration : old('duration') }}" class="form-control only_number @error('duration')  is-invalid @enderror"/>
                         @error('duration')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -176,4 +176,10 @@
     <script src="/assets/default/vendors/moment.min.js"></script>
     <script src="/assets/default/vendors/daterangepicker/daterangepicker.min.js"></script>
     <script src="/assets/default/vendors/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+    <script src="/assets/default/vendors/jQuery-Mask-Plugin-master/dist/jquery.mask.min.js"></script>
+    <script>
+    $(document).ready(()=>{
+        $('.only_number').mask('0#');
+    });
+    </script>
 @endpush
