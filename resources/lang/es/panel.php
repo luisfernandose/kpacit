@@ -291,4 +291,10 @@ return [
     'active_e_inactive_courses' => 'Reporte cursos activos e inactivos',
     'active_courses' => 'Cursos activos ',
     'inactive_courses' => 'Cursos inactivos ',
+    'percents_quizzes' => 'Promedio todos los quizzes',
+    'percent_quizzes' => 'Promedio todos los quizzes',
+    'group' => 'Grupo',
+    'all' => 'Todos',
+    'user_list' => 'Usuario',
+    'course_list' => 'Curso',
 ];

@@ -8,15 +8,15 @@
 @section('content')
 
     <section>
-        <h2 class="section-title">{{ trans('quiz.percerts_quizzes') }}</h2>
+        <h2 class="section-title">{{ trans('panel.percents_quizzes') }}</h2>
 
         <div class="activities-container mt-25 p-20 p-lg-35">
             <div class="row">
                 <div class="col-12 d-flex align-items-center justify-content-center">
                     <div class="d-flex flex-column align-items-center text-center">
                         <img src="/assets/default/img/activity/48.svg" width="64" height="64" alt="">
-                        <strong class="font-30 text-dark-blue font-weight-bold mt-5"> </strong>
-                        <span class="font-16 text-gray font-weight-500">{{ trans('quiz.percent_quizzes') }}</span>
+                        <strong class="font-30 text-dark-blue font-weight-bold mt-5">{{$quizAvgGrad}} </strong>
+                        <span class="font-16 text-gray font-weight-500">{{ trans('panel.percent_quizzes') }}</span>
                     </div>
                 </div>
             </div>

@@ -47,31 +47,68 @@ class ReportController extends Controller
 
         $query = QuizzesResult::whereIn('quiz_id', $quizzesIds);
 
+        $group_id = null;
+        $user_id = null;
+        $quiz_id = null;
+
         $studentsIds = $query->pluck('user_id')->toArray();
+        $allStudents = [];
+
+        if ($request->get('user_id') && $request->get('user_id') != 'all') {
+            $user_id = $request->get('user_id');
+            $studentsIds = User::select('id', 'full_name')->whereIn('id', [$user_id])->get()->pluck('id');
+        }
+
+        if ($request->get('group_id') && $request->get('group_id') != 'all') {
+            $group_id = $request->get('group_id');
+
+            if (!$user_id) {
+                $studentsIds = CourseGroupList::find($group_id)->users()->get()->pluck('user_id');
+            } else {
+                $studentsIds = CourseGroupList::find($group_id)->users()->where('user_id', $user_id)->pluck('user_id');
+            }
+        }
+
+        if ($request->get('quiz_id') && $request->get('quiz_id') != 'all') {
+            $quiz_id = $request->get('quiz_id');
+        }
 
         $allStudents = User::select('id', 'full_name')->whereIn('id', $studentsIds)->get();
         $quizResultsCount = QuizzesResult::whereIn('id',
-            QuizzesResult::select(\DB::raw('MAX(id) AS id'), 'user_grade')->whereIn('quiz_id', $quizzesIds)->groupBy('quiz_id', 'user_id')->get()->pluck('id')
+            QuizzesResult::select(\DB::raw('MAX(id) AS id'), 'user_grade')->whereIn('user_id', $studentsIds)->groupBy('quiz_id', 'user_id')->where(function ($query) use ($quiz_id) {
+                if ($quiz_id) {
+                    $query->where('quiz_id', $quiz_id);
+                }
+            })->get()->pluck('id')
         )->count();
 
         $quizAvgGrad = round(QuizzesResult::whereIn('id',
-            QuizzesResult::select(\DB::raw('MAX(id) AS id'), 'user_grade')->whereIn('quiz_id', $quizzesIds)->groupBy('quiz_id', 'user_id')->get()->pluck('id')
-        )->avg('user_grade'), 2);
+            QuizzesResult::select(\DB::raw('MAX(id) AS id'), 'user_grade')->whereIn('user_id', $allStudents)->groupBy('quiz_id', 'user_id')->get()->pluck('id')
+        )->where(function ($query) use ($quiz_id) {
+            if ($quiz_id) {
+                $query->where('quiz_id', $quiz_id);
+            }
+        })->avg('user_grade'), 2);
 
-        //dd(QuizzesResult::select(\DB::raw('MAX(id) AS id'), 'user_grade')->whereIn('quiz_id', $quizzesIds)->groupBy('quiz_id', 'user_id')->avg('user_grade'));
-
-        $waitingCount = deepClone($query)->where('status', \App\Models\QuizzesResult::$waiting)->count();
         $passedCount = QuizzesResult::whereIn('id',
-            QuizzesResult::select(\DB::raw('MAX(id) AS id'), 'user_grade')->whereIn('quiz_id', $quizzesIds)->where('status', \App\Models\QuizzesResult::$passed)->groupBy('quiz_id', 'user_id')->get()->pluck('id')
-        )->count();
+            QuizzesResult::select(\DB::raw('MAX(id) AS id'), 'user_grade')->whereIn('user_id', $allStudents)->where('status', \App\Models\QuizzesResult::$passed)->groupBy('quiz_id', 'user_id')->get()->pluck('id')
+        )->where(function ($query) use ($quiz_id) {
+            if ($quiz_id) {
+                $query->where('quiz_id', $quiz_id);
+            }
+        })->count();
 
         $successRate = ($quizResultsCount > 0) ? round($passedCount / $quizResultsCount * 100) : 0;
 
-        $quizzesResults = $query->with([
+        $quizzesResults = QuizzesResult::with([
             'quiz' => function ($query) {
                 $query->with(['quizQuestions', 'creator', 'webinar']);
             }, 'user',
-        ])->orderBy('created_at', 'desc')
+        ])->whereIn('user_id', $studentsIds)->where(function ($query) use ($quiz_id) {
+            if ($quiz_id) {
+                $query->where('quiz_id', $quiz_id);
+            }
+        })->orderBy('created_at', 'desc')
             ->paginate(10);
 
         return view(getTemplate() . '.panel.reports.percents_quizzes', [
@@ -79,13 +116,16 @@ class ReportController extends Controller
             'quizResultsCount' => $query->count(),
             'successRate' => $successRate,
             'quizAvgGrad' => $quizAvgGrad,
-            'waitingCount' => $waitingCount,
             'quizzes' => $quizzes,
             'allStudents' => $allStudents,
             "userList" => $userList,
             "groups" => $groups,
             "webinars" => $webinars->where('status', 'active')->get(),
             "quizzesResults" => $quizzesResults,
+            "group_id" => $group_id,
+            "user_id" => $user_id,
+            "quiz_id" => $quiz_id,
+            "quizzes " => $quizzes,
         ]);
     }
     public function courses()
