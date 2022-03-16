@@ -301,4 +301,9 @@ return [
     'student' => 'Estudiante',
     'course' => 'Curso',
     'progress' => 'Progreso',
+    'courses_not_started' => 'Cursos asignados sin progreso',
+    'category' => 'Categoria',
+    'qty' => 'Cantidad de usuarios sin iniciar',
+    'users_no_enrolled' => 'Sin usuarios asignados',
+    'result_no_result' => 'No hay registros',
 ];
