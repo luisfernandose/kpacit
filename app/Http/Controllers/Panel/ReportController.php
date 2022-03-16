@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CourseGroupList;
 use App\Models\Quiz;
 use App\Models\QuizzesResult;
+use App\Models\Sale;
 use App\Models\Webinar;
 use App\User;
 use Illuminate\Http\Request;
@@ -147,6 +148,37 @@ class ReportController extends Controller
         return view(getTemplate() . '.panel.reports.courses', [
             "active" => $data->where('status', 'active')->count(),
             "inactive" => $data->where('status', 'inactive')->count(),
+        ]);
+    }
+    public function users_not_finished_webinars()
+    {
+        $user = auth()->user();
+
+        if ($user->isUser()) {
+            abort(404);
+        }
+
+        if ($user->isTeacher()) {
+            $userList = $user->getOrganizationTeachers()->get();
+        } else {
+            $userList = $user->getOrganizationStudents()->get();
+        }
+
+        $data = Sale::whereIn('buyer_id', $userList->pluck('id'))->get();
+
+        $ids = [];
+        foreach ($data as $d) {
+            if ($d->webinar->getProgressByUser($d->buyer_id) < 100) {
+                $ids[] = ["id" => $d->id];
+            }
+        }
+
+        $dataCount = Sale::whereIn('id', array_column($ids, "id"))->get()->count();
+        $data = Sale::whereIn('id', array_column($ids, "id"))->paginate(10);
+
+        return view(getTemplate() . '.panel.reports.users_not_finished_webinars', [
+            "data" => $data,
+            "dataCount" => $dataCount,
         ]);
     }
 
