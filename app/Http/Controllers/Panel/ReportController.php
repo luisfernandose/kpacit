@@ -182,4 +182,50 @@ class ReportController extends Controller
         ]);
     }
 
+    public function courses_not_started()
+    {
+
+        $user = auth()->user();
+
+        if ($user->isUser()) {
+            abort(404);
+        }
+
+        $webinars = Webinar::with('sales')->where(function ($query) use ($user) {
+            if ($user->isTeacher()) {
+                $query->where('teacher_id', $user->id);
+            } elseif ($user->isOrganization()) {
+                $query->where('creator_id', $user->id);
+            }
+        })->get();
+
+        $data = [];
+        foreach ($webinars as $w) {
+            $valid = true;
+            $count = 0;
+            if ($w->sales->count()) {
+                foreach ($w->sales as $u) {
+                    if ($u->webinar->getProgressByUser($u->buyer_id) == 0) {
+                        $valid = false;
+                        $count++;
+                    }
+                }
+                if (!$valid) {
+                    $w->qty = $count;
+                    $data[] = $w;
+                }
+
+            } else {
+                $w->qty = false;
+                $data[] = $w;
+            }
+        }
+
+        return view(getTemplate() . '.panel.reports.courses_not_started', [
+            "data" => $data,
+            "dataCount" => count($data),
+        ]);
+
+    }
+
 }
