@@ -27,7 +27,7 @@
         <h2 class="section-title">{{ trans('panel.courses_not_started') }}</h2>
     </section>
 
-    @if(count($data) < 0)
+    @if(count($data) > 0)
 
             <div class="panel-section-card py-20 px-25 mt-20">
                 <div class="row">
