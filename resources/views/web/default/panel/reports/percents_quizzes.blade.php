@@ -112,10 +112,10 @@
             </div>
         @else
 
-            @include(getTemplate() . '.includes.no-result',[
+                @include(getTemplate() . '.includes.no-result',[
                     'file_name' => 'result.png',
-                    'title' => trans('quiz.quiz_result_no_result'),
-                    'hint' => trans('quiz.quiz_result_no_result_hint'),
+                    'title' => trans('panel.result_no_result'),
+                    'hint' => trans('panel.result_no_result'),
                 ])
         @endif
 

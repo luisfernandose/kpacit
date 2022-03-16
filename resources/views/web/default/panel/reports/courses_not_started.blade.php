@@ -27,7 +27,7 @@
         <h2 class="section-title">{{ trans('panel.courses_not_started') }}</h2>
     </section>
 
-    @if(count($data) > 0)
+    @if(count($data) < 0)
 
             <div class="panel-section-card py-20 px-25 mt-20">
                 <div class="row">
@@ -60,8 +60,8 @@
 
             @include(getTemplate() . '.includes.no-result',[
                     'file_name' => 'result.png',
-                    'title' => trans('panel.quiz_result_no_result'),
-                    'hint' => trans('panel.quiz_result_no_result_hint'),
+                    'title' => trans('panel.result_no_result'),
+                    'hint' => trans('panel.result_no_result'),
                 ])
         @endif
 
