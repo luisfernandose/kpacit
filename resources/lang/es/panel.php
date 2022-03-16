@@ -297,4 +297,8 @@ return [
     'all' => 'Todos',
     'user_list' => 'Usuario',
     'course_list' => 'Curso',
+    'users_not_finished_webinars' => 'Estudiantes cursos no completados',
+    'student' => 'Estudiante',
+    'course' => 'Curso',
+    'progress' => 'Progreso',
 ];

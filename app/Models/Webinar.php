@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Jorenvh\Share\ShareFacade;
 use Spatie\CalendarLinks\Link;
-use Illuminate\Support\Facades\Storage;
 
 class Webinar extends Model
 {
@@ -27,7 +27,7 @@ class Webinar extends Model
     static $textLesson = 'text_lesson';
 
     static $statuses = [
-        'active', 'pending', 'is_draft', 'inactive'
+        'active', 'pending', 'is_draft', 'inactive',
     ];
 
     public function creator()
@@ -143,7 +143,6 @@ class Webinar extends Model
             }
         }
 
-
         if ($rate > 5) {
             $rate = 5;
         }
@@ -160,8 +159,8 @@ class Webinar extends Model
     {
         return [
             'slug' => [
-                'source' => 'title'
-            ]
+                'source' => 'title',
+            ],
         ];
     }
 
@@ -192,7 +191,7 @@ class Webinar extends Model
         if ($with_percent) {
             return [
                 'bestTicket' => $bestTicket,
-                'percent' => $ticketPercent
+                'percent' => $ticketPercent,
             ];
         }
 
@@ -275,7 +274,7 @@ class Webinar extends Model
                             ->first();
 
                         if (!empty($subscribeSale)) {
-                            $usedDays = (int)diffTimestampDay(time(), $subscribeSale->created_at);
+                            $usedDays = (int) diffTimestampDay(time(), $subscribeSale->created_at);
 
                             if ($usedDays > $subscribe->days) {
                                 $hasBought = false;
@@ -291,14 +290,63 @@ class Webinar extends Model
         return $hasBought;
     }
 
-    public function getProgress($with_quizzes = true)
+    public function getProgressByUser($u = null)
     {
         $progress = 0;
-        $quizzes_count = 0; 
-        
+        $quizzes_count = 0;
+        $user_id = $u ? $u : auth()->id();
+        $sessions = $this->sessions;
+        $files = $this->files;
+        $quizzes = $this->quizzes->where('status', Quiz::ACTIVE);
+        $passed = 0;
+
+        foreach ($files as $file) {
+            $status = CourseLearning::where('user_id', $user_id)
+                ->where('file_id', $file->id)
+                ->first();
+
+            if (!empty($status)) {
+                $passed += 1;
+            }
+        }
+
+        foreach ($sessions as $session) {
+            $status = CourseLearning::where('user_id', $user_id)
+                ->where('session_id', $session->id)
+                ->first();
+
+            if (!empty($status)) {
+                $passed += 1;
+            }
+        }
+
+        foreach ($quizzes as $quiz) {
+            $status = QuizzesResult::where('user_id', $user_id)
+                ->where('quiz_id', $quiz->id)
+                ->where('status', QuizzesResult::$passed)
+                ->first();
+
+            if (!empty($status)) {
+                $passed += 1;
+            }
+        }
+        $quizzes_count = $quizzes->count();
+
+        if ($passed > 0) {
+            $progress = ($passed * 100) / ($sessions->count() + $files->count() + $quizzes_count);
+        }
+
+        return $progress;
+
+    }
+    public function getProgress($with_quizzes = true, $u = null)
+    {
+        $progress = 0;
+        $quizzes_count = 0;
+        $user_id = $u ? $u : auth()->id();
+
         if ($this->isWebinar() and !empty($this->capacity)) {
             if ($this->isProgressing() and $this->checkUserHasBought()) {
-                $user_id = auth()->id();
                 $sessions = $this->sessions;
                 $files = $this->files;
                 $quizzes = $this->quizzes->where('status', Quiz::ACTIVE);
@@ -324,21 +372,21 @@ class Webinar extends Model
                     }
                 }
 
-                if($with_quizzes === TRUE){
+                if ($with_quizzes === true) {
 
                     foreach ($quizzes as $quiz) {
                         $status = QuizzesResult::where('user_id', $user_id)
-                            ->where('quiz_id',$quiz->id)
+                            ->where('quiz_id', $quiz->id)
                             ->where('status', QuizzesResult::$passed)
                             ->first();
-    
+
                         if (!empty($status)) {
                             $passed += 1;
                         }
                     }
                     $quizzes_count = $quizzes->count();
                 }
-                
+
                 if ($passed > 0) {
                     $progress = ($passed * 100) / ($sessions->count() + $files->count() + $quizzes_count);
                 }
@@ -350,7 +398,6 @@ class Webinar extends Model
                 }
             }
         } elseif (!$this->isWebinar() and auth()->check() and $this->checkUserHasBought()) {
-            $user_id = auth()->id();
             $files = $this->files;
             $textLessons = $this->textLessons;
             $quizzes = $this->quizzes->where('status', Quiz::ACTIVE);
@@ -375,10 +422,10 @@ class Webinar extends Model
                     $passed += 1;
                 }
             }
-            if($with_quizzes === TRUE){
+            if ($with_quizzes === true) {
                 foreach ($quizzes as $quiz) {
                     $status = QuizzesResult::where('user_id', $user_id)
-                        ->where('quiz_id',$quiz->id)
+                        ->where('quiz_id', $quiz->id)
                         ->where('status', QuizzesResult::$passed)
                         ->first();
 
@@ -399,19 +446,19 @@ class Webinar extends Model
 
     public function getImageCover()
     {
-        if(strpos($this->image_cover, "http://") !== false || strpos($this->image_cover, "https://") !== false){
+        if (strpos($this->image_cover, "http://") !== false || strpos($this->image_cover, "https://") !== false) {
             return config('app_url') . $this->image_cover;
-           
+
         }
         return Storage::url($this->image_cover);
     }
 
     public function getImage()
     {
-        if(strpos($this->thumbnail, "http://") !== false || strpos($this->thumbnail, "https://") !== false){
+        if (strpos($this->thumbnail, "http://") !== false || strpos($this->thumbnail, "https://") !== false) {
             return config('app_url') . $this->thumbnail;
         }
-        return  Storage::url($this->thumbnail);
+        return Storage::url($this->thumbnail);
     }
 
     public function getUrl()

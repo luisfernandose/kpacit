@@ -277,5 +277,6 @@ Route::group(['namespace' => 'Panel', 'prefix' => 'panel', 'middleware' => ['imp
     Route::group(['prefix' => 'reports'], function () {
         Route::get('/courses', 'ReportController@courses');
         Route::get('/percents_quizzes', 'ReportController@percents_quizzes');
+        Route::get('/users_not_finished_webinars', 'ReportController@users_not_finished_webinars');
     });
 });

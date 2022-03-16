@@ -270,7 +270,6 @@ class WebinarController extends Controller
 
     public function getFileStream(Request $request, $slug, $file_id)
     {
-
         $id = decrypt($file_id);
 
         $file = File::where('id', $id)
@@ -348,11 +347,8 @@ class WebinarController extends Controller
 
                     if ($file->storage == 'local') {
                         $storageService = 's3';
-                    
-                        
-                        $path = route('maskVideo', [$webinar->slug, encrypt($file_id)]);
-                        
 
+                        $path = route('maskVideo', [$webinar->slug, encrypt($file_id)]);
 
                     } else {
 
