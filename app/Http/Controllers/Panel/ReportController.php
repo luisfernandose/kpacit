@@ -10,6 +10,7 @@ use App\Models\Sale;
 use App\Models\Webinar;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class ReportController extends Controller
 {
@@ -227,6 +228,48 @@ class ReportController extends Controller
             "dataCount" => count($data),
         ]);
 
+    }
+
+    public function chart_quizzes()
+    {
+
+        $user = auth()->user();
+        $month = 1;
+        if ($user->isTeacher()) {
+            $userList = $user->getOrganizationTeachers()->get();
+        } else {
+            $userList = $user->getOrganizationStudents()->get();
+        }
+
+        if ($user->isUser()) {
+            abort(404);
+        }
+
+        $quizzes = Quiz::where('creator_id', $user->id)
+            ->where('status', 'active')
+            ->get();
+
+        $quizzesIds = $quizzes->pluck('id')->toArray();
+
+        $query = QuizzesResult::whereIn('quiz_id', $quizzesIds);
+
+        $data = [];
+
+        while ($month <= 12) {
+
+            $first = \Carbon\Carbon::create(date('Y-' . $month . '-01 00:00:00'))->toDateString() . " 00:00:00";
+            $last = \Carbon\Carbon::create(date('Y-' . $month . '-01 00:00:00'))->endOfMonth()->toDateString() . " 23:59:59";
+
+            $quizAvgGrad = round(QuizzesResult::whereIn('id',
+                QuizzesResult::select(\DB::raw('MAX(id) AS id'), 'user_grade')->whereIn('user_id', $userList)->groupBy('quiz_id', 'user_id')->get()->pluck('id')
+            )->whereIn('quiz_id', $quizzesIds)->whereBetween('created_at', [strtotime($first), strtotime($last)])->avg('user_grade'), 2);
+
+            $data[] = $quizAvgGrad;
+            $month++;
+        }
+        return view(getTemplate() . '.panel.reports.chart_quizzes', [
+            "data" => $data,
+        ]);
     }
 
 }
