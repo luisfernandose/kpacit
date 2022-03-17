@@ -143,9 +143,10 @@ class ReportController extends Controller
             } elseif ($user->isOrganization()) {
                 $query->where('creator_id', $user->id);
             }
-        })->get();
+        })->whereIn('status', ['active', 'inactive']);
 
         return view(getTemplate() . '.panel.reports.courses', [
+            "data" => $data->paginate(10),
             "active" => $data->where('status', 'active')->count(),
             "inactive" => $data->where('status', 'inactive')->count(),
         ]);

@@ -30,6 +30,48 @@
         </div>
     </section>
 
+    @if($data->count() > 0)
+
+            <div class="panel-section-card py-20 px-25 mt-20">
+                <div class="row">
+                    <div class="col-12 ">
+                        <div class="table-responsive">
+                            <table class="table custom-table">
+                                <thead>
+                                <tr>
+                                    <th>{{ trans('quiz.course') }}</th>
+                                    <th>{{ trans('quiz.category') }}</th>
+                                    <th class="text-center">{{ trans('quiz.status') }}</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($data as $dat)
+                                    <tr>                                        
+                                        <td>{{ $dat->title }}</td>
+                                        <td>{{$dat->category? $dat->category->title:'N/A'}}</td>
+                                        <td>{{ trans('public.'.$dat->status) }}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @else
+
+                @include(getTemplate() . '.includes.no-result',[
+                    'file_name' => 'result.png',
+                    'title' => trans('panel.result_no_result'),
+                    'hint' => trans('panel.result_no_result'),
+                ])
+        @endif
+
+        <div class="my-30">
+            {{ $data->links('vendor.pagination.panel') }}
+        </div>
+
 
 @endsection
 
