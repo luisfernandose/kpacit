@@ -153,6 +153,9 @@
                         <li class="mt-5 {{ (request()->is('/panel/reports/courses_not_started')) ? 'active' : '' }}">
                             <a href="/panel/reports/courses_not_started">{{ trans('panel.courses_not_started') }}</a>
                         </li>
+                        <li class="mt-5 {{ (request()->is('/panel/reports/chart_quizzes')) ? 'active' : '' }}">
+                            <a href="/panel/reports/chart_quizzes">{{ trans('panel.chart_quizzes') }}</a>
+                        </li>
                     </ul>
                 </div>
             </li>

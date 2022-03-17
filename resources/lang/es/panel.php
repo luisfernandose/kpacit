@@ -306,4 +306,6 @@ return [
     'qty' => 'Cantidad de usuarios sin iniciar',
     'users_no_enrolled' => 'Sin usuarios asignados',
     'result_no_result' => 'No hay registros',
+    'percent' => 'Promedio',
+    'chart_quizzes' => 'Promedio de quizzes mensual',
 ];
