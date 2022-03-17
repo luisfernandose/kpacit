@@ -126,7 +126,7 @@ class PayoutController extends Controller
         Accounting::create([
             'creator_id' => auth()->user()->id,
             'user_id' => $payout->user_id,
-            'amount' => $payout->amount,
+            'amount' => (int)$payout->amount,
             'type' => Accounting::$deduction,
             'type_account' => Accounting::$income,
             'description' => trans('financial.payout_request'),

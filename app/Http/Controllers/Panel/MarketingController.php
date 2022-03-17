@@ -75,7 +75,7 @@ class MarketingController extends Controller
                     "status" => Order::$pending,
                     'tax' => $taxPrice,
                     'commission' => 0,
-                    "amount" => $promotion->price,
+                    "amount" => (int)$promotion->price,
                     "total_amount" => $amount + $taxPrice,
                     "created_at" => time(),
                 ]);

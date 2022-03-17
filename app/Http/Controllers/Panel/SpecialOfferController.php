@@ -52,9 +52,9 @@ class SpecialOfferController extends Controller
         $validator = Validator::make($data, [
             'name' => 'required',
             'webinar_id' => 'required',
-            'percent' => 'required',
-            'from_date' => 'required',
-            'to_date' => 'required',
+            'percent' => 'required|numeric',
+            'from_date' => 'required|numeric',
+            'to_date' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {

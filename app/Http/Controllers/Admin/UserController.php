@@ -682,7 +682,7 @@ class UserController extends Controller
             'account_id' => $data['account_id'],
             'identity_scan' => $data['identity_scan'],
             'address' => $data['address'],
-            'commission' => $data['commission'],
+            'commission' => (int)$data['commission'],
             'financial_approval' => (!empty($data['financial_approval']) and $data['financial_approval'] == 'on')
         ]);
 
