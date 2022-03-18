@@ -48,4 +48,10 @@
 
 @push('scripts_bottom')
     <script src="/assets/default/vendors/select2/select2.min.js"></script>
+    <script src="/assets/default/vendors/jQuery-Mask-Plugin-master/dist/jquery.mask.min.js"></script>
+    <script>
+    $(document).ready(()=>{
+        $('.only_number').mask('0#');
+    });
+    </script>
 @endpush

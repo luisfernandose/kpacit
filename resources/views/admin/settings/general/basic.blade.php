@@ -7,6 +7,11 @@
                 <input type="hidden" name="name" value="general">
 
                 <div class="form-group">
+                    <label>{{ trans('admin/main.use_devices') }}</label>
+                    <input type="text" name="value[use_devices]" value="{{ (!empty($itemValue) and !empty($itemValue['use_devices'])) ? $itemValue['use_devices'] : old('use_devices') }}" class="form-control only_number"/>
+                </div>
+
+                <div class="form-group">
                     <label>{{ trans('admin/main.site_name') }}</label>
                     <input type="text" name="value[site_name]" value="{{ (!empty($itemValue) and !empty($itemValue['site_name'])) ? $itemValue['site_name'] : old('site_name') }}" class="form-control "/>
                 </div>

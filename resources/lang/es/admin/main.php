@@ -6,10 +6,10 @@ return [
     |--------------------------------------------------------------------------
     | Admin General Translations
     |--------------------------------------------------------------------------
-    */
+     */
 
 // General | Side Menu | Buttons
-  
+
     'crm' => 'CRM',
     'content' => 'Content',
     'lists' => 'List',
@@ -171,7 +171,7 @@ return [
 //Blog
 
     'blog' => 'Blog',
-  	'posts' => 'Posts',
+    'posts' => 'Posts',
     'blog_categories' => 'Blog Categories',
     'create_category' => 'New Category',
     'author' => 'Author',
@@ -210,7 +210,7 @@ return [
 
     'certificate_list_page_title' => 'Certificates List',
     'certificate' => 'Certificate',
-  	'certificate_id' => 'Certificate ID',
+    'certificate_id' => 'Certificate ID',
     'certificate_count' => 'Certificates',
     'sub_certificate' => 'Sub-certificate',
     'has_sub_certificate' => 'Includes Sub-certificate',
@@ -269,12 +269,12 @@ return [
     'this_month' => 'Month',
     'this_year' => 'Year',
     'total_incomes' => 'Total Income',
-  	'salescount' => 'Sales Count',
+    'salescount' => 'Sales Count',
     'total_sales_statistics' => 'Total Sales Statistics',
     'new_sale' => 'New Sale',
     'new_comment' => 'New Comment',
     'pending_review' => 'Pending Review',
-  	'pending_review_classes' => 'Pending Review Classes',
+    'pending_review_classes' => 'Pending Review Classes',
     'sales_statistics' => 'Sales Statistics',
     'month' => 'Month',
     'year' => 'Year',
@@ -312,7 +312,7 @@ return [
     'all_users_discount' => 'All Discounts',
     'remain' => 'Remained',
     'usable_times' => 'Usable Times',
-  	'expire_date' => 'Expiry Date',
+    'expire_date' => 'Expiry Date',
 
 //Filters
 
@@ -431,7 +431,7 @@ return [
     'paid_successful' => 'Paid/Successful',
     'success' => 'Successful',
     'invoice' => 'Invoice',
-  	'purchase_date' => 'Purchased Date',
+    'purchase_date' => 'Purchased Date',
 
     'offline_payment' => 'Offline Payment',
     'offline_payments' => 'Offline Payments',
@@ -480,16 +480,16 @@ return [
     'subscribe' => 'Subscribe',
     'new_package' => 'New Package',
     'subscribes' => 'Subscribe',
-  	'packages' => 'Packages',
-  	'subscribe_packages' => 'Subscribe Packages',
+    'packages' => 'Packages',
+    'subscribe_packages' => 'Subscribe Packages',
     'usable_count' => 'Subscribe Times',
     'short_description' => 'Description',
     'short_description_placeholder' => 'Example: Suggested for Professionals.',
     'promotion' => 'Promotion',
     'promotions' => 'Promotion Plans',
     'is_popular' => 'Popular Badge',
-  	'new_plan' => 'New Plan',
-  	'plans' => 'Plans',
+    'new_plan' => 'New Plan',
+    'plans' => 'Plans',
     'new_promotion' => 'New Promotion Plan',
     'edit_promotion' => 'Edit Promotion Plan',
     'payment_channels' => 'Payment Gateways',
@@ -578,7 +578,7 @@ return [
     'admin_roles_delete' => 'Roles Delete',
 
 // Pages Title
-  
+
     'webinar_new_page_title' => 'New Class',
     'tag_new_page_title' => 'New Tag',
     'group_new_page_title' => 'New User Group',
@@ -796,7 +796,7 @@ return [
     'Hero_style_2' => 'Animated Hero Style',
     'video_and_image_sections' => 'Video/Image Section',
     'change_password' => 'Change Password',
-	'select_a_partner_hint' => 'Partner instrcutor will have access to the course content and their profile will be displayed on the class page.',
+    'select_a_partner_hint' => 'Partner instrcutor will have access to the course content and their profile will be displayed on the class page.',
 
 //Tags
 
@@ -808,7 +808,7 @@ return [
     'admin_tags_create' => 'Tags Create',
     'admin_tags_edit' => 'Tags Edit',
     'admin_tags_delete' => 'Tags Delete',
-  	'create_field_title_placeholder' => 'Tags will be displayed on the class page.',
+    'create_field_title_placeholder' => 'Tags will be displayed on the class page.',
 
 //Users
 
@@ -851,9 +851,9 @@ return [
     'create_field_email_placeholder' => 'Example: username@gmail.com',
     'search_user_or_instructor' => 'Search for user or instructor',
     'select_a_instructor' => 'Select an Instructor',
-  	'search_instructor' => 'Search for Instructor',
-  	'search_student' => 'Search for Student',
-  	'search_users' => 'Search Users',
+    'search_instructor' => 'Search for Instructor',
+    'search_student' => 'Search for Student',
+    'search_users' => 'Search Users',
 
 ///User Badges
 
@@ -1008,8 +1008,8 @@ return [
     'is_not_the_teacher_of_this_organization' => 'The selected instructor does not exist or not related to this organization.',
     'webinars_reports' => 'Class Reports',
 
-  // Noticeboard Page
-  
+    // Noticeboard Page
+
     'edit_noticeboard' => 'Edit Notice',
     'send_noticeboard_success' => 'Notice sent successfully.',
     'edit_noticeboard_success' => 'Notice edited successfully.',
@@ -1046,8 +1046,8 @@ return [
     'organizations_instructors' => 'Organizations Instructors',
     'inactive_instructors' => 'Inactive Instructors',
     'ban_instructors' => 'Banned Instructors',
-  	'banned' => 'Banned',
-  	'until' => 'Until',
+    'banned' => 'Banned',
+    'until' => 'Until',
     'total_organizations' => 'Total Organizations',
     'verified_organizations' => 'Verified Organizations',
     'organizations_students' => 'Organization Students',
@@ -1064,7 +1064,7 @@ return [
 //Hints & Placeholders
 
     'hints' => 'Hints',
-  	'new_page_link_hint' => 'Start with a "/" and just use small caps. Example: /about so the page URL will be yourwebsiteurl.com/pages/about',
+    'new_page_link_hint' => 'Start with a "/" and just use small caps. Example: /about so the page URL will be yourwebsiteurl.com/pages/about',
     'consultants_hint_title_1' => 'Become a Consultant',
     'consultants_hint_title_2' => 'Pending Meetings',
     'consultants_hint_title_3' => 'Unavailable Consultants',
@@ -1156,24 +1156,25 @@ return [
     'has_lottie_hint' => 'Turn it ON if a Lottie animation file selected (.json)',
     'index' => 'Index',
     'no_index' => 'No Index',
-  	'additional_pages_title' => 'Additional Pages',
-  	'meetings_list_title' => 'Meetings List',
-  	'consultants_list_title' => 'Consultants List',
-  	'marketing_dashboard_title' => 'Marketing Dashboard',
-  	'general_dashboard_title' => 'Dashboard',
-  	'discount_codes_title' => 'Discount Codes',
-  	'new_discount_title' => 'New Discount',
-  	'edit_discount_title' => 'Edit Discount',
-  	'notices_list_title' => 'Notices List',
-  	'new_notice_title' => 'New Notice',
-  	'offline_payments_title' => 'Offline Payments ',
-  	'payouts_title' => 'Payouts ',
-   	'reviews_list_title' => 'Reviews List',
-   	'settings_title' => 'Settings',
-   	'new_product_discount_title' => 'New Class Discount',
-   	'edit_product_discount_title' => 'Edit Class Discount',
-   	'support_departments_title' => 'Support Departments',
-   	'new_support_ticket_title' => 'New Support Ticket',
-   	'edit_support_ticket_title' => 'Edit Support Ticket',
-   	'staff_list_title' => 'Staff List',
+    'additional_pages_title' => 'Additional Pages',
+    'meetings_list_title' => 'Meetings List',
+    'consultants_list_title' => 'Consultants List',
+    'marketing_dashboard_title' => 'Marketing Dashboard',
+    'general_dashboard_title' => 'Dashboard',
+    'discount_codes_title' => 'Discount Codes',
+    'new_discount_title' => 'New Discount',
+    'edit_discount_title' => 'Edit Discount',
+    'notices_list_title' => 'Notices List',
+    'new_notice_title' => 'New Notice',
+    'offline_payments_title' => 'Offline Payments ',
+    'payouts_title' => 'Payouts ',
+    'reviews_list_title' => 'Reviews List',
+    'settings_title' => 'Settings',
+    'new_product_discount_title' => 'New Class Discount',
+    'edit_product_discount_title' => 'Edit Class Discount',
+    'support_departments_title' => 'Support Departments',
+    'new_support_ticket_title' => 'New Support Ticket',
+    'edit_support_ticket_title' => 'Edit Support Ticket',
+    'staff_list_title' => 'Staff List',
+    'use_devices' => 'Allow number devices (cero(0) for any)',
 ];
