@@ -29,6 +29,15 @@
     <div id="collapseModule{{ !empty($module) ? $module->id :'record' }}" aria-labelledby="module_{{ !empty($module) ? $module->id :'record' }}" class=" collapse @if(empty($module)) show @endif" role="tabpanel">
         <div class="panel-collapse text-gray">
             <div class="module-form" data-action="/panel/modules/{{ !empty($module) ? $module->id . '/update' : 'store' }}">
+                <div id="newFileForm{{$module["id"]}}" class="d-none">
+                    @include('web.default.panel.webinar.create_includes.accordions.file',['webinar' => $webinar])
+                </div>
+                <div id="newSessionForm{{$module["id"]}}" class="d-none">
+                    @include('web.default.panel.webinar.create_includes.accordions.session',['webinar' => $webinar])
+                </div>
+                <div id="newTextLessonForm{{$module["id"]}}" class="d-none">
+                    @include('web.default.panel.webinar.create_includes.accordions.text-lesson',['webinar' => $webinar])
+                </div>
                 <input type="hidden" name="ajax[{{ !empty($module) ? $module->id : 'new' }}][webinar_id]" value="{{ !empty($webinar) ? $webinar->id :'' }}">
 
                 <div class="row">
@@ -94,15 +103,7 @@
                 </div>
                 </div>
                 </div>
-                <div id="newFileForm{{$module["id"]}}" class="d-none">
-                    @include('web.default.panel.webinar.create_includes.accordions.file',['webinar' => $webinar])
-                </div>
-                <div id="newSessionForm{{$module["id"]}}" class="d-none">
-                    @include('web.default.panel.webinar.create_includes.accordions.session',['webinar' => $webinar])
-                </div>
-                <div id="newTextLessonForm{{$module["id"]}}" class="d-none">
-                    @include('web.default.panel.webinar.create_includes.accordions.text-lesson',['webinar' => $webinar])
-                </div>
+
 
             </div>
         </div>
