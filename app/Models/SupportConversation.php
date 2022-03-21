@@ -24,6 +24,10 @@ class SupportConversation extends Model
 
     public function getAttachAttribute($value)
     {
-        return Storage::url($value);
+        if(!empty($value)){
+
+            return Storage::url($value);
+        }
+        return $value;
     }
 }

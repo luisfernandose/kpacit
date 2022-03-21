@@ -22,6 +22,11 @@ class TrendCategory extends Model
      */
     public function getIcon()
     {
-        return Storage::url($this->icon);
+        if(!empty($this->icon)){
+
+            return Storage::url($this->icon);
+        }
+        return $this->icon;
+
     }
 }

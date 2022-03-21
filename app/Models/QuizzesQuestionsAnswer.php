@@ -13,6 +13,10 @@ class QuizzesQuestionsAnswer extends Model
 
     public function getImageAttribute($value)
     {
-        return Storage::url($value);
+        if(!empty($value)){
+
+            return Storage::url($value);
+        }
+        return $value;
     }
 }

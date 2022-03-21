@@ -36,7 +36,11 @@ class File extends Model
     {  
         if($this->storage ==$this->storage_local){
 
-            return  Storage::url( $this->file);
+            if(!empty($this->file)){
+
+                return Storage::url($this->file);
+            }
+
         }
         return $this->file;
     }
