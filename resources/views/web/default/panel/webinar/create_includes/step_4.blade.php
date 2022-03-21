@@ -194,6 +194,7 @@
     }
 
     $(".webinarAddFileModule").click((e)=>{
+        $('#collapseModule'+$(e.target).data('module-id')).collapse();
         $("#newFileForm"+$(e.target).data('module-id')).removeClass('d-none');
         $("#newFileForm"+$(e.target).data('module-id')).addClass('d-inline');
     });
@@ -202,6 +203,7 @@
         $("#newFileForm"+$(e.target).data('module-id')).addClass('d-none');
     });
     $(".webinarAddSessionModule").click((e)=>{
+        $('#collapseModule'+$(e.target).data('module-id')).collapse();
         $("#newSessionForm"+$(e.target).data('module-id')).removeClass('d-none');
         $("#newSessionForm"+$(e.target).data('module-id')).addClass('d-inline');
     });
@@ -210,6 +212,7 @@
         $("#newSessionForm"+$(e.target).data('module-id')).addClass('d-none');
     });
     $(".webinarAddTextModule").click((e)=>{
+        $('#collapseModule'+$(e.target).data('module-id')).collapse();
         console.log('pasando text',$(e.target).data('module-id'));
         $("#newTextLessonForm"+$(e.target).data('module-id')).removeClass('d-none');
         $("#newTextLessonForm"+$(e.target).data('module-id')).addClass('d-inline');
