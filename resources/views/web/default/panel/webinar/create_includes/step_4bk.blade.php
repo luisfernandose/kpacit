@@ -4,6 +4,42 @@
     <link rel="stylesheet" href="/assets/vendors/summernote/summernote-bs4.min.css">
     <link href="/assets/default/vendors/sortable/jquery-ui.min.css"/>
 @endpush
+
+@if($webinar->isWebinar())
+    <section class="mt-50">
+        <div class="">
+            <h2 class="section-title after-line">{{ trans('public.sessions') }} ({{ trans('public.optional') }})</h2>
+        </div>
+
+        <button id="webinarAddSession" data-webinar-id="{{ $webinar->id }}" type="button" class="btn btn-primary btn-sm mt-15">{{ trans('public.add_session') }}</button>
+
+        <div class="row mt-10">
+            <div class="col-12">
+
+                <div class="accordion-content-wrapper mt-15" id="sessionsAccordion" role="tablist" aria-multiselectable="true">
+                    @if(!empty($webinar->sessions) and count($webinar->sessions))
+                        <ul class="draggable-lists" data-order-table="sessions">
+                            @foreach($webinar->sessions as $sessionInfo)
+                                @include('web.default.panel.webinar.create_includes.accordions.session',['webinar' => $webinar,'session' => $sessionInfo])
+                            @endforeach
+                        </ul>
+                    @else
+                        @include(getTemplate() . '.includes.no-result',[
+                            'file_name' => 'meet.png',
+                            'title' => trans('public.sessions_no_result'),
+                            'hint' => trans('public.sessions_no_result_hint'),
+                        ])
+                    @endif
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="newSessionForm" class="d-none">
+        @include('web.default.panel.webinar.create_includes.accordions.session',['webinar' => $webinar])
+    </div>
+@endif
+
 <section class="mt-50">
     <div class="">
         <h2 class="section-title after-line">Módulos</h2>
@@ -33,36 +69,79 @@
 </section>
 
 <div id="newModuleForm" class="d-none">
-    <div class="font-weight-bold text-dark-blue" href="#collapseModule{{ !empty($module) ? $module->id :'record' }}" aria-controls="collapseModule{{ !empty($module) ? $module->id :'record' }}" data-parent="#modulesAccordion" role="button" data-toggle="collapse" aria-expanded="true">
-        <span>{{ 'Agregar nuevo módulo' }}</span>
+    @include('web.default.panel.webinar.create_includes.accordions.module', ['webinar' => $webinar, 'module' => null])
+</div>
+
+<section class="mt-50">
+    <div class="">
+        <h2 class="section-title after-line">{{ trans('public.files') }} ({{ trans('public.optional') }})</h2>
     </div>
+    <div class="mt-15">
+            <p class="font-12 text-gray">- {{ trans('webinars.files_hint_1') }}</p>
+            <p class="font-12 text-gray">- {{ trans('webinars.files_hint_2') }}</p>
+    </div>
+    <button id="webinarAddFile" data-webinar-id="{{ $webinar->id }}" type="button" class="btn btn-primary btn-sm mt-15">{{ trans('public.add_files') }}</button>
 
-    <div id="collapseModulerecord" aria-labelledby="module_record" class="show" role="tabpanel">
-        <div class="panel-collapse text-gray">
-            <div class="module-form" data-action="/panel/modules/store">
-                <input type="hidden" name="ajax[new][webinar_id]" value="{{$webinar->id}}">
+    <div class="row mt-10">
+        <div class="col-12">
 
-                <div class="row">
-                    <div class="col-12 col-lg-6">
-                        <div class="form-group">
-                            <label class="input-label">Nombre</label>
-                            <input type="text" name="ajax[new][name]" class="js-ajax-name form-control" value=""/>
-                            <div class="invalid-feedback"></div>
-                        </div>
-                    </div>
-                </div>
+            <div class="accordion-content-wrapper mt-15" id="filesAccordion" role="tablist" aria-multiselectable="true">
+                @if(!empty($webinar->files) and count($webinar->files))
+                    <ul class="draggable-lists2" data-order-table="files">
+                        @foreach($webinar->files as $fileInfo)
+                            @include('web.default.panel.webinar.create_includes.accordions.file',['webinar' => $webinar, 'file' => $fileInfo])
+                        @endforeach
+                    </ul>
+                @else
+                    @include(getTemplate() . '.includes.no-result',[
+                        'file_name' => 'files.png',
+                        'title' => trans('public.files_no_result'),
+                        'hint' => trans('public.files_no_result_hint'),
+                    ])
+                @endif
+            </div>
+        </div>
+    </div>
+</section>
 
-                <div class="mt-30 d-flex align-items-center">
-                    <button type="button" data-module-id="" class="save-module btn btn-sm btn-primary">{{ trans('public.save') }} </button>
+<div id="newFileForm" class="d-none">
+    @include('web.default.panel.webinar.create_includes.accordions.file',['webinar' => $webinar])
+</div>
 
-                    @if(empty($module))
-                        <button type="button" class="btn btn-sm btn-danger ml-10 cancel-accordion">{{ trans('public.close') }}</button>
+    <section class="mt-50">
+        <div class="">
+            <h2 class="section-title after-line">{{ trans('public.test_lesson') }} ({{ trans('public.optional') }})</h2>
+        </div>
+
+        <button id="AddTextLesson" data-webinar-id="{{ $webinar->id }}" type="button" class="btn btn-primary btn-sm mt-15">{{ trans('public.add_test_lesson') }}</button>
+
+        <div class="row mt-10">
+            <div class="col-12">
+
+                <div class="accordion-content-wrapper mt-15" id="text_lessonsAccordion" role="tablist" aria-multiselectable="true">
+                    @if(!empty($webinar->textLessons) and count($webinar->textLessons))
+                        <ul class="draggable-lists3" data-order-table="text_lessons">
+                            @foreach($webinar->textLessons as $textLessonsInfo)
+                                @include('web.default.panel.webinar.create_includes.accordions.text-lesson',['webinar' => $webinar,'textLesson' => $textLessonsInfo])
+                            @endforeach
+                        </ul>
+
+
+                    @else
+                        @include(getTemplate() . '.includes.no-result',[
+                            'file_name' => 'files.png',
+                            'title' => trans('public.text_lesson_no_result'),
+                            'hint' => trans('public.text_lesson_no_result_hint'),
+                        ])
                     @endif
                 </div>
             </div>
         </div>
+    </section>
+
+    <div id="newTextLessonForm" class="d-none">
+        @include('web.default.panel.webinar.create_includes.accordions.text-lesson',['webinar' => $webinar])
     </div>
-</div>
 
 
 @push('scripts_bottom')
@@ -171,56 +250,5 @@
             }
         })
     }
-
-    $(".webinarAddFileModule").click((e)=>{
-        $("#newFileForm"+$(e.target).data('module-id')).removeClass('d-none');
-        $("#newFileForm"+$(e.target).data('module-id')).addClass('d-inline');
-    });
-    $(".close-file").click((e)=>{
-        $("#newFileForm"+$(e.target).data('module-id')).removeClass('d-inline');
-        $("#newFileForm"+$(e.target).data('module-id')).addClass('d-none');
-    });
-    $(".webinarAddSessionModule").click((e)=>{
-        console.log('pasando session',$(e.target).data('module-id'));
-        $("#newSessionForm"+$(e.target).data('module-id')).removeClass('d-none');
-        $("#newSessionForm"+$(e.target).data('module-id')).addClass('d-inline');
-    });
-    $(".close-session").click((e)=>{
-        $("#newSessionForm"+$(e.target).data('module-id')).removeClass('d-inline');
-        $("#newSessionForm"+$(e.target).data('module-id')).addClass('d-none');
-    });
-
-
-    $(document).ready(function () {
-        function updateNToDatabase(table, idString) {
-            $.post(
-                "/panel/webinars/order-items",
-                { table: table, items: idString },
-                function (result) {}
-            );
-        }
-
-        function setNSortable(target) {
-            if (target.length) {
-                target.sortable({
-                    group: "no-drop",
-                    handle: ".move-icon",
-                    axis: "y",
-                    update: function (e, ui) {
-                        var sortData = target.sortable("toArray", {
-                            attribute: "data-id",
-                        });
-                        var table = e.target.getAttribute("data-order-table");
-
-                        updateToDatabase(table, sortData.join(","));
-                    },
-                });
-            }
-        }
-        var target3 = $(".draggable-content");
-        if (target3.length) {
-            setNSortable(target3);
-        }
-    });
 
 </script>

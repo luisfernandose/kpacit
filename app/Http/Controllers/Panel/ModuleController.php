@@ -11,6 +11,7 @@ class ModuleController extends Controller
 {
     public function store(Request $request)
     {
+        $user = auth()->user();
         $data = $request->get('ajax')['new'];
 
         $validator = Validator::make($data, [
@@ -26,6 +27,7 @@ class ModuleController extends Controller
         }
 
         Module::create([
+            'creator_id' => $user->id,
             'webinar_id' => $data['webinar_id'],
             'name' => $data['name'],
         ]);
@@ -53,7 +55,7 @@ class ModuleController extends Controller
         }
 
         $module = Module::where('id', '=', $id)
-                        ->first();
+            ->first();
 
         if (!empty($module)) {
 
@@ -80,7 +82,7 @@ class ModuleController extends Controller
 
         return response()->json([
 
-            'code' => 200
+            'code' => 200,
 
         ], 200);
     }

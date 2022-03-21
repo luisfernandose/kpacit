@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\FAQ;
 use App\Models\File;
+use App\Models\Module;
 use App\Models\Prerequisite;
 use App\Models\Quiz;
 use App\Models\Role;
@@ -16,6 +17,7 @@ use App\Models\Tag;
 use App\Models\TextLesson;
 use App\Models\Ticket;
 use App\Models\Webinar;
+use App\Models\WebinarContent;
 use App\Models\WebinarFilterOption;
 use App\Models\WebinarPartnerTeacher;
 use App\User;
@@ -613,7 +615,7 @@ class WebinarController extends Controller
             sendNotification('course_created', ['[c.title]' => $webinar->title], $user->id);
         }
 
-        if($user->isOrganization() && $data['save_course']=='si'){
+        if ($user->isOrganization() && $data['save_course'] == 'si') {
             $url = '/panel/webinars';
         }
         return redirect($url);
@@ -1019,6 +1021,20 @@ class WebinarController extends Controller
                 case 'faqs':
                     foreach ($itemIds as $order => $id) {
                         FAQ::where('id', $id)
+                            ->where('creator_id', $user->id)
+                            ->update(['order' => ($order + 1)]);
+                    }
+                    break;
+                case 'webinars_contents':
+                    foreach ($itemIds as $order => $id) {
+                        WebinarContent::where('id', $id)
+                            ->where('creator_id', $user->id)
+                            ->update(['order' => ($order + 1)]);
+                    }
+                    break;
+                case 'modules':
+                    foreach ($itemIds as $order => $id) {
+                        Module::where('id', $id)
                             ->where('creator_id', $user->id)
                             ->update(['order' => ($order + 1)]);
                     }

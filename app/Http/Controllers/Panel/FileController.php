@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Models\File;
+use App\Models\WebinarContent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -51,7 +52,7 @@ class FileController extends Controller
             preg_match('!\d+!', $data['volume'], $volumeMatches);
         }
 
-        File::create([
+        $file = File::create([
             'creator_id' => $user->id,
             'webinar_id' => $data['webinar_id'],
             'title' => $data['title'],
@@ -64,6 +65,20 @@ class FileController extends Controller
             'description' => $data['description'],
             'module_id' => $data['module_id'],
             'created_at' => time(),
+        ]);
+
+        $countContent = WebinarContent::where('creator_id', $user->id)->where('webinar_id', $data['webinar_id'])->where("module_id", $data['module_id'])->get()->count();
+
+        $order = $countContent == 0 ? 1 : ($countContent + 1);
+
+        WebinarContent::create([
+            'creator_id' => $user->id,
+            'webinar_id' => $data['webinar_id'],
+            "module_id" => $data['module_id'],
+            "resource_type" => 'file',
+            "resource_id" => $file->id,
+            "order" => $order,
+            'created_at' => now(),
         ]);
 
         return response()->json([

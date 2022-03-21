@@ -35,6 +35,11 @@ class Webinar extends Model
         return $this->belongsTo('App\User', 'creator_id', 'id');
     }
 
+    public function content()
+    {
+        return $this->hasMany('App\Models\WebinarContent', 'webinar_id', 'id')->orderBy('order', 'asc');
+    }
+
     public function teacher()
     {
         return $this->belongsTo('App\User', 'teacher_id', 'id');
@@ -124,7 +129,7 @@ class Webinar extends Model
 
     public function modules()
     {
-        return $this->hasMany('App\Models\Module', 'webinar_id', 'id');
+        return $this->hasMany('App\Models\Module', 'webinar_id', 'id')->orderBy('order', 'asc');
     }
 
     public function getRate()

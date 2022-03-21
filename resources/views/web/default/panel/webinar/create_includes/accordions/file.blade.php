@@ -1,24 +1,6 @@
-<li data-id="{{ !empty($file) ? $file->id :'' }}" class="accordion-row bg-white rounded-sm panel-shadow mt-20 py-15 py-lg-30 px-10 px-lg-20">
-    <div class="d-flex align-items-center justify-content-between " role="tab" id="file_{{ !empty($file) ? $file->id :'record' }}">
+    <div class="d-flex align-items-center justify-content-between pt-4" role="tab" id="file_{{ !empty($file) ? $file->id :'record' }}">
         <div class="font-weight-bold text-dark-blue" href="#collapseFile{{ !empty($file) ? $file->id :'record' }}" aria-controls="collapseFile{{ !empty($file) ? $file->id :'record' }}" data-parent="#filesAccordion" role="button" data-toggle="collapse" aria-expanded="true">
             <span>{{ !empty($file) ? $file->title . ($file->accessibility == 'free' ? " (". trans('public.free') .")" : '') : trans('public.add_new_files') }}</span>
-        </div>
-
-        <div class="d-flex align-items-center">
-            <i data-feather="move" class="move-icon mr-10 cursor-pointer" height="20"></i>
-
-            @if(!empty($file))
-                <div class="btn-group dropdown table-actions mr-15">
-                    <button type="button" class="btn-transparent dropdown-toggle d-flex align-items-center justify-content-center" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i data-feather="more-vertical" height="20"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a href="/panel/files/{{ $file->id }}/delete" class="delete-action btn btn-sm btn-transparent">{{ trans('public.delete') }}</a>
-                    </div>
-                </div>
-            @endif
-
-            <i class="collapse-chevron-icon" data-feather="chevron-down" height="20" href="#collapseFile{{ !empty($file) ? $file->id :'record' }}" aria-controls="collapseFile{{ !empty($file) ? $file->id :'record' }}" data-parent="#filesAccordion" role="button" data-toggle="collapse" aria-expanded="true"></i>
         </div>
     </div>
 
@@ -26,6 +8,7 @@
         <div class="panel-collapse text-gray">
             <div class="file-form" data-action="/panel/files/{{ !empty($file) ? $file->id . '/update' : 'store' }}">
                 <input type="hidden" name="ajax[{{ !empty($file) ? $file->id : 'new' }}][webinar_id]" value="{{ !empty($webinar) ? $webinar->id :'' }}">
+                <input type="hidden" name="ajax[{{ !empty($file) ? $file->id : 'new' }}][module_id]" value="{{$module["id"]}}">
 
                 <div class="row">
                     <div class="col-12 col-lg-6">
@@ -112,19 +95,6 @@
                             </div>
                         </div>
 
-                        <div class="form-group mt-15 ">
-                            <label class="input-label d-block">Módulo</label>
-                            <select class="custom-select js-ajax-module_id" name="ajax[{{ !empty($file) ? $file->id : 'new' }}][module_id]" value="{{ !empty($file) ? $file->module : '' }}">
-                                <option value="0" selected disabled>Seleccione una opción...</option>
-                                @foreach ( $webinar->modules as $module )
-
-                                    <option value="{{$module->id}}" @if(!empty($file) and !empty($file->module_id) and $file->module_id == $module->id) selected @endif >{{$module->name}}</option>
-
-                                @endforeach
-                            </select>
-                            <div class="invalid-feedback"></div>
-                        </div>
-
                         <div class="form-group">
                             <label class="input-label">{{ trans('public.description') }}</label>
                             <textarea name="ajax[{{ !empty($file) ? $file->id : 'new' }}][description]" class="js-ajax-description form-control" rows="6">{{ !empty($file) ? $file->description : '' }}</textarea>
@@ -147,11 +117,10 @@
                     <button type="button" class="js-save-file save-file1 btn btn-sm btn-primary">{{ trans('public.save') }} </button>
 
                     @if(empty($file))
-                        <button type="button" class="btn btn-sm btn-danger ml-10 cancel-accordion">{{ trans('public.close') }}</button>
+                        <button type="button" data-module-id="{{$module["id"]}}" class="btn btn-sm btn-danger ml-10 close-file">{{ trans('public.close') }}</button>
                     @endif
                 </div>
             </div>
         </div>
     </div>
-</li>
 

@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Sale;
 use App\Models\Session;
 use App\Models\Webinar;
-use Illuminate\Http\Request;
+use App\Models\WebinarContent;
 use App\Sessions\Zoom;
+use Illuminate\Http\Request;
 use Validator;
 
 class SessionController extends Controller
@@ -35,7 +36,7 @@ class SessionController extends Controller
 
         if (!empty($data['session_api']) and $data['session_api'] == 'zoom' and (empty($user->zoomApi) or empty($user->zoomApi->jwt_token))) {
             $error = [
-                'zoom-not-complete-alert' => []
+                'zoom-not-complete-alert' => [],
             ];
 
             return response([
@@ -54,7 +55,7 @@ class SessionController extends Controller
 
             if (strtotime($data['date']) < $webinar->start_date) {
                 $error = [
-                    'date' => [trans('webinars.session_date_must_larger_webinar_start_date', ['start_date' => dateTimeFormat($webinar->start_date, 'Y-m-d')])]
+                    'date' => [trans('webinars.session_date_must_larger_webinar_start_date', ['start_date' => dateTimeFormat($webinar->start_date, 'Y-m-d')])],
                 ];
 
                 return response([
@@ -62,7 +63,6 @@ class SessionController extends Controller
                     'errors' => $error,
                 ], 422);
             }
-
 
             $session = Session::create([
                 'creator_id' => $user->id,
@@ -75,7 +75,7 @@ class SessionController extends Controller
                 'api_secret' => $data['api_secret'] ?? '',
                 'moderator_secret' => $data['moderator_secret'] ?? '',
                 'description' => $data['description'],
-                'created_at' => time()
+                'created_at' => time(),
             ]);
 
             if ($data['session_api'] == 'big_blue_button') {
@@ -85,6 +85,20 @@ class SessionController extends Controller
             if ($data['session_api'] == 'zoom') {
                 return $this->handleZoomApi($session, $user);
             }
+
+            $countContent = WebinarContent::where('creator_id', $user->id)->where('webinar_id', $data['webinar_id'])->where("module_id", $data['module_id'])->get()->count();
+
+            $order = $countContent == 0 ? 1 : ($countContent + 1);
+
+            WebinarContent::create([
+                'creator_id' => $user->id,
+                'webinar_id' => $data['webinar_id'],
+                "module_id" => $data['module_id'],
+                "resource_type" => 'session',
+                "resource_id" => $session->id,
+                "order" => $order,
+                'created_at' => now(),
+            ]);
 
             return response()->json([
                 'code' => 200,
@@ -131,7 +145,7 @@ class SessionController extends Controller
 
                 if ($sessionDate < $webinar->start_date) {
                     $error = [
-                        'date' => [trans('webinars.session_date_must_larger_webinar_start_date', ['start_date' => dateTimeFormat($webinar->start_date, 'Y-m-d')])]
+                        'date' => [trans('webinars.session_date_must_larger_webinar_start_date', ['start_date' => dateTimeFormat($webinar->start_date, 'Y-m-d')])],
                     ];
 
                     return response([
@@ -148,7 +162,7 @@ class SessionController extends Controller
                     'session_api' => $session_api,
                     'api_secret' => $data['api_secret'] ?? $session->api_secret,
                     'description' => $data['description'],
-                    'updated_at' => time()
+                    'updated_at' => time(),
                 ]);
 
                 return response()->json([
@@ -171,7 +185,7 @@ class SessionController extends Controller
         }
 
         return response()->json([
-            'code' => 200
+            'code' => 200,
         ], 200);
     }
 
@@ -202,7 +216,7 @@ class SessionController extends Controller
 
         return response()->json([
             'code' => 422,
-            'status' => 'zoom_jwt_token_invalid'
+            'status' => 'zoom_jwt_token_invalid',
         ], 422);
     }
 
@@ -232,7 +246,7 @@ class SessionController extends Controller
                 $url = \Bigbluebutton::join([
                     'meetingID' => $session->id,
                     'userName' => $user->full_name,
-                    'password' => $session->moderator_secret
+                    'password' => $session->moderator_secret,
                 ]);
 
                 if ($url) {
@@ -250,7 +264,7 @@ class SessionController extends Controller
                     $url = \Bigbluebutton::join([
                         'meetingID' => $session->id,
                         'userName' => $user->full_name,
-                        'password' => $session->api_secret
+                        'password' => $session->api_secret,
                     ]);
 
                     if ($url) {
