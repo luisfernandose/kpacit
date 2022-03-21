@@ -184,9 +184,13 @@ class Badge extends Model
     }
     public function getImageAttribute($value)
     {
-        if(strpos($value, "/store/") !== false){
-            return $value;
+
+        if(!empty($value)){
+            if(strpos($value, "/store/") !== false){
+                return $value;
+            }
+            return Storage::url($value);
         }
-        return Storage::url($value);
+        return $value;
     }
 }

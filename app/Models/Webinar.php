@@ -450,7 +450,12 @@ class Webinar extends Model
             return config('app_url') . $this->image_cover;
 
         }
-        return Storage::url($this->image_cover);
+        if(!empty($this->image_cover)){
+
+            return Storage::url($this->image_cover);
+        }
+        return $this->image_cover;
+
     }
 
     public function getImage()
@@ -458,7 +463,12 @@ class Webinar extends Model
         if (strpos($this->thumbnail, "http://") !== false || strpos($this->thumbnail, "https://") !== false) {
             return config('app_url') . $this->thumbnail;
         }
-        return Storage::url($this->thumbnail);
+        if(!empty($this->thumbnail)){
+
+            return Storage::url($this->thumbnail);
+        }
+        return $this->thumbnail;
+
     }
 
     public function getUrl()
@@ -573,7 +583,11 @@ class Webinar extends Model
     }
 
     public function getVideoDemoAttribute($value)
-    {
-        return Storage::url($value);
+    {   
+        if(!empty($value)){
+
+            return Storage::url($value);
+        }
+        return $value;
     }
 }
