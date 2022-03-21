@@ -308,4 +308,12 @@ return [
     'result_no_result' => 'No hay registros',
     'percent' => 'Promedio',
     'chart_quizzes' => 'Promedio de quizzes mensual',
+    'chart_quizzes' => 'Promedio de quizzes mensual',
+    'file' => 'Archivo',
+    'session' => 'Sesión',
+    'text' => 'Texto',
+    'content_module' => 'Contenido del Módulo',
+    'create_file' => 'Nuevo archivo',
+    'create_session' => 'Nueva sesión',
+    'create_text_lesson' => 'Nuevo texto',
 ];
