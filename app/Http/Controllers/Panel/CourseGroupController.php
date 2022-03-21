@@ -219,25 +219,27 @@ class CourseGroupController extends Controller
         ]);
         $courses = CourseGroups::where('course_group_list_id',$data->group_id)->pluck('webinar_id');
 
-        $webinars = Webinar::whereIn('id', $courses)->get();
+        if (!empty($courses)) {
+            $webinars = Webinar::whereIn('id', $courses)->get();
 
-        if (!empty($webinars)) {
-            foreach($webinars as $course){
-                $student = Sale::where('webinar_id',$course->id)->where('buyer_id',$data->student_id)->first();
-                if(empty($student)){
-                    Sale::create([
-                        'buyer_id' => $data->student_id,
-                        'seller_id' => $course->creator_id,
-                        'webinar_id' => $course->id,
-                        'type' => Sale::$webinar,
-                        'payment_method' => Sale::$credit,
-                        'amount' => 0,
-                        'total_amount' => 0,
-                        'created_at' => time(),
-                    ]);
+            if (!empty($webinars)) {
+                foreach($webinars as $course){
+                    $student = Sale::where('webinar_id',$course->id)->where('buyer_id',$data->student_id)->first();
+                    if(empty($student)){
+                        Sale::create([
+                            'buyer_id' => $data->student_id,
+                            'seller_id' => $course->creator_id,
+                            'webinar_id' => $course->id,
+                            'type' => Sale::$webinar,
+                            'payment_method' => Sale::$credit,
+                            'amount' => 0,
+                            'total_amount' => 0,
+                            'created_at' => time(),
+                        ]);
+                    }
                 }
-            }
 
+            }
         }
         $toastData = [
             'title' => trans('public.request_success'),
@@ -330,6 +332,31 @@ class CourseGroupController extends Controller
             'course_group_list_id' => $data->group_id,
             'webinar_id' => $data->webinar_id,
         ]);
+
+        $users = CourseGroupUsers::where('course_group_list_id',$data->group_id)->pluck('user_id');
+
+        if (!empty($users)) {
+            $webinar = Webinar::find($data->webinar_id);
+
+            if (!empty($webinar)) {
+                foreach($users as $user){
+                    $sale = Sale::where('webinar_id', $data->webinar_id)->where('buyer_id', $user)->first();
+                    if(empty($sale)){
+                        Sale::create([
+                            'buyer_id' =>  $user,
+                            'seller_id' => $webinar->creator_id,
+                            'webinar_id' => $data->webinar_id,
+                            'type' => Sale::$webinar,
+                            'payment_method' => Sale::$credit,
+                            'amount' => 0,
+                            'total_amount' => 0,
+                            'created_at' => time(),
+                        ]);
+                    }
+                }
+
+            }
+        }
 
         $toastData = [
             'title' => trans('public.request_success'),
