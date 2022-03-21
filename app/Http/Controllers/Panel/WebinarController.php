@@ -1047,4 +1047,12 @@ class WebinarController extends Controller
             'code' => 200,
         ], 200);
     }
+
+    public function deleteContent(Request $request)
+    {
+        WebinarContent::find($request->get('id'))->delete();
+        return response()->json([
+            'code' => 200,
+        ], 200);
+    }
 }

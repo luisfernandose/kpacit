@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Models\Module;
+use App\Models\WebinarContent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -26,10 +27,19 @@ class ModuleController extends Controller
             ], 422);
         }
 
-        Module::create([
+        $module = Module::create([
             'creator_id' => $user->id,
             'webinar_id' => $data['webinar_id'],
             'name' => $data['name'],
+        ]);
+
+        $max = WebinarContent::where([
+            'creator_id' => $user->id,
+            'webinar_id' => $data['webinar_id'],
+        ])->orderBy('order', 'desc')->first();
+
+        $module->update([
+            'order' => $max ? ($max->order + 1) : 1,
         ]);
 
         return response()->json([

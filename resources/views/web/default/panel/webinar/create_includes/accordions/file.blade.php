@@ -6,6 +6,7 @@
 
     <div id="collapseFile{{ !empty($file) ? $file->id :'record' }}" aria-labelledby="file_{{ !empty($file) ? $file->id :'record' }}" class=" collapse @if(empty($file)) show @endif" role="tabpanel">
         <div class="panel-collapse text-gray">
+            <form>
             <div class="file-form" data-action="/panel/files/{{ !empty($file) ? $file->id . '/update' : 'store' }}">
                 <input type="hidden" name="ajax[{{ !empty($file) ? $file->id : 'new' }}][webinar_id]" value="{{ !empty($webinar) ? $webinar->id :'' }}">
                 <input type="hidden" name="ajax[{{ !empty($file) ? $file->id : 'new' }}][module_id]" value="{{$module["id"]}}">
@@ -23,13 +24,13 @@
 
                             <div class="d-flex align-items-center js-ajax-accessibility">
                                 <div class="custom-control custom-radio">
-                                    <input type="radio" name="ajax[{{ !empty($file) ? $file->id : 'new' }}][accessibility]" value="free" @if(empty($file) or (!empty($file) and $file->accessibility == 'free')) checked="checked" @endif id="accessibilityRadio1_{{ !empty($file) ? $file->id : 'record' }}" class="custom-control-input">
-                                    <label class="custom-control-label font-14 cursor-pointer" for="accessibilityRadio1_{{ !empty($file) ? $file->id : 'record' }}">{{ trans('public.free') }}</label>
+                                    <input type="radio" name="ajax[new][accessibility]" value="free" id="accessibilityRadio{{$module['id']}}1F_record" class="custom-control-input">
+                                    <label class="custom-control-label font-14 cursor-pointer" for="accessibilityRadio{{$module['id']}}1F_record">{{ trans('public.free') }}</label>
                                 </div>
 
                                 <div class="custom-control custom-radio ml-15">
-                                    <input type="radio" name="ajax[{{ !empty($file) ? $file->id : 'new' }}][accessibility]" value="paid" @if(!empty($file) and $file->accessibility == 'paid') checked="checked" @endif id="accessibilityRadio2_{{ !empty($file) ? $file->id : 'record' }}" class="custom-control-input">
-                                    <label class="custom-control-label font-14 cursor-pointer" for="accessibilityRadio2_{{ !empty($file) ? $file->id : 'record' }}">{{ trans('public.paid') }}</label>
+                                    <input type="radio" name="ajax[new][accessibility]" value="paid" id="accessibilityRadio{{$module['id']}}2F_record" class="custom-control-input">
+                                    <label class="custom-control-label font-14 cursor-pointer" for="accessibilityRadio{{$module['id']}}2F_record">{{ trans('public.paid') }}</label>
                                 </div>
                             </div>
 
@@ -42,23 +43,23 @@
 
                             <div class="d-flex align-items-center">
                                 <div class="custom-control custom-radio">
-                                    <input type="radio" name="ajax[{{ !empty($file) ? $file->id : 'new' }}][storage]" value="local" @if(empty($file) or $file->storage != 'online') checked="checked" @endif id="customRadio1_{{ !empty($file) ? $file->id : 'record' }}" class="js-file-storage custom-control-input">
-                                    <label class="custom-control-label font-14 cursor-pointer" for="customRadio1_{{ !empty($file) ? $file->id : 'record' }}">{{ trans('webinars.upload') }}</label>
+                                    <input type="radio" name="ajax[new][storage]" value="local" id="customRadio1{{$module["id"]}}_record" class="js-file-storage custom-control-input">
+                                    <label class="custom-control-label font-14 cursor-pointer" for="customRadio1{{$module["id"]}}_record">{{ trans('webinars.upload') }}</label>
                                 </div>
 
                                 <div class="custom-control custom-radio ml-15">
-                                    <input type="radio" name="ajax[{{ !empty($file) ? $file->id : 'new' }}][storage]" value="online" @if(!empty($file) and $file->storage == 'online') checked="checked" @endif id="customRadio2_{{ !empty($file) ? $file->id : 'record' }}" class="js-file-storage custom-control-input">
-                                    <label class="custom-control-label font-14 cursor-pointer" for="customRadio2_{{ !empty($file) ? $file->id : 'record' }}">{{ trans('webinars.youtube_vimeo') }}</label>
+                                    <input type="radio" name="ajax[new][storage]" value="online" id="customRadio2{{$module["id"]}}_record" class="js-file-storage custom-control-input">
+                                    <label class="custom-control-label font-14 cursor-pointer" for="customRadio2{{$module["id"]}}_record">{{ trans('webinars.youtube_vimeo') }}</label>
                                 </div>
                             </div>
 
                             <div class="local-input input-group mt-20 @if(!empty($file) and $file->storage == 'online') d-none @endif">
                                 <div class="input-group-prepend">
-                                    <button type="button" class="input-group-text panel-file-manager" data-input="file_path{{ !empty($file) ? $file->id : 'record' }}" data-preview="holder">
+                                    <button type="button" class="input-group-text panel-file-manager" data-input="file_path{{$module["id"]}}record" data-preview="holder">
                                         <i data-feather="arrow-up" width="18" height="18" class="text-white"></i>
                                     </button>
                                 </div>
-                                <input type="text" readonly name="ajax[{{ !empty($file) ? $file->id : 'new' }}][file_path]" id="file_path{{ !empty($file) ? $file->id : 'record' }}" value="{{ (!empty($file) and $file->storage != 'online') ? $file->file : '' }}" class="js-ajax-file_path validate-path form-control" placeholder="{{ trans('webinars.file_upload_placeholder') }}"/>
+                                <input type="text" readonly name="ajax[new][file_path]" id="file_path{{$module["id"]}}record" value="" class="js-ajax-file_path validate-path form-control" placeholder="{{ trans('webinars.file_upload_placeholder') }}"/>
                                 <div class="invalid-feedback"></div>
                             </div>
 
@@ -69,7 +70,7 @@
                                             <i data-feather="link" width="18" height="18" class="text-white"></i>
                                         </span>
                                     </div>
-                                    <input type="text" name="ajax[{{ !empty($file) ? $file->id : 'new' }}][file_path]" value="{{ (!empty($file) and $file->storage == 'online') ? $file->file : '' }}" class="js-ajax-file_path form-control" placeholder="{{ trans('webinars.file_online_placeholder') }}"/>
+                                    <input type="text" name="ajax[new][file_path]" value="" class="js-ajax-file_path form-control" placeholder="{{ trans('webinars.file_online_placeholder') }}"/>
                                     <div class="invalid-feedback"></div>
                                 </div>
 
@@ -103,10 +104,10 @@
 
                         <div class="js-downloadable-file form-group mt-20 @if(!empty($file) and $file->storage == 'online') d-none @endif">
                             <div class="d-flex align-items-center justify-content-between">
-                                <label class="cursor-pointer input-label" for="downloadableSwitch{{ !empty($file) ? $file->id : '_record' }}">{{ trans('home.downloadable') }}</label>
+                                <label class="cursor-pointer input-label" for="downloadableSwitch{{$module["id"]}}_record">{{ trans('home.downloadable') }}</label>
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" name="ajax[{{ !empty($file) ? $file->id : 'new' }}][downloadable]" class="custom-control-input" id="downloadableSwitch{{ !empty($file) ? $file->id : '_record' }}" {{ (empty($file) or !$file->downloadable) ? '' : 'checked'  }}>
-                                    <label class="custom-control-label" for="downloadableSwitch{{ !empty($file) ? $file->id : '_record' }}"></label>
+                                    <input type="checkbox" name="ajax[new][downloadable]" class="custom-control-input" id="downloadableSwitch{{$module["id"]}}_record">
+                                    <label class="custom-control-label" for="downloadableSwitch{{$module["id"]}}_record"></label>
                                 </div>
                             </div>
                         </div>
@@ -121,6 +122,7 @@
                     @endif
                 </div>
             </div>
+        </form>
         </div>
     </div>
 

@@ -12,9 +12,9 @@
                         <i data-feather="more-vertical" height="20"></i>
                     </button>
                     <div class="dropdown-menu">
-                        <a href="/panel/modules/{{ $module->id }}/delete" class="delete-action btn btn-sm btn-transparent">{{ trans('public.delete') }}</a><br>
                         <button type="button" data-module-id="{{ $module->id }}" data-webinar-id="{{ $webinar->id }}" class="webinarAddFileModule btn btn-sm btn-transparent">{{ trans('panel.create_file') }}</button><br>
                         <button type="button" data-module-id="{{ $module->id }}" data-webinar-id="{{ $webinar->id }}" class="webinarAddSessionModule btn btn-sm btn-transparent">{{ trans('panel.create_session') }}</button><br>
+                        <button type="button" data-module-id="{{ $module->id }}" data-webinar-id="{{ $webinar->id }}" class="webinarAddTextModule btn btn-sm btn-transparent">{{ trans('panel.create_text_lesson') }}</button><br>
                         <a href="/panel/modules/{{ $module->id }}/delete" class="delete-action btn btn-sm btn-transparent">{{ trans('public.delete') }}</a><br>                        
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                                                             <i data-feather="more-vertical" height="20"></i>
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            <a href="/panel/content/{{ $content->id }}/delete" class="delete-action btn btn-sm btn-transparent">{{ trans('public.delete') }}</a>
+                                                            <button type="button" onclick='deleteContent({{$content->id}})' class="btn btn-sm btn-transparent">{{ trans('public.delete') }}</button>
                                                         </div>
                                                     </div>
                                                 @endif
@@ -94,13 +94,14 @@
                 </div>
                 </div>
                 </div>
-
-             
                 <div id="newFileForm{{$module["id"]}}" class="d-none">
                     @include('web.default.panel.webinar.create_includes.accordions.file',['webinar' => $webinar])
                 </div>
                 <div id="newSessionForm{{$module["id"]}}" class="d-none">
                     @include('web.default.panel.webinar.create_includes.accordions.session',['webinar' => $webinar])
+                </div>
+                <div id="newTextLessonForm{{$module["id"]}}" class="d-none">
+                    @include('web.default.panel.webinar.create_includes.accordions.text-lesson',['webinar' => $webinar])
                 </div>
 
             </div>

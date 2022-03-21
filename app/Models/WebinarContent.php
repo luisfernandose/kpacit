@@ -40,7 +40,7 @@ class WebinarContent extends Model
     {
         return $this->belongsTo('App\Models\Session', 'resource_id', 'id');
     }
-    public function textLessons()
+    public function textLesson()
     {
         return $this->belongsTo('App\Models\TextLesson', 'resource_id', 'id');
     }
@@ -54,6 +54,9 @@ class WebinarContent extends Model
             case 'session':
                 return trans('panel.session');
                 break;
+            case 'text':
+                return trans('panel.text_lesson');
+                break;
         }
 
     }
@@ -65,6 +68,9 @@ class WebinarContent extends Model
                 break;
             case 'session':
                 return $this->session->title;
+                break;
+            case 'text':
+                return $this->textLesson->title;
                 break;
         }
 
