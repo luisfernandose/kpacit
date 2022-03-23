@@ -584,7 +584,7 @@ class Webinar extends Model
                 break;
         }
 
-        return $link;
+        return is_array($link) ? $link[$social]: $link;
     }
 
     public function getVideoDemoAttribute($value)
