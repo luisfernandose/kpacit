@@ -1,6 +1,6 @@
     <div class="d-flex align-items-center justify-content-between pt-4" role="tab" id="file_{{ !empty($file) ? $file->id :'record' }}">
         <div class="font-weight-bold text-dark-blue" href="#collapseFile{{ !empty($file) ? $file->id :'record' }}" aria-controls="collapseFile{{ !empty($file) ? $file->id :'record' }}" data-parent="#filesAccordion" role="button" data-toggle="collapse" aria-expanded="true">
-            <span>{{ !empty($file) ? $file->title . ($file->accessibility == 'free' ? " (". trans('public.free') .")" : '') : trans('public.add_new_files') }}</span>
+            <span>{{  isset($edit) ? trans('public.edit_files') : trans('public.add_new_files') }}</span>
         </div>
     </div>
 

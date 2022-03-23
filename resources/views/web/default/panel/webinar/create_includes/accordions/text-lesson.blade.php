@@ -1,6 +1,6 @@
 <div class="d-flex align-items-center justify-content-between " role="tab" id="text_lesson_{{ !empty($textLesson) ? $textLesson->id :'record' }}">
     <div class="font-weight-bold text-dark-blue" href="#collapseTextLesson{{ !empty($textLesson) ? $textLesson->id :'record' }}" aria-controls="collapseTextLesson{{ !empty($textLesson) ? $textLesson->id :'record' }}" data-parent="#text_lessonsAccordion" role="button" data-toggle="collapse" aria-expanded="true">
-        <span>{{ !empty($textLesson) ? $textLesson->title : trans('public.add_new_test_lesson') }}</span>
+        <span>{{ isset($edit) ? trans('public.edit_test_lesson') : trans('public.add_new_test_lesson') }}</span>
     </div>
 
     <div class="d-flex align-items-center">
@@ -21,7 +21,7 @@
     </div>
 </div>
 
-<div id="collapseTextLesson{{ !empty($textLesson) ? $textLesson->id :'record' }}" aria-labelledby="text_lesson_{{ !empty($textLesson) ? $textLesson->id :'record' }}" class=" collapse @if(empty($textLesson)) show @endif" role="tabpanel">
+<div id="collapseTextLessonrecord" aria-labelledby="text_lesson_{{ !empty($textLesson) ? $textLesson->id :'record' }}" class=" collapse @if(empty($textLesson)) show @endif" role="tabpanel">
     <div class="panel-collapse text-gray">
         <div class="text_lesson-form" data-action="/panel/text-lesson/{{ !empty($textLesson) ? $textLesson->id . '/update' : 'store' }}">
             <input type="hidden" name="ajax[{{ 'new' }}][webinar_id]" value="{{ $webinar->id }}">
@@ -45,11 +45,11 @@
                         <label class="input-label">{{ trans('public.image') }}</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <button type="button" class="input-group-text panel-file-manager" data-input="image{{$module["id"]}}record" data-preview="holder">
+                                <button type="button" class="input-group-text panel-file-manager" data-input="image{{$module["id"]}}record{{isset($edit)?'E':''}}" data-preview="holder">
                                     <i data-feather="arrow-up" width="18" height="18" class="text-white"></i>
                                 </button>
                             </div>
-                            <input type="text" readonly name="ajax[new][image]" id="image{{$module["id"]}}record" value="" class="js-ajax-image form-control validate-path"/>
+                            <input type="text" readonly name="ajax[new][image]" id="image{{$module["id"]}}record{{isset($edit)?'E':''}}" value="" class="js-ajax-image form-control validate-path"/>
                             <div class="invalid-feedback"></div>
                         </div>
                     </div>
@@ -59,13 +59,13 @@
 
                         <div class="d-flex align-items-center js-ajax-accessibility">
                             <div class="custom-control custom-radio">
-                                <input type="radio" name="ajax[new][accessibility]" value="free" id="accessibilityRadio{{$module['id']}}1T_record" class="custom-control-input">
-                                <label class="custom-control-label font-14 cursor-pointer" for="accessibilityRadio{{$module['id']}}1T_record">{{ trans('public.free') }}</label>
+                                <input type="radio" name="ajax[new][accessibility]" value="free" id="accessibilityRadio{{$module['id']}}1T_record{{isset($edit)?'E':''}}" class="custom-control-input">
+                                <label class="custom-control-label font-14 cursor-pointer" for="accessibilityRadio{{$module['id']}}1T_record{{isset($edit)?'E':''}}">{{ trans('public.free') }}</label>
                             </div>
 
                             <div class="custom-control custom-radio ml-15">
-                                <input type="radio" name="ajax[new][accessibility]" value="paid" id="accessibilityRadio{{$module['id']}}2T_record" class="custom-control-input">
-                                <label class="custom-control-label font-14 cursor-pointer" for="accessibilityRadio{{$module['id']}}2T_record">{{ trans('public.paid') }}</label>
+                                <input type="radio" name="ajax[new][accessibility]" value="paid" id="accessibilityRadio{{$module['id']}}2T_record{{isset($edit)?'E':''}}" class="custom-control-input">
+                                <label class="custom-control-label font-14 cursor-pointer" for="accessibilityRadio{{$module['id']}}2T_record{{isset($edit)?'E':''}}">{{ trans('public.paid') }}</label>
                             </div>
                         </div>
                         <div class="invalid-feedback"></div>
@@ -73,14 +73,13 @@
 
                     <div class="form-group">
                         <label class="input-label d-block">{{ trans('public.attachments') }}</label>
-
                         <select class="js-ajax-attachments @if(empty($textLesson)) form-control @endif attachments-select2" name="ajax[{{ !empty($textLesson) ? $textLesson->id : 'new' }}][attachments]" data-placeholder="{{ trans('public.choose_attachments') }}">
                             <option></option>
 
                             @if(!empty($webinar->files) and count($webinar->files))
                                 @foreach($webinar->files as $filesInfo)
-                                    @if($filesInfo->downloadable)
-                                        <option value="{{ $filesInfo->id }}" @if(!empty($textLesson) and in_array($filesInfo->id,$textLesson->attachments->pluck('file_id')->toArray())) selected @endif>{{ $filesInfo->title }}</option>
+                                    @if($filesInfo->file->downloadable)
+                                        <option value="{{ $filesInfo->file->id }}" @if(!empty($textLesson) and in_array($filesInfo->file->id,$textLesson->attachments->pluck('file_id')->toArray())) selected @endif>{{ $filesInfo->file->title }}</option>
                                     @endif
                                 @endforeach
                             @endif
@@ -108,10 +107,10 @@
             </div>
 
             <div class="mt-30 d-flex align-items-center">
-                <button type="button" class="js-save-text_lesson btn btn-sm btn-primary">{{ trans('public.save') }}</button>
+                <button type="button" class="js-save-text_lesson btn btn-sm btn-primary">@if (isset($edit)) {{trans('public.edit')}}  @else {{trans('public.save')}} @endif</button>
 
                 @if(empty($textLesson))
-                    <button type="button" data-module-id="{{$module["id"]}}"  class="btn btn-sm btn-danger ml-10 close-text">{{ trans('public.close') }}</button>
+                    <button type="button" data-module-id="{{$module["id"]}}"  class="btn btn-sm btn-danger ml-10 @if (isset($edit)) close-text-edit @else close-text @endif">{{ trans('public.close') }}</button>
                 @endif
             </div>
         </div>

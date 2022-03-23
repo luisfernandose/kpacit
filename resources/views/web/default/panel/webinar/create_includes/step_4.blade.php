@@ -179,6 +179,8 @@
             $("#newSessionForm"+id).addClass('d-none');
             $("#newTextLessonForm"+id).removeClass('d-inline');
             $("#newTextLessonForm"+id).addClass('d-none');
+            $("#editTextLessonForm").addClass('d-none');
+            $("#editTextLessonForm").removeClass('d-inline');
         }
     
         $(".webinarAddFileModule").click((e)=>{
@@ -190,6 +192,10 @@
         $(".close-file-edit").click((e)=>{
             $("#editFileForm").removeClass('d-inline');
             $("#editFileForm").addClass('d-none');
+        });
+        $(".close-text-edit").click((e)=>{
+            $("#editTextLessonForm").removeClass('d-inline');
+            $("#editTextLessonForm").addClass('d-none');
         });
         $(".close-session-edit").click((e)=>{
             $("#editSessionForm").removeClass('d-inline');
@@ -256,6 +262,31 @@
         
         const editContent = (content_id, type)=>{
             closeAll();
+            if(type=='text'){
+                $("#editTextLessonForm").removeClass('d-none');
+                $("#editTextLessonForm").addClass('d-inline');
+                let action = "/panel/webinars/content/edit/"+content_id;
+                $.get(action, function (result) {
+                    $("#editTextLessonForm").find('#collapseTextLessonrecord').find('.panel-collapse').find('.text_lesson-form').data('action', '/panel/text-lesson/'+result.data.text_lesson.id+'/update');
+
+                    console.log($("#editTextLessonForm").find('#collapseTextLessonrecord').find('.panel-collapse').find('.text_lesson-form').data('action'));
+
+                    $("#editTextLessonForm").find('[name="ajax[new][title]"]').val(result.data.text_lesson.title);
+                    $("#editTextLessonForm").find('[name="ajax[new][study_time]"]').val(result.data.text_lesson.study_time);
+                    $("#editTextLessonForm").find('[name="ajax[new][study_time]"]').val(result.data.text_lesson.study_time);
+                    $("#editTextLessonForm").find('[name="ajax[new][image]"]').val(result.data.text_lesson.image);
+
+                    if(result.data.text_lesson.accessibility == 'free'){
+                        $("#editTextLessonForm").find('#accessibilityRadio'+result.data.module_id+'1T_recordE').prop("checked", true);
+                    } else{
+                        $("#editTextLessonForm").find('#accessibilityRadio'+result.data.module_id+'2T_recordE').prop("checked", true);
+                    } 
+                    $("#editTextLessonForm").find('[name="ajax[new][attachments]"]').find("option[value='"+result.data.text_lesson.attachments.file_id+"']").prop("selected", true);
+                    $("#editTextLessonForm").find('[name="ajax[new][summary]"]').val(result.data.text_lesson.summary);
+                    $("#editTextLessonForm").find('[name="ajax[new][content]"]').val(result.data.text_lesson.content);
+                   
+                });
+            }
             if(type=='file'){
                 $("#editFileForm").removeClass('d-none');
                 $("#editFileForm").addClass('d-inline');

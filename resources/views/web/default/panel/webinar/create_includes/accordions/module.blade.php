@@ -38,7 +38,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-30 d-flex align-items-center">
+                <div class="mt-30 d-flex align-items-center pb-4">
                     <button type="button" data-module-id="{{ !empty($module) ? $module->id : '' }}" class="save-module btn btn-sm btn-primary">{{ trans('public.save') }} </button>
 
                     @if(empty($module))
@@ -50,6 +50,9 @@
                 </div>
                 <div id="editSessionForm" class="d-none">
                     @include('web.default.panel.webinar.create_includes.accordions.session',['webinar' => $webinar, 'edit'=>true])
+                </div>
+                <div id="editTextLessonForm" class="d-none">
+                    @include('web.default.panel.webinar.create_includes.accordions.text-lesson',['webinar' => $webinar, 'edit'=>true])
                 </div>
                 <div id="newFileForm{{$module["id"]}}" class="d-none">
                     @include('web.default.panel.webinar.create_includes.accordions.file',['webinar' => $webinar])

@@ -1,7 +1,7 @@
 
 <div class="d-flex align-items-center justify-content-between " role="tab" id="session_{{ 'record' }}">
     <div class="font-weight-bold text-dark-blue" href="#collapseSession{{'record' }}" aria-controls="collapseSession{{ 'record' }}" data-parent="#sessionsAccordion" role="button" data-toggle="collapse" aria-expanded="true">
-        <span>{{ trans('public.add_new_sessions') }}</span>
+        <span>{{ isset($edit) ? trans('public.edit_sessions') : trans('public.add_new_sessions') }}</span>
     </div>
 
     <div class="d-flex align-items-center">

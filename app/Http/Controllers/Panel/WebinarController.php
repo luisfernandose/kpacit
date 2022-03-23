@@ -1068,7 +1068,7 @@ class WebinarController extends Controller
                 $data->session->date = date("Y-m-d H:i:s", $data->session->date);
                 break;
             case "text":
-                $data = WebinarContent::with('text')->find($content_id);
+                $data = WebinarContent::with('textLesson')->with('textLesson.attachments')->find($content_id);
                 break;
         }
         return response()->json([
