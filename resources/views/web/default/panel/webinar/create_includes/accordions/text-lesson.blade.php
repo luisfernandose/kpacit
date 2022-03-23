@@ -49,7 +49,7 @@
                                     <i data-feather="arrow-up" width="18" height="18" class="text-white"></i>
                                 </button>
                             </div>
-                            <input type="text" readonly name="ajax[new][image]" id="imageTL{{$module["id"]}}record" value="" class="js-ajax-image form-control validate-path"/>
+                            <input type="text" readonly name="ajax[new][image]" id="image{{$module["id"]}}record" value="" class="js-ajax-image form-control validate-path"/>
                             <div class="invalid-feedback"></div>
                         </div>
                     </div>
