@@ -186,7 +186,6 @@
             $("#newFileForm"+$(e.target).data('module-id')).addClass('d-inline');
         });
         $(".close-file-edit").click((e)=>{
-            console.log('pasando');
             $("#editFileForm").removeClass('d-inline');
             $("#editFileForm").addClass('d-none');
         });
@@ -258,7 +257,6 @@
             $.get(action, function (result) {
                 $("#editFileForm").find('#collapseFilerecord').find('.panel-collapse').find('.file-form').data('action', '/panel/files/'+result.data.file.id+'/update');
 
-                console.log($("#editFileForm").find('#collapseFilerecord').find('.panel-collapse').find('.file-form').data('action'));
                 $("#editFileForm").find('[name="ajax[new][title]"]').val(result.data.file.title);
                 if(result.data.file.accessibility == 'free'){
                     $("#editFileForm").find('#accessibilityRadio'+result.data.module_id+'1F_recordE').prop("checked", true);
@@ -280,10 +278,8 @@
                 $("#editFileForm").find('[name="ajax[new][file_type]"]').find("option[value='"+result.data.file.file_type+"']").prop("selected", true);
 
                 if(result.data.file.downloadable == 1){
-                    console.log('pasando', result.data.file.downloadable);
                     $("#editFileForm").find('[name="ajax[new][downloadable]"]').prop("checked", true);
                 } else{
-                    console.log('false', result.data.file.downloadable);
                     $("#editFileForm").find('[name="ajax[new][downloadable]"]').prop("checked", false);
                 } 
                
