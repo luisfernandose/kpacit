@@ -35,6 +35,7 @@ Route::group(['namespace' => 'Panel', 'prefix' => 'panel', 'middleware' => ['imp
             Route::post('/store', 'WebinarController@store');
             Route::get('/{id}/step/{step?}', 'WebinarController@edit');
             Route::post('/content/delete', 'WebinarController@deleteContent')->name('delete_content');
+            Route::get('/content/edit/{content_id}', 'WebinarController@editContent')->name('edit_content');
             Route::get('/{id}/edit', 'WebinarController@edit')->name('panel_edit_webinar');
             Route::post('/{id}/update', 'WebinarController@update');
             Route::get('/{id}/delete', 'WebinarController@destroy');

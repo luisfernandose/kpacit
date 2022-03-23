@@ -77,7 +77,7 @@ class TextLessonsController extends Controller
     public function update(Request $request, $id)
     {
         $user = auth()->user();
-        $data = $request->get('ajax')[$id];
+        $data = $request->get('ajax')['new'];
 
         $validator = Validator::make($data, [
             'webinar_id' => 'required',

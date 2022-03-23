@@ -13,7 +13,7 @@ class TextLesson extends Model
 
     public function attachments()
     {
-        return $this->hasMany('App\Models\TextLessonAttachment', 'text_lesson_id', 'id');
+        return $this->hasOne('App\Models\TextLessonAttachment', 'text_lesson_id', 'id');
     }
 
     public function learningStatus()

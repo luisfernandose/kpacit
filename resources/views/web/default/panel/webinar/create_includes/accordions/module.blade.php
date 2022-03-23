@@ -38,12 +38,21 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-30 d-flex align-items-center">
+                <div class="mt-30 d-flex align-items-center pb-4">
                     <button type="button" data-module-id="{{ !empty($module) ? $module->id : '' }}" class="save-module btn btn-sm btn-primary">{{ trans('public.save') }} </button>
 
                     @if(empty($module))
                         <button type="button" class="btn btn-sm btn-danger ml-10 cancel-accordion">{{ trans('public.close') }}</button>
                     @endif
+                </div>
+                <div id="editFileForm" class="d-none">
+                    @include('web.default.panel.webinar.create_includes.accordions.file',['webinar' => $webinar, 'edit'=>true])
+                </div>
+                <div id="editSessionForm" class="d-none">
+                    @include('web.default.panel.webinar.create_includes.accordions.session',['webinar' => $webinar, 'edit'=>true])
+                </div>
+                <div id="editTextLessonForm" class="d-none">
+                    @include('web.default.panel.webinar.create_includes.accordions.text-lesson',['webinar' => $webinar, 'edit'=>true])
                 </div>
                 <div id="newFileForm{{$module["id"]}}" class="d-none">
                     @include('web.default.panel.webinar.create_includes.accordions.file',['webinar' => $webinar])
@@ -79,6 +88,7 @@
                                                             <i data-feather="more-vertical" height="20"></i>
                                                         </button>
                                                         <div class="dropdown-menu">
+                                                            <button type="button" onclick='editContent({{$content->id}}, "{{$content->resource_type}}")' class="btn btn-sm btn-transparent">{{ trans('public.edit') }}</button><br>
                                                             <button type="button" onclick='deleteContent({{$content->id}})' class="btn btn-sm btn-transparent">{{ trans('public.delete') }}</button>
                                                         </div>
                                                     </div>

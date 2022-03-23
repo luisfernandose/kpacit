@@ -90,7 +90,7 @@ class FileController extends Controller
     {
 
         $user = auth()->user();
-        $data = $request->get('ajax')[$id];
+        $data = $request->get('ajax')["new"];
 
         if (empty($data['storage'])) {
             $data['storage'] = 'local';

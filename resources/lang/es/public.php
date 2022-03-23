@@ -6,7 +6,7 @@ return [
     |--------------------------------------------------------------------------
     | General Translations
     |--------------------------------------------------------------------------
-    */
+     */
 
     'title' => 'Title',
     'sub_title' => 'Subtitle',
@@ -15,7 +15,7 @@ return [
     'cover_image' => 'Cover Image',
     'thumbnail_image' => 'Thumbnail',
     'image' => 'Image',
-  	'images' => 'Images',
+    'images' => 'Images',
     'demo_video' => 'Demo Video',
     'optional' => 'Optional',
     'description' => 'Description',
@@ -128,6 +128,7 @@ return [
     'sessions' => 'Sessions',
     'add_session' => 'New Session',
     'add_new_sessions' => 'New Live Session',
+    'edit_sessions' => 'Edit Live Session',
     'sessions_no_result' => 'No live sessions!',
     'sessions_no_result_hint' => 'You can create live sessions so students will be able to join and start learning.',
     'create_join_link' => 'Create join link',
@@ -143,6 +144,7 @@ return [
     'source' => 'Source',
     'add_files' => 'New File',
     'add_new_files' => 'Add new file',
+    'edit_files' => 'Edit file',
     'files_no_result' => 'No file is defined!',
     'files_no_result_hint' => 'You can define course video parts, projects, attachments and exercises as files.',
 
@@ -150,6 +152,7 @@ return [
     'lesson' => 'Lesson',
     'add_test_lesson' => 'New text lesson',
     'add_new_test_lesson' => 'Add new text lesson',
+    'edit_test_lesson' => 'Edit text lesson',
     'text_lesson_no_result' => 'No text lesson!',
     'text_lesson_no_result_hint' => 'Create text lessons so students will be able to enroll on them and start learning.',
 
@@ -368,7 +371,7 @@ return [
 
     'zoom_api' => 'Zoom API',
     'zoom_jwt_token' => 'Zoom JWT Token',
- 	'how_zoom_jwt_token' => 'How to create Zoom JWT token',
+    'how_zoom_jwt_token' => 'How to create Zoom JWT token',
     'instructor_is_not_available' => 'Instructor is temporarily unavailable.',
     'unlimited' => 'Unlimited',
 ];

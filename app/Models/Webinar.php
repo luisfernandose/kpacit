@@ -67,7 +67,7 @@ class Webinar extends Model
 
     public function files()
     {
-        return $this->hasMany('App\Models\File', 'webinar_id', 'id');
+        return $this->hasMany('App\Models\WebinarContent', 'webinar_id', 'id')->where('resource_type', 'file');
     }
 
     public function textLessons()
@@ -455,7 +455,7 @@ class Webinar extends Model
             return config('app_url') . $this->image_cover;
 
         }
-        if(!empty($this->image_cover)){
+        if (!empty($this->image_cover)) {
 
             return Storage::url($this->image_cover);
         }
@@ -468,7 +468,7 @@ class Webinar extends Model
         if (strpos($this->thumbnail, "http://") !== false || strpos($this->thumbnail, "https://") !== false) {
             return config('app_url') . $this->thumbnail;
         }
-        if(!empty($this->thumbnail)){
+        if (!empty($this->thumbnail)) {
 
             return Storage::url($this->thumbnail);
         }
@@ -584,12 +584,12 @@ class Webinar extends Model
                 break;
         }
 
-        return is_array($link) ? $link[$social]: $link;
+        return is_array($link) ? $link[$social] : $link;
     }
 
     public function getVideoDemoAttribute($value)
-    {   
-        if(!empty($value)){
+    {
+        if (!empty($value)) {
 
             return Storage::url($value);
         }

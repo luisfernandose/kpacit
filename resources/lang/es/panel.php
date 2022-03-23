@@ -316,4 +316,5 @@ return [
     'create_file' => 'Nuevo archivo',
     'create_session' => 'Nueva sesión',
     'create_text_lesson' => 'Nuevo texto',
+    'text_lesson' => 'Texto',
 ];

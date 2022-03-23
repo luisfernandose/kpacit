@@ -164,8 +164,7 @@
      * */
     function handleWebinarItemForm(form, $this) {
         let data = serializeObjectByTag(form);
-        let action = form.attr("data-action");
-
+        let action = form.data("action");
         $this.addClass("loadingbar primary").prop("disabled", true);
         form.find("input").removeClass("is-invalid");
         form.find("textarea").removeClass("is-invalid");
@@ -292,7 +291,6 @@
         e.preventDefault();
         const $this = $(this);
         let form = $this.closest(".file-form");
-
         handleWebinarItemForm(form, $this);
     });
 
