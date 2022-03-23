@@ -1055,4 +1055,12 @@ class WebinarController extends Controller
             'code' => 200,
         ], 200);
     }
+    public function editContent($content_id)
+    {
+        $data = WebinarContent::with('file')->find($content_id);
+        return response()->json([
+            'code' => 200,
+            'data' => $data,
+        ], 200);
+    }
 }

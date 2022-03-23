@@ -45,6 +45,9 @@
                         <button type="button" class="btn btn-sm btn-danger ml-10 cancel-accordion">{{ trans('public.close') }}</button>
                     @endif
                 </div>
+                <div id="editFileForm" class="d-none">
+                    @include('web.default.panel.webinar.create_includes.accordions.file',['webinar' => $webinar, 'edit'=>true])
+                </div>
                 <div id="newFileForm{{$module["id"]}}" class="d-none">
                     @include('web.default.panel.webinar.create_includes.accordions.file',['webinar' => $webinar])
                 </div>
@@ -79,6 +82,7 @@
                                                             <i data-feather="more-vertical" height="20"></i>
                                                         </button>
                                                         <div class="dropdown-menu">
+                                                            <button type="button" onclick='editContent({{$content->id}})' class="btn btn-sm btn-transparent">{{ trans('public.edit') }}</button><br>
                                                             <button type="button" onclick='deleteContent({{$content->id}})' class="btn btn-sm btn-transparent">{{ trans('public.delete') }}</button>
                                                         </div>
                                                     </div>

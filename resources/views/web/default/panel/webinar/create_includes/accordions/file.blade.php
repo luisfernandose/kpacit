@@ -24,13 +24,13 @@
 
                             <div class="d-flex align-items-center js-ajax-accessibility">
                                 <div class="custom-control custom-radio">
-                                    <input type="radio" name="ajax[new][accessibility]" value="free" id="accessibilityRadio{{$module['id']}}1F_record" class="custom-control-input">
-                                    <label class="custom-control-label font-14 cursor-pointer" for="accessibilityRadio{{$module['id']}}1F_record">{{ trans('public.free') }}</label>
+                                    <input type="radio" name="ajax[new][accessibility]" value="free" id="accessibilityRadio{{$module['id']}}1F_record{{isset($edit)?'E':''}}" class="custom-control-input">
+                                    <label class="custom-control-label font-14 cursor-pointer" for="accessibilityRadio{{$module['id']}}1F_record{{isset($edit)?'E':''}}">{{ trans('public.free') }}</label>
                                 </div>
 
                                 <div class="custom-control custom-radio ml-15">
-                                    <input type="radio" name="ajax[new][accessibility]" value="paid" id="accessibilityRadio{{$module['id']}}2F_record" class="custom-control-input">
-                                    <label class="custom-control-label font-14 cursor-pointer" for="accessibilityRadio{{$module['id']}}2F_record">{{ trans('public.paid') }}</label>
+                                    <input type="radio" name="ajax[new][accessibility]" value="paid" id="accessibilityRadio{{$module['id']}}2F_record{{isset($edit)?'E':''}}" class="custom-control-input">
+                                    <label class="custom-control-label font-14 cursor-pointer" for="accessibilityRadio{{$module['id']}}2F_record{{isset($edit)?'E':''}}">{{ trans('public.paid') }}</label>
                                 </div>
                             </div>
 
@@ -43,23 +43,23 @@
 
                             <div class="d-flex align-items-center">
                                 <div class="custom-control custom-radio">
-                                    <input type="radio" name="ajax[new][storage]" value="local" id="customRadio1{{$module["id"]}}_record" class="js-file-storage custom-control-input">
-                                    <label class="custom-control-label font-14 cursor-pointer" for="customRadio1{{$module["id"]}}_record">{{ trans('webinars.upload') }}</label>
+                                    <input type="radio" name="ajax[new][storage]" value="local" id="customRadio1{{$module["id"]}}_record{{isset($edit)?'E':''}}" class="js-file-storage custom-control-input">
+                                    <label class="custom-control-label font-14 cursor-pointer" for="customRadio1{{$module["id"]}}_record{{isset($edit)?'E':''}}">{{ trans('webinars.upload') }}</label>
                                 </div>
 
                                 <div class="custom-control custom-radio ml-15">
-                                    <input type="radio" name="ajax[new][storage]" value="online" id="customRadio2{{$module["id"]}}_record" class="js-file-storage custom-control-input">
-                                    <label class="custom-control-label font-14 cursor-pointer" for="customRadio2{{$module["id"]}}_record">{{ trans('webinars.youtube_vimeo') }}</label>
+                                    <input type="radio" name="ajax[new][storage]" value="online" id="customRadio2{{$module["id"]}}_record{{isset($edit)?'E':''}}" class="js-file-storage custom-control-input">
+                                    <label class="custom-control-label font-14 cursor-pointer" for="customRadio2{{$module["id"]}}_record{{isset($edit)?'E':''}}">{{ trans('webinars.youtube_vimeo') }}</label>
                                 </div>
                             </div>
 
                             <div class="local-input input-group mt-20 @if(!empty($file) and $file->storage == 'online') d-none @endif">
                                 <div class="input-group-prepend">
-                                    <button type="button" class="input-group-text panel-file-manager" data-input="file_path{{$module["id"]}}record" data-preview="holder">
+                                    <button type="button" class="input-group-text panel-file-manager" data-input="file_path{{$module["id"]}}record{{isset($edit)?'E':''}}" data-preview="holder">
                                         <i data-feather="arrow-up" width="18" height="18" class="text-white"></i>
                                     </button>
                                 </div>
-                                <input type="text" readonly name="ajax[new][file_path]" id="file_path{{$module["id"]}}record" value="" class="js-ajax-file_path validate-path form-control" placeholder="{{ trans('webinars.file_upload_placeholder') }}"/>
+                                <input type="text" readonly name="ajax[new][file_path]" id="file_path{{$module["id"]}}record{{isset($edit)?'E':''}}" value="" class="js-ajax-file_path validate-path form-control" placeholder="{{ trans('webinars.file_upload_placeholder') }}"/>
                                 <div class="invalid-feedback"></div>
                             </div>
 
@@ -115,10 +115,10 @@
                 </div>
 
                 <div class="mt-30 d-flex align-items-center">
-                    <button type="button" class="js-save-file save-file1 btn btn-sm btn-primary">{{ trans('public.save') }} </button>
+                    <button type="button" class="js-save-file save-file btn btn-sm btn-primary">@if (isset($edit)) {{trans('public.edit')}}  @else {{trans('public.save')}} @endif</button>
 
                     @if(empty($file))
-                        <button type="button" data-module-id="{{$module["id"]}}" class="btn btn-sm btn-danger ml-10 close-file">{{ trans('public.close') }}</button>
+                        <button type="button" data-module-id="{{$module["id"]}}" class="btn btn-sm btn-danger ml-10 @if (isset($edit)) close-file-edit @else close-file @endif">{{ trans('public.close') }}</button>
                     @endif
                 </div>
             </div>

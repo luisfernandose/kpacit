@@ -66,8 +66,6 @@
 </section>
 
 
-
-
 @push('scripts_bottom')
     <script src="/assets/default/vendors/select2/select2.min.js"></script>
     <script src="/assets/default/vendors/daterangepicker/daterangepicker.min.js"></script>
@@ -75,10 +73,225 @@
     <script src="/assets/default/vendors/sortable/jquery-ui.min.js"></script>
 
     <script>
+
+        $(document).ready(function() {
+    
+            $('body').on('click', '#webinarAddModule1', function (e) {
+                $("#newModuleForm").removeClass('d-none');
+                $("#newModuleForm").addClass('d-inline');
+            });
+            $('body').on('click', '.close-new-module', function (e) {
+                $("#newModuleForm").removeClass('d-inline');
+                $("#newModuleForm").addClass('d-none');
+            });
+    
+            $('body').on('click', '.save-module', function (e) {
+    
+    
+    
+                const $this = $(this);
+                let form = $this.closest('.module-form');
+    
+                handleForm(form, $this);
+    
+            });
+    
+            // $('body').on('click', '.cancel-accordion2', function (e) {
+    
+            //     e.preventDefault();
+    
+            //     $(this).closest('.accordion-row').remove();
+            // });
+    
+        });
+    
+        const randomString = () => {
+            var text = "";
+            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    
+            for (var i = 0; i < 5; i++)
+                text += possible.charAt(Math.floor(Math.random() * possible.length));
+    
+            return text;
+        }
+    
+    
+        const handleForm = (form, $this) => {
+    
+            let data = serializeObjectByTag(form);
+            let action = form.attr('data-action');
+    
+            $this.addClass('loadingbar primary').prop('disabled', true);
+            form.find('input').removeClass('is-invalid');
+            form.find('textarea').removeClass('is-invalid');
+    
+            $.post(action, data, function (result) {
+                if (result && result.code === 200) {
+                    //window.location.reload();
+                    Swal.fire({
+                        icon: 'success',
+                        html: '<h3 class="font-20 text-center text-dark-blue py-25">' + saveSuccessLang + '</h3>',
+                        showConfirmButton: false,
+                        width: '25rem',
+                    });
+    
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 500)
+                }
+            }).fail(err => {
+                $this.removeClass('loadingbar primary').prop('disabled', false);
+                var errors = err.responseJSON;
+    
+                if (errors && errors.status === 'zoom_jwt_token_invalid') {
+                    Swal.fire({
+                        icon: 'error',
+                        html: '<h3 class="font-20 text-center text-dark-blue py-25">' + zoomJwtTokenInvalid + '</h3>',
+                        showConfirmButton: false,
+                        width: '25rem',
+                    });
+                }
+    
+                if (errors && errors.errors) {
+                    Object.keys(errors.errors).forEach((key) => {
+                        const error = errors.errors[key];
+                        let element = form.find('.js-ajax-' + key);
+    
+                        if (key === 'zoom-not-complete-alert') {
+                            form.find('.js-zoom-not-complete-alert').removeClass('d-none');
+                        } else {
+                            element.addClass('is-invalid');
+                            element.parent().find('.invalid-feedback').text(error[0]);
+                        }
+                    });
+                }
+            })
+        }
+    
+        const closeAll = (id)=>{
+            $("#editFileForm").removeClass('d-inline');
+            $("#editFileForm").addClass('d-none');
+            $("#newFileForm"+id).removeClass('d-inline');
+            $("#newFileForm"+id).addClass('d-none');
+            $("#newSessionForm"+id).removeClass('d-inline');
+            $("#newSessionForm"+id).addClass('d-none');
+            $("#newTextLessonForm"+id).removeClass('d-inline');
+            $("#newTextLessonForm"+id).addClass('d-none');
+        }
+    
+        $(".webinarAddFileModule").click((e)=>{
+            closeAll($(e.target).data('module-id'));
+            $('#collapseModule'+$(e.target).data('module-id')).collapse();
+            $("#newFileForm"+$(e.target).data('module-id')).removeClass('d-none');
+            $("#newFileForm"+$(e.target).data('module-id')).addClass('d-inline');
+        });
+        $(".close-file-edit").click((e)=>{
+            console.log('pasando');
+            $("#editFileForm").removeClass('d-inline');
+            $("#editFileForm").addClass('d-none');
+        });
+        $(".close-file").click((e)=>{
+            $("#newFileForm"+$(e.target).data('module-id')).removeClass('d-inline');
+            $("#newFileForm"+$(e.target).data('module-id')).addClass('d-none');
+        });
+        $(".webinarAddSessionModule").click((e)=>{
+            closeAll($(e.target).data('module-id'));
+            $('#collapseModule'+$(e.target).data('module-id')).collapse();
+            $("#newSessionForm"+$(e.target).data('module-id')).removeClass('d-none');
+            $("#newSessionForm"+$(e.target).data('module-id')).addClass('d-inline');
+        });
+        $(".close-session").click((e)=>{
+            $("#newSessionForm"+$(e.target).data('module-id')).removeClass('d-inline');
+            $("#newSessionForm"+$(e.target).data('module-id')).addClass('d-none');
+        });
+        $(".webinarAddTextModule").click((e)=>{
+            closeAll($(e.target).data('module-id'));
+            $('#collapseModule'+$(e.target).data('module-id')).collapse();
+            $("#newTextLessonForm"+$(e.target).data('module-id')).removeClass('d-none');
+            $("#newTextLessonForm"+$(e.target).data('module-id')).addClass('d-inline');
+        });
+        $(".close-text").click((e)=>{
+            $("#newTextLessonForm"+$(e.target).data('module-id')).removeClass('d-inline');
+            $("#newTextLessonForm"+$(e.target).data('module-id')).addClass('d-none');
+        });
+    
+    
+        $(document).ready(function () {
+            function updateNToDatabase(table, idString) {
+                $.post(
+                    "/panel/webinars/order-items",
+                    { table: table, items: idString },
+                    function (result) {}
+                );
+            }
+    
+            function setNSortable(target) {
+                if (target.length) {
+                    target.sortable({
+                        group: "no-drop",
+                        handle: ".move-icon",
+                        axis: "y",
+                        update: function (e, ui) {
+                            var sortData = target.sortable("toArray", {
+                                attribute: "data-id",
+                            });
+                            var table = e.target.getAttribute("data-order-table");
+    
+                            updateToDatabase(table, sortData.join(","));
+                        },
+                    });
+                }
+            }
+            var target3 = $(".draggable-content");
+            if (target3.length) {
+                setNSortable(target3);
+            }
+        });
+    
         
+        const editContent = (content_id)=>{
+            closeAll();
+            http://localhost:8000/panel/webinars/content/edit/content_id
+            $("#editFileForm").removeClass('d-none');
+            $("#editFileForm").addClass('d-inline');
+            let action = "/panel/webinars/content/edit/"+content_id;
+            $.get(action, function (result) {
+                $("#editFileForm").find('#collapseFilerecord').find('.panel-collapse').find('.file-form').data('action', '/panel/files/'+result.data.file.id+'/update');
+
+                console.log($("#editFileForm").find('#collapseFilerecord').find('.panel-collapse').find('.file-form').data('action'));
+                $("#editFileForm").find('[name="ajax[new][title]"]').val(result.data.file.title);
+                if(result.data.file.accessibility == 'free'){
+                    $("#editFileForm").find('#accessibilityRadio'+result.data.module_id+'1F_recordE').prop("checked", true);
+                } else{
+                    $("#editFileForm").find('#accessibilityRadio'+result.data.module_id+'2F_recordE').prop("checked", true);
+                }               
+                if(result.data.file.storage == 'local'){
+                    $('.local-input').removeClass('d-none');
+                    $('.online-inputs').addClass('d-none');
+                    $("#editFileForm").find('#customRadio1'+result.data.module_id+'_recordE').prop("checked", true);
+                } else{
+                    $('.online-inputs').removeClass('d-none');
+                    $('.local-input').addClass('d-none');
+                    $("#editFileForm").find('#customRadio2'+result.data.module_id+'_recordE').prop("checked", true);
+                }               
+                $("#editFileForm").find('[name="ajax[new][file_path]"]').val(result.data.file.file);
+                $("#editFileForm").find('[name="ajax[new][description]"]').val(result.data.file.description);
+                $("#editFileForm").find('[name="ajax[new][volume]"]').val(result.data.file.volume);
+                $("#editFileForm").find('[name="ajax[new][file_type]"]').find("option[value='"+result.data.file.file_type+"']").prop("selected", true);
+
+                if(result.data.file.downloadable == 1){
+                    console.log('pasando', result.data.file.downloadable);
+                    $("#editFileForm").find('[name="ajax[new][downloadable]"]').prop("checked", true);
+                } else{
+                    console.log('false', result.data.file.downloadable);
+                    $("#editFileForm").find('[name="ajax[new][downloadable]"]').prop("checked", false);
+                } 
+               
+
+            });
+    }
         const deleteContent = (content_id)=>{
         let action = '{{route("delete_content")}}';
-
         $.post(action, {id:content_id}, function (result) {
             if (result && result.code === 200) {
                 //window.location.reload();
@@ -97,173 +310,3 @@
     </script>
 @endpush
 
-<script type="module">
-
-    $(document).ready(function() {
-
-        $('body').on('click', '#webinarAddModule1', function (e) {
-            $("#newModuleForm").removeClass('d-none');
-            $("#newModuleForm").addClass('d-inline');
-        });
-        $('body').on('click', '.close-new-module', function (e) {
-            $("#newModuleForm").removeClass('d-inline');
-            $("#newModuleForm").addClass('d-none');
-        });
-
-        $('body').on('click', '.save-module', function (e) {
-
-
-
-            const $this = $(this);
-            let form = $this.closest('.module-form');
-
-            handleForm(form, $this);
-
-        });
-
-        // $('body').on('click', '.cancel-accordion2', function (e) {
-
-        //     e.preventDefault();
-
-        //     $(this).closest('.accordion-row').remove();
-        // });
-
-    });
-
-    const randomString = () => {
-        var text = "";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-
-        for (var i = 0; i < 5; i++)
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-        return text;
-    }
-
-
-    const handleForm = (form, $this) => {
-
-        let data = serializeObjectByTag(form);
-        let action = form.attr('data-action');
-
-        $this.addClass('loadingbar primary').prop('disabled', true);
-        form.find('input').removeClass('is-invalid');
-        form.find('textarea').removeClass('is-invalid');
-
-        $.post(action, data, function (result) {
-            if (result && result.code === 200) {
-                //window.location.reload();
-                Swal.fire({
-                    icon: 'success',
-                    html: '<h3 class="font-20 text-center text-dark-blue py-25">' + saveSuccessLang + '</h3>',
-                    showConfirmButton: false,
-                    width: '25rem',
-                });
-
-                setTimeout(() => {
-                    window.location.reload();
-                }, 500)
-            }
-        }).fail(err => {
-            $this.removeClass('loadingbar primary').prop('disabled', false);
-            var errors = err.responseJSON;
-
-            if (errors && errors.status === 'zoom_jwt_token_invalid') {
-                Swal.fire({
-                    icon: 'error',
-                    html: '<h3 class="font-20 text-center text-dark-blue py-25">' + zoomJwtTokenInvalid + '</h3>',
-                    showConfirmButton: false,
-                    width: '25rem',
-                });
-            }
-
-            if (errors && errors.errors) {
-                Object.keys(errors.errors).forEach((key) => {
-                    const error = errors.errors[key];
-                    let element = form.find('.js-ajax-' + key);
-
-                    if (key === 'zoom-not-complete-alert') {
-                        form.find('.js-zoom-not-complete-alert').removeClass('d-none');
-                    } else {
-                        element.addClass('is-invalid');
-                        element.parent().find('.invalid-feedback').text(error[0]);
-                    }
-                });
-            }
-        })
-    }
-
-    const closeAll = (id)=>{
-        $("#newFileForm"+id).removeClass('d-inline');
-        $("#newFileForm"+id).addClass('d-none');
-        $("#newSessionForm"+id).removeClass('d-inline');
-        $("#newSessionForm"+id).addClass('d-none');
-        $("#newTextLessonForm"+id).removeClass('d-inline');
-        $("#newTextLessonForm"+id).addClass('d-none');
-    }
-
-    $(".webinarAddFileModule").click((e)=>{
-        closeAll($(e.target).data('module-id'));
-        $('#collapseModule'+$(e.target).data('module-id')).collapse();
-        $("#newFileForm"+$(e.target).data('module-id')).removeClass('d-none');
-        $("#newFileForm"+$(e.target).data('module-id')).addClass('d-inline');
-    });
-    $(".close-file").click((e)=>{
-        $("#newFileForm"+$(e.target).data('module-id')).removeClass('d-inline');
-        $("#newFileForm"+$(e.target).data('module-id')).addClass('d-none');
-    });
-    $(".webinarAddSessionModule").click((e)=>{
-        closeAll($(e.target).data('module-id'));
-        $('#collapseModule'+$(e.target).data('module-id')).collapse();
-        $("#newSessionForm"+$(e.target).data('module-id')).removeClass('d-none');
-        $("#newSessionForm"+$(e.target).data('module-id')).addClass('d-inline');
-    });
-    $(".close-session").click((e)=>{
-        $("#newSessionForm"+$(e.target).data('module-id')).removeClass('d-inline');
-        $("#newSessionForm"+$(e.target).data('module-id')).addClass('d-none');
-    });
-    $(".webinarAddTextModule").click((e)=>{
-        closeAll($(e.target).data('module-id'));
-        $('#collapseModule'+$(e.target).data('module-id')).collapse();
-        $("#newTextLessonForm"+$(e.target).data('module-id')).removeClass('d-none');
-        $("#newTextLessonForm"+$(e.target).data('module-id')).addClass('d-inline');
-    });
-    $(".close-text").click((e)=>{
-        $("#newTextLessonForm"+$(e.target).data('module-id')).removeClass('d-inline');
-        $("#newTextLessonForm"+$(e.target).data('module-id')).addClass('d-none');
-    });
-
-
-    $(document).ready(function () {
-        function updateNToDatabase(table, idString) {
-            $.post(
-                "/panel/webinars/order-items",
-                { table: table, items: idString },
-                function (result) {}
-            );
-        }
-
-        function setNSortable(target) {
-            if (target.length) {
-                target.sortable({
-                    group: "no-drop",
-                    handle: ".move-icon",
-                    axis: "y",
-                    update: function (e, ui) {
-                        var sortData = target.sortable("toArray", {
-                            attribute: "data-id",
-                        });
-                        var table = e.target.getAttribute("data-order-table");
-
-                        updateToDatabase(table, sortData.join(","));
-                    },
-                });
-            }
-        }
-        var target3 = $(".draggable-content");
-        if (target3.length) {
-            setNSortable(target3);
-        }
-    });
-
-</script>
