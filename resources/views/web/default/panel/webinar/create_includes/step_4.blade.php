@@ -269,8 +269,6 @@
                 $.get(action, function (result) {
                     $("#editTextLessonForm").find('#collapseTextLessonrecord').find('.panel-collapse').find('.text_lesson-form').data('action', '/panel/text-lesson/'+result.data.text_lesson.id+'/update');
 
-                    console.log($("#editTextLessonForm").find('#collapseTextLessonrecord').find('.panel-collapse').find('.text_lesson-form').data('action'));
-
                     $("#editTextLessonForm").find('[name="ajax[new][title]"]').val(result.data.text_lesson.title);
                     $("#editTextLessonForm").find('[name="ajax[new][study_time]"]').val(result.data.text_lesson.study_time);
                     $("#editTextLessonForm").find('[name="ajax[new][study_time]"]').val(result.data.text_lesson.study_time);
@@ -327,7 +325,6 @@
                 let action = "/panel/webinars/content/edit/"+content_id;
                 $.get(action, function (result) {
                     $("#editSessionForm").find('#collapseSessionrecord').find('.panel-collapse').find('.session-form').data('action', '/panel/sessions/'+result.data.session.id+'/update');
-                    console.log('aca',result.data.session.session_api);
                     $('.js-moderator-secret').addClass('d-none');
                     if(result.data.session.session_api == 'local'){
                         $("#editSessionForm").find('#localApi'+result.data.module_id+'E').prop("checked", true);
