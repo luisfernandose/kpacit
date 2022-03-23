@@ -25,18 +25,18 @@
 
                         <div class="js-session-api">
                             <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" name="ajax[new][session_api]" id="localApi{{$module['id']}}" value="local" @if(empty($session) or $session->session_api == 'local') checked @endif class="js-api-input custom-control-input">
-                                <label class="custom-control-label" for="localApi{{$module['id']}}">{{ trans('webinars.session_local_api') }}</label>
+                                <input type="radio" name="ajax[new][session_api]" id="localApi{{$module['id']}}{{isset($edit)?'E':''}}" value="local" @if(empty($session) or $session->session_api == 'local') checked @endif class="js-api-input custom-control-input">
+                                <label class="custom-control-label" for="localApi{{$module['id']}}{{isset($edit)?'E':''}}">{{ trans('webinars.session_local_api') }}</label>
                             </div>
 
                             <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" name="ajax[new][session_api]" id="bigBlueButton{{$module['id']}}" value="big_blue_button" @if(!empty($session) and $session->session_api == 'big_blue_button') checked @endif class="js-api-input custom-control-input" {{ (!empty($session) and $session->session_api != 'local') ? 'disabled' :'' }}>
-                                <label class="custom-control-label" for="bigBlueButton{{$module['id']}}">{{ trans('webinars.session_big_blue_button') }}</label>
+                                <input type="radio" name="ajax[new][session_api]" id="bigBlueButton{{$module['id']}}{{isset($edit)?'E':''}}" value="big_blue_button" @if(!empty($session) and $session->session_api == 'big_blue_button') checked @endif class="js-api-input custom-control-input" {{ (!empty($session) and $session->session_api != 'local') ? 'disabled' :'' }}>
+                                <label class="custom-control-label" for="bigBlueButton{{$module['id']}}{{isset($edit)?'E':''}}">{{ trans('webinars.session_big_blue_button') }}</label>
                             </div>
 
                             <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" name="ajax[new][session_api]" id="zoomApi{{$module['id']}}" value="zoom" @if(!empty($session) and $session->session_api == 'zoom') checked @endif class="js-api-input custom-control-input">
-                                <label class="custom-control-label" for="zoomApi{{$module['id']}}">{{ trans('webinars.session_zoom') }}</label>
+                                <input type="radio" name="ajax[new][session_api]" id="zoomApi{{$module['id']}}{{isset($edit)?'E':''}}" value="zoom" @if(!empty($session) and $session->session_api == 'zoom') checked @endif class="js-api-input custom-control-input">
+                                <label class="custom-control-label" for="zoomApi{{$module['id']}}{{isset($edit)?'E':''}}">{{ trans('webinars.session_zoom') }}</label>
                             </div>
                         </div>
 
@@ -57,7 +57,7 @@
 
                     <div class="form-group js-moderator-secret {{ (empty($session) or $session->session_api != 'big_blue_button') ? 'd-none' :'' }}">
                         <label class="input-label">{{ trans('public.moderator_password') }}</label>
-                        <input type="text" name="ajax[{{  'new' }}][moderator_secret]" class="js-ajax-moderator_secret form-control" value="{{ !empty($session) ? $session->moderator_secret : '' }}" {{ (!empty($session) and $session->session_api == 'big_blue_button') ? 'disabled' :'' }}/>
+                        <input type="text" name="ajax[{{  'new' }}][moderator_secret]" class="js-ajax-moderator_secret form-control" value="" />
                         <div class="invalid-feedback"></div>
                     </div>
 
@@ -102,10 +102,10 @@
             </div>
 
             <div class="mt-30 d-flex align-items-center">
-                <button type="button" class="js-save-session btn btn-sm btn-primary">{{ trans('public.save') }}</button>
+                <button type="button" class="js-save-session btn btn-sm btn-primary">@if (isset($edit)) {{trans('public.edit')}}  @else {{trans('public.save')}} @endif</button>
 
                 @if(empty($session))
-                    <button type="button" data-module-id="{{$module["id"]}}" class="btn btn-sm btn-danger ml-10 close-session">{{ trans('public.close') }}</button>
+                    <button type="button" data-module-id="{{$module["id"]}}" class="btn btn-sm btn-danger ml-10 @if (isset($edit)) close-session-edit @else close-session @endif">{{ trans('public.close') }}</button>
                 @endif
             </div>
         </div>

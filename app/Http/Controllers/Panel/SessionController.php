@@ -111,7 +111,7 @@ class SessionController extends Controller
     public function update(Request $request, $id)
     {
         $user = auth()->user();
-        $data = $request->get('ajax')[$id];
+        $data = $request->get('ajax')['new'];
 
         $session = Session::where('id', $id)
             ->where('creator_id', $user->id)
@@ -163,6 +163,7 @@ class SessionController extends Controller
                     'api_secret' => $data['api_secret'] ?? $session->api_secret,
                     'description' => $data['description'],
                     'updated_at' => time(),
+                    'moderator_secret' => $data['moderator_secret'] ?? '',
                 ]);
 
                 return response()->json([

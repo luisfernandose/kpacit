@@ -169,6 +169,8 @@
         }
     
         const closeAll = (id)=>{
+            $("#editSessionForm").removeClass('d-inline');
+            $("#editSessionForm").addClass('d-none');
             $("#editFileForm").removeClass('d-inline');
             $("#editFileForm").addClass('d-none');
             $("#newFileForm"+id).removeClass('d-inline');
@@ -188,6 +190,10 @@
         $(".close-file-edit").click((e)=>{
             $("#editFileForm").removeClass('d-inline');
             $("#editFileForm").addClass('d-none');
+        });
+        $(".close-session-edit").click((e)=>{
+            $("#editSessionForm").removeClass('d-inline');
+            $("#editSessionForm").addClass('d-none');
         });
         $(".close-file").click((e)=>{
             $("#newFileForm"+$(e.target).data('module-id')).removeClass('d-inline');
@@ -248,43 +254,70 @@
         });
     
         
-        const editContent = (content_id)=>{
+        const editContent = (content_id, type)=>{
             closeAll();
-            http://localhost:8000/panel/webinars/content/edit/content_id
-            $("#editFileForm").removeClass('d-none');
-            $("#editFileForm").addClass('d-inline');
-            let action = "/panel/webinars/content/edit/"+content_id;
-            $.get(action, function (result) {
-                $("#editFileForm").find('#collapseFilerecord').find('.panel-collapse').find('.file-form').data('action', '/panel/files/'+result.data.file.id+'/update');
+            if(type=='file'){
+                $("#editFileForm").removeClass('d-none');
+                $("#editFileForm").addClass('d-inline');
+                let action = "/panel/webinars/content/edit/"+content_id;
+                $.get(action, function (result) {
+                    $("#editFileForm").find('#collapseFilerecord').find('.panel-collapse').find('.file-form').data('action', '/panel/files/'+result.data.file.id+'/update');
 
-                $("#editFileForm").find('[name="ajax[new][title]"]').val(result.data.file.title);
-                if(result.data.file.accessibility == 'free'){
-                    $("#editFileForm").find('#accessibilityRadio'+result.data.module_id+'1F_recordE').prop("checked", true);
-                } else{
-                    $("#editFileForm").find('#accessibilityRadio'+result.data.module_id+'2F_recordE').prop("checked", true);
-                }               
-                if(result.data.file.storage == 'local'){
-                    $('.local-input').removeClass('d-none');
-                    $('.online-inputs').addClass('d-none');
-                    $("#editFileForm").find('#customRadio1'+result.data.module_id+'_recordE').prop("checked", true);
-                } else{
-                    $('.online-inputs').removeClass('d-none');
-                    $('.local-input').addClass('d-none');
-                    $("#editFileForm").find('#customRadio2'+result.data.module_id+'_recordE').prop("checked", true);
-                }               
-                $("#editFileForm").find('[name="ajax[new][file_path]"]').val(result.data.file.file);
-                $("#editFileForm").find('[name="ajax[new][description]"]').val(result.data.file.description);
-                $("#editFileForm").find('[name="ajax[new][volume]"]').val(result.data.file.volume);
-                $("#editFileForm").find('[name="ajax[new][file_type]"]').find("option[value='"+result.data.file.file_type+"']").prop("selected", true);
+                    $("#editFileForm").find('[name="ajax[new][title]"]').val(result.data.file.title);
+                    if(result.data.file.accessibility == 'free'){
+                        $("#editFileForm").find('#accessibilityRadio'+result.data.module_id+'1F_recordE').prop("checked", true);
+                    } else{
+                        $("#editFileForm").find('#accessibilityRadio'+result.data.module_id+'2F_recordE').prop("checked", true);
+                    }               
+                    if(result.data.file.storage == 'local'){
+                        $('.local-input').removeClass('d-none');
+                        $('.online-inputs').addClass('d-none');
+                        $("#editFileForm").find('#customRadio1'+result.data.module_id+'_recordE').prop("checked", true);
+                    } else{
+                        $('.online-inputs').removeClass('d-none');
+                        $('.local-input').addClass('d-none');
+                        $("#editFileForm").find('#customRadio2'+result.data.module_id+'_recordE').prop("checked", true);
+                    }               
+                    $("#editFileForm").find('[name="ajax[new][file_path]"]').val(result.data.file.file);
+                    $("#editFileForm").find('[name="ajax[new][description]"]').val(result.data.file.description);
+                    $("#editFileForm").find('[name="ajax[new][volume]"]').val(result.data.file.volume);
+                    $("#editFileForm").find('[name="ajax[new][file_type]"]').find("option[value='"+result.data.file.file_type+"']").prop("selected", true);
 
-                if(result.data.file.downloadable == 1){
-                    $("#editFileForm").find('[name="ajax[new][downloadable]"]').prop("checked", true);
-                } else{
-                    $("#editFileForm").find('[name="ajax[new][downloadable]"]').prop("checked", false);
-                } 
-               
-
-            });
+                    if(result.data.file.downloadable == 1){
+                        $("#editFileForm").find('[name="ajax[new][downloadable]"]').prop("checked", true);
+                    } else{
+                        $("#editFileForm").find('[name="ajax[new][downloadable]"]').prop("checked", false);
+                    } 
+                });
+            }
+            if(type=='session'){
+                $("#editSessionForm").removeClass('d-none');
+                $("#editSessionForm").addClass('d-inline');
+                let action = "/panel/webinars/content/edit/"+content_id;
+                $.get(action, function (result) {
+                    $("#editSessionForm").find('#collapseSessionrecord').find('.panel-collapse').find('.session-form').data('action', '/panel/sessions/'+result.data.session.id+'/update');
+                    console.log('aca',result.data.session.session_api);
+                    $('.js-moderator-secret').addClass('d-none');
+                    if(result.data.session.session_api == 'local'){
+                        $("#editSessionForm").find('#localApi'+result.data.module_id+'E').prop("checked", true);
+                    } else if(result.data.session.session_api == 'big_blue_button'){
+                        $('.js-moderator-secret').removeClass('d-none');
+                        $('.js-moderator-secret').addClass('d-inline');
+                        $("#editSessionForm").find('#bigBlueButton'+result.data.module_id+'E').prop("checked", true);
+                    } else{
+                        $("#editSessionForm").find('#zoomApi'+result.data.module_id+'E').prop("checked", true);
+                    }
+                    $("#editSessionForm").find('[name="ajax[new][api_secret]"]').val(result.data.session.api_secret);
+                    $("#editSessionForm").find('[name="ajax[new][title]"]').val(result.data.session.title);
+                    $("#editSessionForm").find('[name="ajax[new][date]"]').val(result.data.session.date);
+                    $("#editSessionForm").find('[name="ajax[new][duration]"]').val(result.data.session.duration);
+                    $("#editSessionForm").find('[name="ajax[new][link]"]').val(result.data.session.link);
+                    $("#editSessionForm").find('[name="ajax[new][description]"]').val(result.data.session.description);
+                    $("#editSessionForm").find('[name="ajax[new][moderator_secret]"]').val(result.data.session.moderator_secret);
+           
+                });
+            }
+           
     }
         const deleteContent = (content_id)=>{
         let action = '{{route("delete_content")}}';

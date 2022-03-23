@@ -1057,7 +1057,20 @@ class WebinarController extends Controller
     }
     public function editContent($content_id)
     {
-        $data = WebinarContent::with('file')->find($content_id);
+
+        $data = WebinarContent::find($content_id);
+        switch ($data->resource_type) {
+            case "file":
+                $data = WebinarContent::with('file')->find($content_id);
+                break;
+            case "session":
+                $data = WebinarContent::with('session')->find($content_id);
+                $data->session->date = date("Y-m-d H:i:s", $data->session->date);
+                break;
+            case "text":
+                $data = WebinarContent::with('text')->find($content_id);
+                break;
+        }
         return response()->json([
             'code' => 200,
             'data' => $data,

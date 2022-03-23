@@ -288,7 +288,6 @@
     });
 
     $("body").on("click", ".js-save-file", function (e) {
-        console.log("pasando js-save-file");
         e.preventDefault();
         const $this = $(this);
         let form = $this.closest(".file-form");
