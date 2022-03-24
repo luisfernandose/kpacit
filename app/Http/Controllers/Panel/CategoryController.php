@@ -39,6 +39,14 @@ class CategoryController extends Controller
             'icon' => 'required',
         ]);
 
+        $exist = Category::where('title', clean($request->input('title')))->first();
+
+        if ($exist) {
+            return redirect()->route('panel.categories.create')
+                ->withInput($request->all())
+                ->with('error', trans('panel.category_already_exist'));
+        }
+
         $category = Category::create([
             'organ_id' => auth()->user()->id,
             'title' => clean($request->input('title')),
@@ -93,6 +101,10 @@ class CategoryController extends Controller
     public function destroy(Request $request, $id)
     {
         $category = Category::where('id', $id)->first();
+
+        if ($category->webinars) {
+            return response()->json(['message' => trans('panel.category_have_webinars')], 422);
+        }
 
         if (!empty($category)) {
             Category::where('parent_id', $category->id)

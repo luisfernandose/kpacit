@@ -15,7 +15,13 @@
             <div class="row">
                 <div class="col-12 col-md-6 col-lg-6">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body">                           
+                            @if ($message = Session::get('error'))
+                                <div class="alert alert-danger alert-block mb-3" style="color:white">
+                                    <button type="button" class="close" data-dismiss="alert">×</button>
+                                    <strong>{{ $message }}</strong>
+                                </div>
+                            @endif
                             <form action="/panel/categories/{{ !empty($category) ? $category->id.'/update' : 'store' }}"
                                   method="Post">
                                 {{ csrf_field() }}

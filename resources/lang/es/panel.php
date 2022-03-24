@@ -303,6 +303,8 @@ return [
     'progress' => 'Progreso',
     'courses_not_started' => 'Cursos asignados sin progreso',
     'category' => 'Categoria',
+    'category_already_exist' => 'La categoría que intenta guardar ya existe',
+    'category_have_webinars' => 'La categoría que intenta eliminar tiene asociados Cursos',
     'qty' => 'Cantidad de usuarios sin iniciar',
     'users_no_enrolled' => 'Sin usuarios asignados',
     'result_no_result' => 'No hay registros',
