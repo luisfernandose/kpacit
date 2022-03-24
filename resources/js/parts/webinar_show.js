@@ -322,38 +322,79 @@
         const file_title = $(this).closest('.accordion-row').find('.file-title').text();
         $modal.find('.section-title').text(file_title);
 
-        $modal.modal('show');
-
+      
+        $('.modal-content').removeClass('full_modal-content')
+        $('.modal-dialog').removeClass('full_modal-dialog')
         $.post('/course/getFilePath', {file_id: file_id}, function (result) {
             if (result && result.code === 200) {
                 const storage = result.storage;
+                const type = result.type;
                 $modalLoading.addClass('d-none');
                 $modalVideoContent.removeClass('d-none');
-
+                let isVideo= false;
+                $('.modal-content').find('iframe').remove();
+                $('.modal-content').find('.img-visor').remove();
                 let html = '';
-                if (storage === 'local') {
-                    html = '<video id="my-video" class="video-js" controls preload="auto" width="870" height="364"><source src="' + result.path + '" type="video/mp4"/></video>';
-                } else {
-                    html = '<video\n' +
-                        '    id="my-video"\n' +
-                        '    class="video-js"\n' +
-                        '    controls\n' +
-                        '    preload="auto"\n' +
-                        '    width="870" height="364"\n' +
-                        '    data-setup=\'{ "techOrder": ["' + result.storageService + '"], "sources": [{ "type": "video/' + result.storageService + '", "src": "' + result.path + '"}] }\'\n' +
-                        '  >\n' +
-                        '  </video>';
+                if (storage === 'local' && (type=='mp4'|| type=='mkv'|| type=='avi')) {
+                    html = '<video id="my-video" class="video-js" controls preload="auto" width="870" height="364"><source src="' + result.path + '" type="video/'+type+'"/></video>';
+                    isVideo=true;
+                } else if(storage === 'online' && type == 'video') {
+                    let vimeoControls = (result.storageService =='vimeo' ? ', "vimeo": { "ytControls": 2 }':'');
+                    html = `
+                     <video
+                        id="my-video"
+                        class="video-js"
+                        controls
+                        preload="auto"
+                        width="870" height="364"
+                        data-setup='{ "techOrder": ["${result.storageService}"], "sources": [{ "type": "video/${result.storageService}", "src": "${result.path}"}] ${vimeoControls}  }'
+                        >
+                     </video>
+                    `
+                    
+                    
+                    isVideo=true;
+                } else if (storage === 'local' && ( type=='docx'|| type=='doc' || type=='xls'|| type=='xlsx' || type=='ppt'|| type=='pptx')){
+                    var encodedUrl = encodeURIComponent(result.path);
+                    console.log(encodedUrl);
+                    
+                    // html ='<iframe src="https://docs.google.com/viewer?url='+encodedUrl+'&embedded=true" width="100%"   frameborder="0"/>'
+                    $('.modal-content').append(`<iframe src='https://view.officeapps.live.com/op/embed.aspx?src=${encodedUrl}' width='100%' height='100%' frameborder='0'>This is an embedded <a target='_blank' href='http://office.com'>Microsoft Office</a> document, powered by <a target='_blank' href='http://office.com/webapps'>Office Online</a>.</iframe>`);
+                    $('.modal-content').addClass('full_modal-content')
+                    $('.modal-dialog').addClass('full_modal-dialog')
+                }else if( type=='jpg'|| type=='jpeg'|| type=='png'){
+
+                    // This next line will just add it to the <body> tag
+                    $('.modal-content').append(`<div class="img-visor d-flex justify-content-center"><img src="${result.path}" ></div>`);
+                }else if( type=='pdf'){
+
+                    // This next line will just add it to the <body> tag
+                    $('.modal-content').addClass('full_modal-content')
+                    $('.modal-dialog').addClass('full_modal-dialog')
+                   
+                    $('.modal-content').append(`<iframe src="https://docs.google.com/gview?url=${result.path}&embedded=true" frameborder="0">
+                        </iframe>`);
+
+                   
                 }
+
+
+
 
 
                 $modalVideoContent.html(html);
 
-                const options = {
-                    autoplay: false,
-                    preload: 'auto',
-                };
+                if(isVideo){
 
-                player = videojs('my-video', options);
+                    const options = {
+                        autoplay: false,
+                        preload: 'auto',
+                    };
+    
+                    player = videojs('my-video', options);
+                }
+
+                $modal.modal('show');
             } else {
                 $.toast({
                     heading: notAccessToastTitleLang,
