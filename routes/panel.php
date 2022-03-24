@@ -19,8 +19,8 @@ Route::group(['namespace' => 'Panel', 'prefix' => 'panel', 'middleware' => ['imp
     });
 
     Route::group(['prefix' => 'categories'], function () {
-        Route::get('/', 'CategoryController@index');
-        Route::get('/create', 'CategoryController@create');
+        Route::get('/', 'CategoryController@index')->name('panel.categories.index');
+        Route::get('/create', 'CategoryController@create')->name('panel.categories.create');
         Route::post('/store', 'CategoryController@store');
         Route::get('/{id}/edit', 'CategoryController@edit')->name('panel.categories.edit');
         Route::post('/{id}/update', 'CategoryController@update');

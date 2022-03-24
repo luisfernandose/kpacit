@@ -93,7 +93,7 @@
                                                 <i class="fa fa-chevron-up"></i>
                                             </button>
                                         </div>
-                                        <input type="text" readonly name="icon" id="icon" value="{{ !empty($subscribe->icon) ? $subscribe->icon : old('icon') }}" class="form-control validate-path @error('icon') is-invalid @enderror"/>
+                                        <input type="text" readonly name="icon" id="icon" value="{{ !empty($subscribe->icon) ? str_replace(env('AWS_URL'),'/',$subscribe->icon) : old('icon') }}" class="form-control validate-path @error('icon') is-invalid @enderror"/>
                                         @error('icon')
                                         <div class="invalid-feedback">
                                             {{ $message }}

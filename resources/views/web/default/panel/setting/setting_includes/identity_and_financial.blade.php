@@ -57,7 +57,7 @@
                             <i data-feather="arrow-up" width="18" height="18" class="text-white"></i>
                         </button>
                     </div>
-                    <input type="text" readonly name="identity_scan" id="identity_scan" value="{{ (!empty($user) and empty($new_user)) ? $user->identity_scan : old('identity_scan') }}" class="form-control validate-path @error('identity_scan')  is-invalid @enderror"/>
+                    <input type="text" readonly name="identity_scan" id="identity_scan" value="{{ (!empty($user) and empty($new_user)) ? str_replace(env('AWS_URL'),'/',$user->identity_scan) : old('identity_scan') }}" class="form-control validate-path @error('identity_scan')  is-invalid @enderror"/>
                     @error('identity_scan')
                     <div class="invalid-feedback">
                         {{ $message }}
@@ -74,7 +74,7 @@
                             <i data-feather="arrow-up" width="18" height="18" class="text-white"></i>
                         </button>
                     </div>
-                    <input type="text" readonly name="certificate" id="certificate" value="{{ (!empty($user) and empty($new_user)) ? $user->certificate : old('certificate') }}" class="form-control validate-path"/>
+                    <input type="text" readonly name="certificate" id="certificate" value="{{ (!empty($user) and empty($new_user)) ? str_replace(env('AWS_URL'),'/',$user->certificate) : old('certificate') }}" class="form-control validate-path"/>
                 </div>
             </div>
 
