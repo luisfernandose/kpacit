@@ -97,7 +97,7 @@ class Category extends Model
 
     public function getIconAttribute($value)
     {
-        if(!empty($value)){
+        if (!empty($value)) {
 
             return Storage::url($value);
         }
