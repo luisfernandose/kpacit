@@ -232,7 +232,7 @@ class WebinarController extends Controller
                 ->where('id', $file_id)
                 ->first();
 
-            if (!empty($file) and $file->downloadable) {
+            if (!empty($file) and $file->storage=='local' and $file->downloadable) {
                 $canAccess = true;
 
                 if ($file->accessibility == 'paid') {
