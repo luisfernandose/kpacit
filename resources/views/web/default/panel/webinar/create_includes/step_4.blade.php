@@ -15,12 +15,12 @@
         <div class="font-weight-bold text-dark-blue" href="#collapseModule{{ !empty($module) ? $module->id :'record' }}" aria-controls="collapseModule{{ !empty($module) ? $module->id :'record' }}" data-parent="#modulesAccordion" role="button" data-toggle="collapse" aria-expanded="true">
             <span>{{ 'Agregar nuevo módulo' }}</span>
         </div>
-    
+
         <div id="collapseModulerecord" aria-labelledby="module_record" class="show" role="tabpanel">
             <div class="panel-collapse text-gray">
                 <div class="module-form" data-action="/panel/modules/store">
                     <input type="hidden" name="ajax[new][webinar_id]" value="{{$webinar->id}}">
-    
+
                     <div class="row">
                         <div class="col-12 col-lg-6">
                             <div class="form-group">
@@ -30,10 +30,10 @@
                             </div>
                         </div>
                     </div>
-    
+
                     <div class="mt-30 d-flex align-items-center">
                         <button type="button" data-module-id="" class="save-module btn btn-sm btn-primary">{{ trans('public.save') }} </button>
-    
+
                         @if(empty($module))
                             <button type="button" class="btn btn-sm btn-danger ml-10 close-new-module">{{ trans('public.close') }}</button>
                         @endif
@@ -75,7 +75,7 @@
     <script>
 
         $(document).ready(function() {
-    
+
             $('body').on('click', '#webinarAddModule1', function (e) {
                 $("#newModuleForm").removeClass('d-none');
                 $("#newModuleForm").addClass('d-inline');
@@ -84,47 +84,47 @@
                 $("#newModuleForm").removeClass('d-inline');
                 $("#newModuleForm").addClass('d-none');
             });
-    
+
             $('body').on('click', '.save-module', function (e) {
-    
-    
-    
+
+
+
                 const $this = $(this);
                 let form = $this.closest('.module-form');
-    
+
                 handleForm(form, $this);
-    
+
             });
-    
+
             // $('body').on('click', '.cancel-accordion2', function (e) {
-    
+
             //     e.preventDefault();
-    
+
             //     $(this).closest('.accordion-row').remove();
             // });
-    
+
         });
-    
+
         const randomString = () => {
             var text = "";
             var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    
+
             for (var i = 0; i < 5; i++)
                 text += possible.charAt(Math.floor(Math.random() * possible.length));
-    
+
             return text;
         }
-    
-    
+
+
         const handleForm = (form, $this) => {
-    
+
             let data = serializeObjectByTag(form);
             let action = form.attr('data-action');
-    
+
             $this.addClass('loadingbar primary').prop('disabled', true);
             form.find('input').removeClass('is-invalid');
             form.find('textarea').removeClass('is-invalid');
-    
+
             $.post(action, data, function (result) {
                 if (result && result.code === 200) {
                     //window.location.reload();
@@ -134,7 +134,7 @@
                         showConfirmButton: false,
                         width: '25rem',
                     });
-    
+
                     setTimeout(() => {
                         window.location.reload();
                     }, 500)
@@ -142,7 +142,7 @@
             }).fail(err => {
                 $this.removeClass('loadingbar primary').prop('disabled', false);
                 var errors = err.responseJSON;
-    
+
                 if (errors && errors.status === 'zoom_jwt_token_invalid') {
                     Swal.fire({
                         icon: 'error',
@@ -151,12 +151,12 @@
                         width: '25rem',
                     });
                 }
-    
+
                 if (errors && errors.errors) {
                     Object.keys(errors.errors).forEach((key) => {
                         const error = errors.errors[key];
                         let element = form.find('.js-ajax-' + key);
-    
+
                         if (key === 'zoom-not-complete-alert') {
                             form.find('.js-zoom-not-complete-alert').removeClass('d-none');
                         } else {
@@ -167,7 +167,7 @@
                 }
             })
         }
-    
+
         const closeAll = (id)=>{
             $("#editSessionForm"+id).removeClass('d-inline');
             $("#editSessionForm"+id).addClass('d-none');
@@ -182,7 +182,7 @@
             $("#editTextLessonForm"+id).addClass('d-none');
             $("#editTextLessonForm"+id).removeClass('d-inline');
         }
-    
+
         $(".webinarAddFileModule").click((e)=>{
             closeAll($(e.target).data('module-id'));
             $('#collapseModule'+$(e.target).data('module-id')).collapse();
@@ -225,8 +225,8 @@
             $("#newTextLessonForm"+$(e.target).data('module-id')).removeClass('d-inline');
             $("#newTextLessonForm"+$(e.target).data('module-id')).addClass('d-none');
         });
-    
-    
+
+
         $(document).ready(function () {
             function updateNToDatabase(table, idString) {
                 $.post(
@@ -235,7 +235,7 @@
                     function (result) {}
                 );
             }
-    
+
             function setNSortable(target) {
                 if (target.length) {
                     target.sortable({
@@ -247,7 +247,7 @@
                                 attribute: "data-id",
                             });
                             var table = e.target.getAttribute("data-order-table");
-    
+
                             updateToDatabase(table, sortData.join(","));
                         },
                     });
@@ -257,9 +257,20 @@
             if (target3.length) {
                 setNSortable(target3);
             }
+
+            $('.summernote').summernote({
+                tabsize: 2,
+                height: 400,
+                placeholder: $('.summernote').attr('placeholder'),
+                callbacks: {
+                onInit: function (c) {
+                    c.editable.html('');
+                }
+            }
+            });
         });
-    
-        
+
+
         const editContent = (id,content_id, type)=>{
             closeAll();
             if(type=='text'){
@@ -278,11 +289,13 @@
                         $("#editTextLessonForm"+id).find('#accessibilityRadio'+result.data.module_id+'1T_recordE').prop("checked", true);
                     } else{
                         $("#editTextLessonForm"+id).find('#accessibilityRadio'+result.data.module_id+'2T_recordE').prop("checked", true);
-                    } 
-                    $("#editTextLessonForm"+id).find('[name="ajax[new][attachments]"]').find("option[value='"+result.data.text_lesson.attachments.file_id+"']").prop("selected", true);
+                    }
                     $("#editTextLessonForm"+id).find('[name="ajax[new][summary]"]').val(result.data.text_lesson.summary);
-                    $("#editTextLessonForm"+id).find('[name="ajax[new][content]"]').val(result.data.text_lesson.content);
-                   
+                    $("#editTextLessonForm"+id).find('[name="ajax[new][content]"]').html('');
+                    $("#editTextLessonForm"+id).find('[name="ajax[new][content]"]').summernote('reset')
+                    $("#editTextLessonForm"+id).find('[name="ajax[new][content]"]').summernote('pasteHTML', result.data.text_lesson.content);
+
+
                 });
             }
             if(type=='file'){
@@ -297,7 +310,7 @@
                         $("#editFileForm"+id).find('#accessibilityRadio'+result.data.module_id+'1F_recordE').prop("checked", true);
                     } else{
                         $("#editFileForm"+id).find('#accessibilityRadio'+result.data.module_id+'2F_recordE').prop("checked", true);
-                    }               
+                    }
                     if(result.data.file.storage == 'local'){
                         $('.local-input').removeClass('d-none');
                         $('.online-inputs').addClass('d-none');
@@ -306,7 +319,7 @@
                         $('.online-inputs').removeClass('d-none');
                         $('.local-input').addClass('d-none');
                         $("#editFileForm"+id).find('#customRadio2'+result.data.module_id+'_recordE').prop("checked", true);
-                    }               
+                    }
                     $("#editFileForm"+id).find('[name="ajax[new][file_path]"]').val(result.data.file.file);
                     $("#editFileForm"+id).find('[name="ajax[new][description]"]').val(result.data.file.description);
                     $("#editFileForm"+id).find('[name="ajax[new][volume]"]').val(result.data.file.volume);
@@ -316,7 +329,7 @@
                         $("#editFileForm"+id).find('[name="ajax[new][downloadable]"]').prop("checked", true);
                     } else{
                         $("#editFileForm"+id).find('[name="ajax[new][downloadable]"]').prop("checked", false);
-                    } 
+                    }
                 });
             }
             if(type=='session'){
@@ -342,10 +355,10 @@
                     $("#editSessionForm"+id).find('[name="ajax[new][link]"]').val(result.data.session.link);
                     $("#editSessionForm"+id).find('[name="ajax[new][description]"]').val(result.data.session.description);
                     $("#editSessionForm"+id).find('[name="ajax[new][moderator_secret]"]').val(result.data.session.moderator_secret);
-           
+
                 });
             }
-           
+
     }
         const deleteContent = (content_id)=>{
         let action = '{{route("delete_content")}}';
