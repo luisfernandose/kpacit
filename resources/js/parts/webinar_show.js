@@ -307,7 +307,7 @@
     $('body').on('click', '.js-play-video', function (e) {
         e.preventDefault();
 
-        if (player !== undefined) {
+        if ($('#my-video').length) {
             player.dispose();
         }
 
@@ -356,7 +356,7 @@
                     isVideo=true;
                 } else if (storage === 'local' && ( type=='docx'|| type=='doc' || type=='xls'|| type=='xlsx' || type=='ppt'|| type=='pptx')){
                     var encodedUrl = encodeURIComponent(result.path);
-                    console.log(encodedUrl);
+                    
                     
                     // html ='<iframe src="https://docs.google.com/viewer?url='+encodedUrl+'&embedded=true" width="100%"   frameborder="0"/>'
                     $('.modal-content').append(`<iframe src='https://view.officeapps.live.com/op/embed.aspx?src=${encodedUrl}' width='100%' height='100%' frameborder='0'>This is an embedded <a target='_blank' href='http://office.com'>Microsoft Office</a> document, powered by <a target='_blank' href='http://office.com/webapps'>Office Online</a>.</iframe>`);
@@ -419,8 +419,9 @@
         });
 
         $('#playVideo').on('hidden.bs.modal', function () {
-            if (player !== undefined) {
+            if ($('#my-video').length) {
                 player.pause();
+                player.dispose();
             }
         })
     });
