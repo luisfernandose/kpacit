@@ -24,11 +24,12 @@
 <div id="collapseTextLessonrecord" aria-labelledby="text_lesson_{{ !empty($textLesson) ? $textLesson->id :'record' }}" class=" collapse @if(empty($textLesson)) show @endif" role="tabpanel">
     <div class="panel-collapse text-gray">
         <div class="text_lesson-form" data-action="/panel/text-lesson/{{ !empty($textLesson) ? $textLesson->id . '/update' : 'store' }}">
+            <input type="hidden" name="ajax[{{ !empty($textLesson) ? $textLesson->id : 'new' }}][attachments]">
             <input type="hidden" name="ajax[{{ 'new' }}][webinar_id]" value="{{ $webinar->id }}">
             <input type="hidden" name="ajax[{{'new' }}][module_id]" value="{{$module["id"]}}">
 
             <div class="row">
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-lg-12">
                     <div class="form-group">
                         <label class="input-label">{{ trans('public.title') }}</label>
                         <input type="text" name="ajax[{{ !empty($textLesson) ? $textLesson->id : 'new' }}][title]" class="js-ajax-title form-control" value="{{ !empty($textLesson) ? $textLesson->title : '' }}" placeholder=""/>
@@ -72,22 +73,6 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="input-label d-block">{{ trans('public.attachments') }}</label>
-                        <select class="js-ajax-attachments @if(empty($textLesson)) form-control @endif attachments-select2" name="ajax[{{ !empty($textLesson) ? $textLesson->id : 'new' }}][attachments]" data-placeholder="{{ trans('public.choose_attachments') }}">
-                            <option></option>
-
-                            @if(!empty($webinar->files) and count($webinar->files))
-                                @foreach($webinar->files as $filesInfo)
-                                    @if($filesInfo->file->downloadable)
-                                        <option value="{{ $filesInfo->file->id }}" @if(!empty($textLesson) and in_array($filesInfo->file->id,$textLesson->attachments->pluck('file_id')->toArray())) selected @endif>{{ $filesInfo->file->title }}</option>
-                                    @endif
-                                @endforeach
-                            @endif
-                        </select>
-                        <div class="invalid-feedback"></div>
-                    </div>
-
-                    <div class="form-group">
                         <label class="input-label">{{ trans('public.summary') }}</label>
                         <textarea name="ajax[{{ !empty($textLesson) ? $textLesson->id : 'new' }}][summary]" class="js-ajax-summary form-control" rows="6">{{ !empty($textLesson) ? $textLesson->summary : '' }}</textarea>
                         <div class="invalid-feedback"></div>
@@ -99,7 +84,7 @@
                     <div class="form-group">
                         <label class="input-label">{{ trans('public.content') }}</label>
                         <div class="content-summernote js-ajax-file_path">
-                            <textarea name="ajax[new][content]" class="js-ajax-summary form-control" rows="6"></textarea>                         
+                            <textarea name="ajax[new][content]" class="summernote js-ajax-summary form-control" rows="6"></textarea>
                         </div>
                         <div class="invalid-feedback"></div>
                     </div>
