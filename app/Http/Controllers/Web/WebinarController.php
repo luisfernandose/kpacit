@@ -232,7 +232,7 @@ class WebinarController extends Controller
                 ->where('id', $file_id)
                 ->first();
 
-            if (!empty($file) and $file->downloadable) {
+            if (!empty($file) and $file->storage=='local' and $file->downloadable) {
                 $canAccess = true;
 
                 if ($file->accessibility == 'paid') {
@@ -348,7 +348,7 @@ class WebinarController extends Controller
                     if ($file->storage == 'local') {
                         $storageService = 's3';
 
-                        $path = route('maskVideo', [$webinar->slug, encrypt($file_id)]);
+                        $path =  Storage::url($file->file);
 
                     } else {
 
