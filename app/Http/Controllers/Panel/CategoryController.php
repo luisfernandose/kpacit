@@ -86,7 +86,7 @@ class CategoryController extends Controller
         $exist = Category::where('title', clean($request->input('title')))->where('id', '<>', $id)->first();
 
         if ($exist) {
-            return redirect()->route('panel.categories.edit')
+            return redirect()->route('panel.categories.edit', $id)
                 ->withInput($request->all())
                 ->with('error', trans('panel.category_already_exist'));
         }
