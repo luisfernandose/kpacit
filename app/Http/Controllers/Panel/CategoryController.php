@@ -83,10 +83,10 @@ class CategoryController extends Controller
             'title' => 'required|min:3|max:128',
             'icon' => 'required',
         ]);
-        $exist = Category::where('title', clean($request->input('title')))->where('id','<>', $id )->first();
+        $exist = Category::where('title', clean($request->input('title')))->where('id', '<>', $id)->first();
 
         if ($exist) {
-            return redirect()->route('panel.categories.create')
+            return redirect()->route('panel.categories.edit')
                 ->withInput($request->all())
                 ->with('error', trans('panel.category_already_exist'));
         }
