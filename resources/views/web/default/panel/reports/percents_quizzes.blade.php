@@ -25,7 +25,7 @@
 
     <section class="mt-35">
         <h2 class="section-title">{{ trans('panel.filter_students') }}</h2>
-        @include('web.default.panel.reports.filters.filters')
+        @include('web.default.panel.reports.filters.percent')
     </section>
 
     <section class="mt-35">

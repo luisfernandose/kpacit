@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\CourseGroupList;
 use App\Models\Quiz;
 use App\Models\QuizzesResult;
@@ -130,7 +131,7 @@ class ReportController extends Controller
             "quizzes " => $quizzes,
         ]);
     }
-    public function courses()
+    public function courses(Request $request)
     {
         $user = auth()->user();
 
@@ -138,21 +139,50 @@ class ReportController extends Controller
             abort(404);
         }
 
+        $categories = Category::where('parent_id', null)->where('organ_id', auth()->user()->id)->get();
+
+        $webinar_id = null;
+        $category_id = null;
+        $status_id = null;
+
         $data = Webinar::where(function ($query) use ($user) {
             if ($user->isTeacher()) {
                 $query->where('teacher_id', $user->id);
             } elseif ($user->isOrganization()) {
                 $query->where('creator_id', $user->id);
             }
-        })->whereIn('status', ['active', 'inactive']);
+        });
+        $webinars = $data;
+
+        if ($request->get('webinar_id') and $request->get('webinar_id') != "all") {
+            $data->where('id', $request->get('webinar_id'));
+            $webinar_id = $request->get('webinar_id');
+        }
+        if ($request->get('category_id') and $request->get('category_id') != "all") {
+            $data->where('category_id', $request->get('category_id'));
+            $category_id = $request->get('category_id');
+        }
+        if ($request->get('status_id') and $request->get('status_id') != "all") {
+            $data->where('status', $request->get('status_id'));
+            $status_id = $request->get('status_id');
+        }
 
         return view(getTemplate() . '.panel.reports.courses', [
-            "data" => $data->paginate(10),
+            "allStatus" => collect([
+                ['id' => 'active', 'title' => trans('panel.status_active')],
+                ['id' => 'inactive', 'title' => trans('panel.status_inactive')],
+            ]),
+            "webinar_id" => $webinar_id,
+            "category_id" => $category_id,
+            "categories" => $categories,
+            "status_id" => $status_id,
+            "webinars" => $webinars->get(),
+            "data" => $data->whereIn('status', ['active', 'inactive'])->paginate(10),
             "active" => $data->where('status', 'active')->count(),
             "inactive" => $data->where('status', 'inactive')->count(),
         ]);
     }
-    public function users_not_finished_webinars()
+    public function users_not_finished_webinars(Request $request)
     {
         $user = auth()->user();
 
@@ -165,26 +195,55 @@ class ReportController extends Controller
         } else {
             $userList = $user->getOrganizationStudents()->get();
         }
+        $users = $userList;
 
-        $data = Sale::whereIn('buyer_id', $userList->pluck('id'))->get();
+        $webinar_id = null;
+        $user_id = null;
+
+        $webinars = Webinar::where(function ($query) use ($user) {
+            if ($user->isTeacher()) {
+                $query->where('teacher_id', $user->id);
+            } elseif ($user->isOrganization()) {
+                $query->where('creator_id', $user->id);
+            }
+        })->get();
+
+        $userList = $userList->pluck('id');
+
+        if ($request->get('user_id') and $request->get('user_id') != "all") {
+            $userList = [$request->get('user_id')];
+            $user_id = $request->get('user_id');
+        }
+
+        $data = Sale::whereIn('buyer_id', $userList);
+
+        if ($request->get('webinar_id') and $request->get('webinar_id') != "all") {
+            $data->where('webinar_id', $request->get('webinar_id'));
+            $webinar_id = $request->get('webinar_id');
+        }
 
         $ids = [];
-        foreach ($data as $d) {
+        foreach ($data->get() as $d) {
             if ($d->webinar->getProgressByUser($d->buyer_id) < 100) {
                 $ids[] = ["id" => $d->id];
             }
         }
 
-        $dataCount = Sale::whereIn('id', array_column($ids, "id"))->get()->count();
         $data = Sale::whereIn('id', array_column($ids, "id"))->paginate(10);
 
+        $dataCount = Sale::whereIn('id', array_column($ids, "id"))->get()->count();
+
         return view(getTemplate() . '.panel.reports.users_not_finished_webinars', [
+            "webinar_id" => $webinar_id,
+            "user_id" => $user_id,
             "data" => $data,
             "dataCount" => $dataCount,
+            "webinars" => $webinars,
+            "userList" => $users,
         ]);
     }
 
-    public function courses_not_started()
+    public function courses_not_started(Request $request)
     {
 
         $user = auth()->user();
@@ -193,16 +252,32 @@ class ReportController extends Controller
             abort(404);
         }
 
+        $categories = Category::where('parent_id', null)->where('organ_id', auth()->user()->id)->get();
+
+        $webinar_id = null;
+        $category_id = null;
+
         $webinars = Webinar::with('sales')->where(function ($query) use ($user) {
             if ($user->isTeacher()) {
                 $query->where('teacher_id', $user->id);
             } elseif ($user->isOrganization()) {
                 $query->where('creator_id', $user->id);
             }
-        })->get();
+        });
+
+        $allWebinars = $webinars;
+
+        if ($request->get('webinar_id') and $request->get('webinar_id') != "all") {
+            $webinars->where('id', $request->get('webinar_id'));
+            $webinar_id = $request->get('webinar_id');
+        }
+        if ($request->get('category_id') and $request->get('category_id') != "all") {
+            $webinars->where('category_id', $request->get('category_id'));
+            $category_id = $request->get('category_id');
+        }
 
         $data = [];
-        foreach ($webinars as $w) {
+        foreach ($webinars->get() as $w) {
             $valid = true;
             $count = 0;
             if ($w->sales->count()) {
@@ -226,6 +301,10 @@ class ReportController extends Controller
         return view(getTemplate() . '.panel.reports.courses_not_started', [
             "data" => $data,
             "dataCount" => count($data),
+            "categories" => $categories,
+            "category_id" => $category_id,
+            "webinar_id" => $webinar_id,
+            "webinars" => $allWebinars->get(),
         ]);
 
     }

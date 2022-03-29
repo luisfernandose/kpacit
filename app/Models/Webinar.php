@@ -341,7 +341,7 @@ class Webinar extends Model
             $progress = ($passed * 100) / ($sessions->count() + $files->count() + $quizzes_count);
         }
 
-        return $progress;
+        return round($progress) . "%";
 
     }
     public function getProgress($with_quizzes = true, $u = null)

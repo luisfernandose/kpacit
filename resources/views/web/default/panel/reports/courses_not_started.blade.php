@@ -24,8 +24,14 @@
     </section>
 
     <section class="mt-35">
+        <h2 class="section-title">{{ trans('panel.filter') }}</h2>
+        @include('web.default.panel.reports.filters.courses_not_started')
+    </section>
+
+    <section class="mt-35">
         <h2 class="section-title">{{ trans('panel.courses_not_started') }}</h2>
     </section>
+
 
     @if(count($data) > 0)
 
@@ -36,8 +42,8 @@
                             <table class="table custom-table">
                                 <thead>
                                 <tr>
-                                    <th>{{ trans('panel.course') }}</th>
-                                    <th>{{ trans('panel.category') }}</th>
+                                    <th class="text-center">{{ trans('panel.course') }}</th>
+                                    <th class="text-center">{{ trans('panel.category') }}</th>
                                     <th class="text-center">{{ trans('panel.qty') }}</th>
                                     <th></th>
                                 </tr>

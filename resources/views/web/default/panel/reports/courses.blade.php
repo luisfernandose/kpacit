@@ -25,10 +25,15 @@
                         <strong class="font-30 text-dark-blue font-weight-bold mt-5">{{$inactive}}</strong>
                         <span class="font-16 text-gray font-weight-500">{{ trans('panel.inactive_courses') }}</span>
                     </div>
-                </div>              
+                </div>
             </div>
         </div>
     </section>
+    <section class="mt-35">
+        <h2 class="section-title">{{ trans('panel.filter') }}</h2>
+        @include('web.default.panel.reports.filters.courses')
+    </section>
+
 
     @if($data->count() > 0)
 
@@ -39,15 +44,15 @@
                             <table class="table custom-table">
                                 <thead>
                                 <tr>
-                                    <th>{{ trans('quiz.course') }}</th>
-                                    <th>{{ trans('quiz.category') }}</th>
-                                    <th class="text-center">{{ trans('quiz.status') }}</th>
+                                    <th class="text-center">{{ trans('panel.course') }}</th>
+                                    <th class="text-center">{{ trans('panel.category') }}</th>
+                                    <th class="text-center">{{ trans('panel.status') }}</th>
                                     <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($data as $dat)
-                                    <tr>                                        
+                                    <tr>
                                         <td>{{ $dat->title }}</td>
                                         <td>{{$dat->category? $dat->category->title:'N/A'}}</td>
                                         <td>{{ trans('public.'.$dat->status) }}</td>

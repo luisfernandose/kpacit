@@ -24,8 +24,13 @@
     </section>
 
     <section class="mt-35">
+        <h2 class="section-title">{{ trans('panel.filter') }}</h2>
+        @include('web.default.panel.reports.filters.users_not_finished_webinars')
+    </section>
+    <section class="mt-35">
         <h2 class="section-title">{{ trans('panel.users_not_finished_webinars') }}</h2>
     </section>
+
 
     @if($data->count() > 0)
 
@@ -36,8 +41,8 @@
                             <table class="table custom-table">
                                 <thead>
                                 <tr>
-                                    <th>{{ trans('panel.student') }}</th>
-                                    <th>{{ trans('panel.course') }}</th>
+                                    <th class="text-center">{{ trans('panel.student') }}</th>
+                                    <th class="text-center">{{ trans('panel.course') }}</th>
                                     <th class="text-center">{{ trans('panel.progress') }}</th>
                                     <th></th>
                                 </tr>
@@ -45,7 +50,7 @@
                                 <tbody>
                                 @foreach($data as $dat)
                                     <tr>
-                                        
+
                                         <td class="align-middle">{{ $dat->buyer->full_name }}</td>
                                         <td class="align-middle">{{ $dat->webinar->title }}</td>
                                         <td class="align-middle">{{ $dat->webinar->getProgressByUser($dat->buyer_id) }}</td>
