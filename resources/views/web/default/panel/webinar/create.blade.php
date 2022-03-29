@@ -45,11 +45,11 @@
                     <button type="button" id="saveCourseOrganization" class="btn btn-sm btn-primary">{{ trans('public.finish') }}</button>
                 @endif
 
+                @if(!auth()->user()->isOrganization() and $currentStep == 7)
+                    <button type="button" id="sendForReview" class="btn btn-sm btn-primary">{{ trans('public.send_for_review') }}</button>
 
-                <button type="button" id="sendForReview" class="btn btn-sm btn-primary">{{ trans('public.send_for_review') }}</button>
-
-                <button type="button" id="saveAsDraft" class=" btn btn-sm btn-primary">{{ trans('public.save_as_draft') }}</button>
-
+                    <button type="button" id="saveAsDraft" class=" btn btn-sm btn-primary">{{ trans('public.save_as_draft') }}</button>
+                @endif
                 @if(!empty($webinar) and $webinar->creator_id == $authUser->id)
                     <a href="/panel/webinars/{{ $webinar->id }}/delete?redirect_to=/panel/webinars" class="delete-action webinar-actions btn btn-sm btn-danger mt-20 mt-md-0">{{ trans('public.delete') }}</a>
                 @endif
