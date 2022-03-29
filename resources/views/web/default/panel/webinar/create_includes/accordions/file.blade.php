@@ -24,7 +24,7 @@
 
                             <div class="d-flex align-items-center js-ajax-accessibility">
                                 <div class="custom-control custom-radio">
-                                    <input type="radio" name="ajax[new][accessibility]" value="free" id="accessibilityRadio{{$module['id']}}1F_record{{isset($edit)?'E':''}}" class="custom-control-input">
+                                    <input type="radio" name="ajax[new][accessibility]" value="free" id="accessibilityRadio{{$module['id']}}1F_record{{isset($edit)?'E':''}}" class="custom-control-input" checked>
                                     <label class="custom-control-label font-14 cursor-pointer" for="accessibilityRadio{{$module['id']}}1F_record{{isset($edit)?'E':''}}">{{ trans('public.free') }}</label>
                                 </div>
 
@@ -43,7 +43,7 @@
 
                             <div class="d-flex align-items-center">
                                 <div class="custom-control custom-radio">
-                                    <input type="radio" name="ajax[new][storage]" value="local" id="customRadio1{{$module["id"]}}_record{{isset($edit)?'E':''}}" class="js-file-storage custom-control-input">
+                                    <input type="radio" name="ajax[new][storage]" value="local" id="customRadio1{{$module["id"]}}_record{{isset($edit)?'E':''}}" class="js-file-storage custom-control-input" checked>
                                     <label class="custom-control-label font-14 cursor-pointer" for="customRadio1{{$module["id"]}}_record{{isset($edit)?'E':''}}">{{ trans('webinars.upload') }}</label>
                                 </div>
 
@@ -104,10 +104,10 @@
 
                         <div class="js-downloadable-file form-group mt-20 @if(!empty($file) and $file->storage == 'online') d-none @endif">
                             <div class="d-flex align-items-center justify-content-between">
-                                <label class="cursor-pointer input-label" for="downloadableSwitch{{$module["id"]}}_record">{{ trans('home.downloadable') }}</label>
+                                <label class="cursor-pointer input-label" for="downloadableSwitch{{$module["id"]}}_record{{isset($edit)?'E':''}}">{{ trans('home.downloadable') }}</label>
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" name="ajax[new][downloadable]" class="custom-control-input" id="downloadableSwitch{{$module["id"]}}_record">
-                                    <label class="custom-control-label" for="downloadableSwitch{{$module["id"]}}_record"></label>
+                                    <input type="checkbox" name="ajax[new][downloadable]" class="custom-control-input" id="downloadableSwitch{{$module["id"]}}_record{{isset($edit)?'E':''}}">
+                                    <label class="custom-control-label" for="downloadableSwitch{{$module["id"]}}_record{{isset($edit)?'E':''}}"></label>
                                 </div>
                             </div>
                         </div>
