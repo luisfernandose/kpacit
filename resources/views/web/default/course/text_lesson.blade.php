@@ -26,7 +26,7 @@
                 <div class="post-show mt-30">
 
                     <div class="post-img pb-30">
-                        <img src="{{ url($textLesson->image) }}" alt="{{ $textLesson->title }}"/>
+                        <img src="{{ $textLesson->image }}" alt="{{ $textLesson->title }}"/>
                     </div>
 
                     {!! nl2br($textLesson->content) !!}
@@ -86,7 +86,7 @@
                     </div>
                 </div>
 
-                @if(!empty($textLesson->attachments) and count($textLesson->attachments))
+<!--                 @if(!empty($textLesson->attachments) and count($textLesson->attachments))
                     <div class="shadow-sm rounded-lg bg-white px-15 px-md-25 py-20 mt-30">
                         <h3 class="category-filter-title font-16 font-weight-bold text-dark-blue">{{ trans('public.attachments') }}</h3>
 
@@ -102,7 +102,7 @@
                             @endforeach
                         </ul>
                     </div>
-                @endif
+                @endif -->
 
                 @if(!empty($course->textLessons) and count($course->textLessons))
                     <div class="shadow-sm rounded-lg bg-white px-15 px-md-25 py-20 mt-30">
