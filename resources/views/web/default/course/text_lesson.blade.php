@@ -86,23 +86,7 @@
                     </div>
                 </div>
 
-<!--                 @if(!empty($textLesson->attachments) and count($textLesson->attachments))
-                    <div class="shadow-sm rounded-lg bg-white px-15 px-md-25 py-20 mt-30">
-                        <h3 class="category-filter-title font-16 font-weight-bold text-dark-blue">{{ trans('public.attachments') }}</h3>
 
-                        <ul class="p-0 m-0 pt-10">
-                            @foreach($textLesson->attachments as $attachment)
-                                <li class="mt-10 p-10 rounded bg-info-lighter font-14 font-weight-500 text-dark-blue d-flex align-items-center justify-content-between text-ellipsis">
-                                    <span class="">{{ $attachment->file->title }}</span>
-
-                                    <a href="{{ $course->getUrl() }}/file/{{ $attachment->file->id }}/download">
-                                        <i data-feather="download-cloud" width="20" class="text-secondary"></i>
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif -->
 
                 @if(!empty($course->textLessons) and count($course->textLessons))
                     <div class="shadow-sm rounded-lg bg-white px-15 px-md-25 py-20 mt-30">
