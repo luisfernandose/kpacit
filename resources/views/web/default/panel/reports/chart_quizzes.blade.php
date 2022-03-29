@@ -8,7 +8,7 @@
 @section('content')
 
     <section>
-        <h2 class="section-title">{{ trans('panel.chart_quizzes') }} {{date('Y')}}</h2>      
+        <h2 class="section-title">{{ trans('panel.chart_quizzes') }} {{date('Y')}}</h2>
     </section>
 
     <div id="chart" style="margin-top:30px"></div>
@@ -37,10 +37,6 @@
         },
         stroke: {
           curve: 'straight'
-        },
-        title: {
-          text: '{{ trans('panel.chart_quizzes') }} {{date('Y')}}',
-          align: 'left'
         },
         grid: {
           row: {
