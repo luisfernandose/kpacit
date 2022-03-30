@@ -17,6 +17,7 @@
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^7.3",
+        "ivanomatteo/laravel-device-tracking": "^0.2.0",
         "iyzico/iyzipay-php": "^2.0",
         "joisarjignesh/bigbluebutton": "^1.1",
         "jorenvanhocht/laravel-share": "^4.0",

@@ -88,4 +88,6 @@ return [
     'login_failed_your_account_is_not_verified' => 'Login failed! Your email/phone not verified.',
     'document_type' => 'Document type',
     'document_id' => 'Document ID',
+
+    'limit_devices' => 'Limit of devices reached contact the administrator',
 ];
