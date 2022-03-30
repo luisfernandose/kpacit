@@ -134,7 +134,7 @@
             <li class="sidenav-item {{ request()->is('panel/reports*')  ? 'sidenav-item-active' : '' }}">
                 <a class="d-flex align-items-center" data-toggle="collapse" href="#reportsCollapse" role="button" aria-expanded="false" aria-controls="reportsCollapse">
                 <span class="sidenav-item-icon mr-10">
-                    @include('web.default.panel.includes.sidebar_icons.students')
+                    @include('web.default.panel.includes.sidebar_icons.experience')
                 </span>
                     <span class="font-14 text-dark-blue font-weight-500">{{ trans('panel.reports') }}</span>
                 </a>

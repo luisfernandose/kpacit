@@ -35,17 +35,22 @@
                 @else
                     <a href="" class="btn btn-sm btn-primary disabled">{{ trans('webinars.previous') }}</a>
                 @endif
-
-                <button type="button" id="getNextStep" class="btn btn-sm btn-primary ml-15" @if($currentStep >= 8) disabled @endif>{{ trans('webinars.next') }}</button>
+                @if((auth()->user()->isOrganization() and $currentStep == 7 ) || (!auth()->user()->isOrganization() and $currentStep == 8 ))
+                    <button type="button" id="saveCourseOrganization" class="btn btn-sm btn-primary ml-15">{{ trans('public.finish') }}</button>
+                @else
+                    <button type="button" id="getNextStep" class="btn btn-sm btn-primary ml-15" @if($currentStep >= 8) disabled @endif>{{ trans('webinars.next') }}</button>
+                @endif
             </div>
 
             <div class="mt-20 mt-md-0">
          
-                @if(auth()->user()->isOrganization() and $currentStep == 7)
-                    <button type="button" id="saveCourseOrganization" class="btn btn-sm btn-primary">{{ trans('public.finish') }}</button>
-                @endif
 
-                @if(!auth()->user()->isOrganization() and $currentStep == 7)
+
+                @if(!auth()->user()->isOrganization() and $currentStep != 8)
+                    <button type="button" id="sendForReview" class="btn btn-sm btn-primary">{{ trans('public.send_for_review') }}</button>
+
+                    <button type="button" id="saveAsDraft" class=" btn btn-sm btn-primary">{{ trans('public.save_as_draft') }}</button>
+                @elseif(auth()->user()->isOrganization() and $currentStep != 7)
                     <button type="button" id="sendForReview" class="btn btn-sm btn-primary">{{ trans('public.send_for_review') }}</button>
 
                     <button type="button" id="saveAsDraft" class=" btn btn-sm btn-primary">{{ trans('public.save_as_draft') }}</button>
