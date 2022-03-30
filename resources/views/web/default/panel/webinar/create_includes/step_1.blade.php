@@ -79,6 +79,16 @@
         </div>
 
         <div class="form-group mt-15">
+            <label class="input-label">{{ trans('public.limit_device') }}</label>
+            <input type="text" name="limit_device" value="{{ !empty($webinar) ? $webinar->limit_device : old('limit_device') }}" class="form-control only_number @error('limit_device')  is-invalid @enderror " placeholder="{{ trans('forms.limit_device') }}"/>
+            @error('limit_device')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+
+        <div class="form-group mt-15">
             <label class="input-label">{{ trans('public.thumbnail_image') }}</label>
             <div class="input-group">
                 <div class="input-group-prepend">
@@ -103,7 +113,7 @@
                         <i data-feather="arrow-up" width="18" height="18" class="text-white"></i>
                     </button>
                 </div>
-                <input type="text" readonly name="image_cover" id="cover_image" value="{{ !empty($webinar) ? $webinar->image_cover : old('image_cover') }}" placeholder="{{ trans('forms.course_cover_size') }}" class="form-control str_replace(env('AWS_URL'),'/',validate-path) @error('image_cover')  is-invalid @enderror"/>
+                <input type="text" readonly name="image_cover" id="cover_image" value="{{ !empty($webinar) ? $webinar->image_cover : old('image_cover') }}" placeholder="{{ trans('forms.course_cover_size') }}" class="form-control validate-path @error('image_cover')  is-invalid @enderror"/>
                 @error('image_cover')
                 <div class="invalid-feedback">
                     {{ $message }}

@@ -68,7 +68,13 @@
         var saveSuccessLang = '{{ trans('webinars.success_store') }}';
         var zoomJwtTokenInvalid = '{{ trans('webinars.zoom_jwt_token_invalid') }}';
         var hasZoomApiToken = '{{ (!empty($authUser->zoomApi) and $authUser->zoomApi->jwt_token) ? 'true' : 'false' }}';
+
+        $(document).ready(()=>{
+       
+             $('.only_number').mask('0#');       
+        });
     </script>
 
     <script src="/assets/default/js/panel/webinar.min.js"></script>
+    <script src="/assets/default/vendors/jQuery-Mask-Plugin-master/dist/jquery.mask.min.js"></script>
 @endpush

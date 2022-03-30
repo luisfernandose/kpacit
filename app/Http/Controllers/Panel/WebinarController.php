@@ -258,6 +258,7 @@ class WebinarController extends Controller
         $rules = [
             'type' => 'required|in:webinar,course,text_lesson',
             'title' => 'required|max:255',
+            'limit_device' =>'nullable|numeric',
             'thumbnail' => 'required',
             'image_cover' => 'required',
             'description' => 'required',
@@ -300,6 +301,7 @@ class WebinarController extends Controller
             'private' => $private,
             'title' => $data['title'],
             'seo_description' => $data['seo_description'],
+            'limit_device' => (isset($data['limit_device'])? (int)$data['limit_device'] : null   ),
             'thumbnail' => $data['thumbnail'],
             'image_cover' => $data['image_cover'],
             'video_demo' => $data['video_demo'],
@@ -467,6 +469,7 @@ class WebinarController extends Controller
             $rules = [
                 'type' => 'required|in:webinar,course,text_lesson',
                 'title' => 'required|max:255',
+                'limit_device' => 'nullable|numeric',
                 'thumbnail' => 'required',
                 'image_cover' => 'required',
                 'description' => 'required',
@@ -497,6 +500,7 @@ class WebinarController extends Controller
 
         if ($currentStep == 1) {
             $data['private'] = (!empty($data['private']) and $data['private'] == 'on');
+            $data['limit_device'] = (isset($data['limit_device']) ? (int)$data['limit_device']: null);
             $webinar->slug = null; // regenerate slug in model
         }
 

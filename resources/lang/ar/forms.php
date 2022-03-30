@@ -18,5 +18,6 @@ return [
     'subscribe_hint' => 'سيتمكن الطلاب من الاشتراك في دورتك التدريبية بالإضافة إلى الشراء المباشر.',
     'webinar_description_placeholder' => 'الحد الادني 150 كلمة الصور وملفات html مدعومة.',
     'empty_means_unlimited' => 'اترك هذا فارغ لجعلها غير محدودة.',
+    'limit_device' => '0 or white for unlimited',
 
 ];

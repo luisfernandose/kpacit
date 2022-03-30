@@ -27,28 +27,6 @@ class WebinarController extends Controller
 
         if (auth()->check()) {
             $user = auth()->user();
-            if($user->isUser()){
-
-                $settings = Setting::where('page', 'general')->where('name','general')->first();
-
-                if( $settings ){
-                 
-                    $settings_values = json_decode($settings['value']);
-
-                    if(isset($settings_values->use_devices) && (int)$settings_values->use_devices > 0){
-
-                        if($user->device->count() >(int)$settings_values->use_devices){
-                            $toastData = [
-                                'title' => '',
-                                'msg' => trans('auth.limit_devices'),
-                                'status' => 'error',
-                            ];
-                            return back()->with(['toast' => $toastData]);
-                        }
-                    }
-                }
-            }
-
 
         }
 
@@ -151,6 +129,25 @@ class WebinarController extends Controller
         if (empty($course)) {
             return back();
         }
+
+        if($user->isUser()){
+
+
+            if( isset($course->limit_device) && (int)$course->limit_device > 0){
+               
+
+                    if($user->device->count() > (int)$course->limit_device){
+                        $toastData = [
+                            'title' => '',
+                            'msg' => trans('auth.limit_devices'),
+                            'status' => 'error',
+                        ];
+                        return back()->with(['toast' => $toastData]);
+                    }
+                
+            }
+        }
+
 
         $course->files_without_module = File::with([
             'learningStatus' => function ($query) use ($user) {

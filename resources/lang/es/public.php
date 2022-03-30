@@ -12,6 +12,7 @@ return [
     'sub_title' => 'Subtitle',
     'name' => 'Name',
     'seo_description' => 'SEO Meta Description',
+    'limit_device' => 'Limite de dispositivos',
     'cover_image' => 'Cover Image',
     'thumbnail_image' => 'Thumbnail',
     'image' => 'Image',
