@@ -17,10 +17,11 @@ use App\Models\Webinar;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
+use IvanoMatteo\LaravelDeviceTracking\Traits\UseDevices;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, UseDevices;
 
     static $active = 'active';
     static $pending = 'pending';

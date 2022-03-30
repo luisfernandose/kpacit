@@ -8,6 +8,7 @@ use App\Models\AdvertisingBanner;
 use App\Models\CourseLearning;
 use App\Models\Favorite;
 use App\Models\File;
+use App\Models\Setting;
 use App\Models\Quiz;
 use App\Models\QuizzesResult;
 use App\Models\Sale;
@@ -26,6 +27,29 @@ class WebinarController extends Controller
 
         if (auth()->check()) {
             $user = auth()->user();
+            if($user->isUser()){
+
+                $settings = Setting::where('page', 'general')->where('name','general')->first();
+
+                if( $settings ){
+                 
+                    $settings_values = json_decode($settings['value']);
+
+                    if(isset($settings_values->use_devices) && (int)$settings_values->use_devices > 0){
+
+                        if($user->device->count() >(int)$settings_values->use_devices){
+                            $toastData = [
+                                'title' => '',
+                                'msg' => trans('auth.limit_devices'),
+                                'status' => 'error',
+                            ];
+                            return back()->with(['toast' => $toastData]);
+                        }
+                    }
+                }
+            }
+
+
         }
 
         $course = Webinar::where('slug', $slug)
