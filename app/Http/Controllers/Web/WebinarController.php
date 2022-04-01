@@ -17,6 +17,7 @@ use App\Models\Webinar;
 use App\Models\WebinarReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use IvanoMatteo\LaravelDeviceTracking\Models\DeviceUser;
 
 class WebinarController extends Controller
 {
@@ -135,8 +136,14 @@ class WebinarController extends Controller
 
             if( isset($course->limit_device) && (int)$course->limit_device > 0){
                
+                $device = \DeviceTracker::findCurrentDevice();
+              
+                $user_device_find = DeviceUser::where('user_id',$user->id)
+                                               ->orderBy('created_at','ASC')
+                                               ->limit((int)$course->limit_device)
+                                               ->get()->contains('device_id', $device->id); 
 
-                    if($user->device->count() > (int)$course->limit_device){
+                    if(empty($user_device_find)){
                         $toastData = [
                             'title' => '',
                             'msg' => trans('auth.limit_devices'),
