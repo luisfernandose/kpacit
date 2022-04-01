@@ -300,8 +300,10 @@ class Webinar extends Model
         $progress = 0;
         $quizzes_count = 0;
         $user_id = $u ? $u : auth()->id();
+
         $sessions = $this->sessions;
-        $files = $this->files;
+        $textLessons = $this->textLessons;
+        $files = $this->files->where('resource_type','file');
         $quizzes = $this->quizzes->where('status', Quiz::ACTIVE);
         $passed = 0;
 
@@ -324,7 +326,15 @@ class Webinar extends Model
                 $passed += 1;
             }
         }
+        foreach ($textLessons as $textLesson) {
+            $status = CourseLearning::where('user_id', $user_id)
+                ->where('text_lesson_id', $textLesson->id)
+                ->first();
 
+            if (!empty($status)) {
+                $passed += 1;
+            }
+        }
         foreach ($quizzes as $quiz) {
             $status = QuizzesResult::where('user_id', $user_id)
                 ->where('quiz_id', $quiz->id)
@@ -338,7 +348,7 @@ class Webinar extends Model
         $quizzes_count = $quizzes->count();
 
         if ($passed > 0) {
-            $progress = ($passed * 100) / ($sessions->count() + $files->count() + $quizzes_count);
+            $progress = ($passed * 100) / ($sessions->count() + $files->count() + $textLessons->count() + $quizzes_count);
         }
 
         return round($progress) . "%";
@@ -353,7 +363,8 @@ class Webinar extends Model
         if ($this->isWebinar() and !empty($this->capacity)) {
             if ($this->isProgressing() and $this->checkUserHasBought()) {
                 $sessions = $this->sessions;
-                $files = $this->files;
+                $files = $this->files->where('resource_type','file');
+                $textLessons = $this->textLessons;
                 $quizzes = $this->quizzes->where('status', Quiz::ACTIVE);
                 $passed = 0;
 
@@ -376,6 +387,15 @@ class Webinar extends Model
                         $passed += 1;
                     }
                 }
+                foreach ($textLessons as $textLesson) {
+                    $status = CourseLearning::where('user_id', $user_id)
+                        ->where('text_lesson_id', $textLesson->id)
+                        ->first();
+    
+                    if (!empty($status)) {
+                        $passed += 1;
+                    }
+                }
 
                 if ($with_quizzes === true) {
 
@@ -393,7 +413,7 @@ class Webinar extends Model
                 }
 
                 if ($passed > 0) {
-                    $progress = ($passed * 100) / ($sessions->count() + $files->count() + $quizzes_count);
+                    $progress = ($passed * 100) / ($sessions->count() + $files->count() + $textLessons->count() + $quizzes_count);
                 }
             } else {
                 $salesCount = !empty($this->sales_count) ? $this->sales_count : $this->sales()->count();
@@ -403,14 +423,27 @@ class Webinar extends Model
                 }
             }
         } elseif (!$this->isWebinar() and auth()->check() and $this->checkUserHasBought()) {
-            $files = $this->files;
+            $sessions = $this->sessions;
+            $files = $this->files->where('resource_type','file');
             $textLessons = $this->textLessons;
             $quizzes = $this->quizzes->where('status', Quiz::ACTIVE);
             $passed = 0;
+            
 
             foreach ($files as $file) {
+
                 $status = CourseLearning::where('user_id', $user_id)
-                    ->where('file_id', $file->id)
+                    ->where('file_id', $file->resource_id)
+                    ->first();
+               
+                if (!empty($status)) {
+                    $passed += 1;
+                }
+            }
+
+            foreach ($sessions as $session) {
+                $status = CourseLearning::where('user_id', $user_id)
+                    ->where('session_id', $session->id)
                     ->first();
 
                 if (!empty($status)) {
@@ -442,7 +475,7 @@ class Webinar extends Model
             }
 
             if ($passed > 0) {
-                $progress = ($passed * 100) / ($files->count() + $textLessons->count() + $quizzes_count);
+                $progress = ($passed * 100) / ($sessions->count() + $files->count() + $textLessons->count() + $quizzes_count);
             }
         }
 
