@@ -29,7 +29,7 @@
                 <select name="teacher_id" class="custom-select @error('teacher_id')  is-invalid @enderror">
                     <option {{ !empty($webinar) ? '' : 'selected' }} disabled>{{ trans('public.choose_instructor') }}</option>
                     @foreach($teachers as $teacher)
-                        <option value="{{ $teacher->id }}" {{ !empty($webinar) && $webinar->teacher_id === $teacher->id? 'selected' : '' }}>{{ $teacher->full_name }}</option>
+                        <option value="{{ $teacher->id }}" {{ !empty($webinar) && $webinar->teacher_id === $teacher->id? 'selected' : '' }} @if(old('teacher_id')== $teacher->id) selected @endif>{{ $teacher->full_name }}</option>
                     @endforeach
                 </select>
 
@@ -79,6 +79,16 @@
         </div>
 
         <div class="form-group mt-15">
+            <label class="input-label">{{ trans('public.limit_device') }}</label>
+            <input type="text" name="limit_device" value="{{ !empty($webinar) ? $webinar->limit_device : old('limit_device') }}" class="form-control only_number @error('limit_device')  is-invalid @enderror " placeholder="{{ trans('forms.limit_device') }}"/>
+            @error('limit_device')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+
+        <div class="form-group mt-15">
             <label class="input-label">{{ trans('public.thumbnail_image') }}</label>
             <div class="input-group">
                 <div class="input-group-prepend">
@@ -86,7 +96,7 @@
                         <i data-feather="arrow-up" width="18" height="18" class="text-white"></i>
                     </button>
                 </div>
-                <input type="text" name="thumbnail" id="thumbnail" value="{{ !empty($webinar) ? $webinar->thumbnail : old('thumbnail') }}" class="form-control @error('thumbnail')  is-invalid @enderror" placeholder="{{ trans('forms.course_thumbnail_size') }}"/>
+                <input type="text" readonly name="thumbnail" id="thumbnail" value="{{ !empty($webinar) ? str_replace(env('AWS_URL'),'/',$webinar->thumbnail) : old('thumbnail') }}" class="form-control validate-path @error('thumbnail')  is-invalid @enderror" placeholder="{{ trans('forms.course_thumbnail_size') }}"/>
                 @error('thumbnail')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -103,7 +113,7 @@
                         <i data-feather="arrow-up" width="18" height="18" class="text-white"></i>
                     </button>
                 </div>
-                <input type="text" name="image_cover" id="cover_image" value="{{ !empty($webinar) ? $webinar->image_cover : old('image_cover') }}" placeholder="{{ trans('forms.course_cover_size') }}" class="form-control @error('image_cover')  is-invalid @enderror"/>
+                <input type="text" readonly name="image_cover" id="cover_image" value="{{ !empty($webinar) ? $webinar->image_cover : old('image_cover') }}" placeholder="{{ trans('forms.course_cover_size') }}" class="form-control validate-path @error('image_cover')  is-invalid @enderror"/>
                 @error('image_cover')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -120,7 +130,7 @@
                         <i data-feather="arrow-up" width="18" height="18" class="text-white"></i>
                     </button>
                 </div>
-                <input type="text" name="video_demo" id="demo_video" value="{{ !empty($webinar) ? $webinar->video_demo : old('video_demo') }}" class="form-control @error('video_demo')  is-invalid @enderror"/>
+                <input type="text" readonly name="video_demo" id="demo_video" value="{{ !empty($webinar) ? str_replace(env('AWS_URL'),'/',$webinar->video_demo) : old('video_demo') }}" class="form-control validate-path @error('video_demo')  is-invalid @enderror"/>
                 @error('video_demo')
                 <div class="invalid-feedback">
                     {{ $message }}

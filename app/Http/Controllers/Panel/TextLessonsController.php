@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\File;
 use App\Models\TextLesson;
 use App\Models\TextLessonAttachment;
+use App\Models\WebinarContent;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Validator;
@@ -54,6 +55,20 @@ class TextLessonsController extends Controller
         $attachments = $data['attachments'];
         $this->saveAttachments($textLesson, $attachments);
 
+        $countContent = WebinarContent::where('creator_id', $user->id)->where('webinar_id', $data['webinar_id'])->where("module_id", $data['module_id'])->get()->count();
+
+        $order = $countContent == 0 ? 1 : ($countContent + 1);
+
+        WebinarContent::create([
+            'creator_id' => $user->id,
+            'webinar_id' => $data['webinar_id'],
+            "module_id" => $data['module_id'],
+            "resource_type" => 'text',
+            "resource_id" => $textLesson->id,
+            "order" => $order,
+            'created_at' => now(),
+        ]);
+
         return response()->json([
             'code' => 200,
         ], 200);
@@ -62,7 +77,7 @@ class TextLessonsController extends Controller
     public function update(Request $request, $id)
     {
         $user = auth()->user();
-        $data = $request->get('ajax')[$id];
+        $data = $request->get('ajax')['new'];
 
         $validator = Validator::make($data, [
             'webinar_id' => 'required',
@@ -146,5 +161,3 @@ class TextLessonsController extends Controller
         }
     }
 }
-
-

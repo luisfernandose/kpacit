@@ -101,6 +101,17 @@
 
 <script>
     {!! !empty(getCustomCssAndJs('js')) ? getCustomCssAndJs('js') : '' !!}
+
+
+    $("body").on("change", ".validate-path", function (e) {
+        
+        var path = '{{ env('AWS_URL') }}';
+        let value = $(this).val();
+        value = value.replace(path.slice(0, -1),'')
+        $(this).val(value)
+
+    });
+
 </script>
 </body>
 </html>

@@ -19,7 +19,7 @@
                 <div class="d-flex align-items-center justify-content-between">
                     <label class="cursor-pointer input-label" for="rulesSwitch">{{ trans('public.agree_rules') }}</label>
                     <div class="custom-control custom-switch">
-                        <input type="checkbox" name="rules" class="custom-control-input " id="rulesSwitch">
+                        <input type="checkbox" name="rules" class="custom-control-input " id="rulesSwitch" {{ (!empty($webinar) and $webinar->status ==='active') ? 'checked="checked"' : '' }}>
                         <label class="custom-control-label" for="rulesSwitch"></label>
                     </div>
                 </div>

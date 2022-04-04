@@ -59,7 +59,7 @@
                                                                         <i class="fa fa-chevron-up"></i>
                                                                     </button>
                                                                 </div>
-                                                                <input type="text" name="image" id="image_{{ $type }}" value="{{ old('image') }}" class="form-control @error('image')  is-invalid @enderror"/>
+                                                                <input type="text" name="image" id="image_{{ $type }}" value="{{ old('image') }}" class="form-control validate-path @error('image')  is-invalid @enderror"/>
                                                                 @error('image')
                                                                 <div class="invalid-feedback">
                                                                     {{ $message }}
@@ -183,7 +183,7 @@
                                                             <i class="fa fa-chevron-up"></i>
                                                         </button>
                                                     </div>
-                                                    <input type="text" name="image" id="imageUrl" value="{{ !empty($badge) ? $badge->image : old('image') }}" class="form-control @error('image')  is-invalid @enderror"/>
+                                                    <input type="text" name="image" id="imageUrl" value="{{ !empty($badge) ? str_replace(env('AWS_URL'),'/',$badge->image) : old('image') }}" class="form-control validate-path @error('image')  is-invalid @enderror"/>
                                                     @error('image')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}

@@ -57,8 +57,8 @@ class MeetingController extends Controller
         $data = $request->all();
 
         $validator = Validator::make($data, [
-            'amount' => 'required',
-            'discount' => 'nullable',
+            'amount' => 'required|numeric',
+            'discount' => 'nullable|numeric',
             'disabled' => 'nullable',
         ]);
 

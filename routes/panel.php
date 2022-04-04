@@ -19,8 +19,8 @@ Route::group(['namespace' => 'Panel', 'prefix' => 'panel', 'middleware' => ['imp
     });
 
     Route::group(['prefix' => 'categories'], function () {
-        Route::get('/', 'CategoryController@index');
-        Route::get('/create', 'CategoryController@create');
+        Route::get('/', 'CategoryController@index')->name('panel.categories.index');
+        Route::get('/create', 'CategoryController@create')->name('panel.categories.create');
         Route::post('/store', 'CategoryController@store');
         Route::get('/{id}/edit', 'CategoryController@edit')->name('panel.categories.edit');
         Route::post('/{id}/update', 'CategoryController@update');
@@ -34,6 +34,8 @@ Route::group(['namespace' => 'Panel', 'prefix' => 'panel', 'middleware' => ['imp
             Route::get('/invitations', 'WebinarController@invitations');
             Route::post('/store', 'WebinarController@store');
             Route::get('/{id}/step/{step?}', 'WebinarController@edit');
+            Route::post('/content/delete', 'WebinarController@deleteContent')->name('delete_content');
+            Route::get('/content/edit/{content_id}', 'WebinarController@editContent')->name('edit_content');
             Route::get('/{id}/edit', 'WebinarController@edit')->name('panel_edit_webinar');
             Route::post('/{id}/update', 'WebinarController@update');
             Route::get('/{id}/delete', 'WebinarController@destroy');
@@ -272,5 +274,13 @@ Route::group(['namespace' => 'Panel', 'prefix' => 'panel', 'middleware' => ['imp
         Route::get('/{user_type}/{user_id}/edit', 'UserController@editUser');
         Route::get('/{user_type}/{user_id}/edit/step/{step?}', 'UserController@editUser');
         Route::get('/{user_type}/{user_id}/remove', 'UserController@removeUserFromOrganization');
+    });
+
+    Route::group(['prefix' => 'reports'], function () {
+        Route::get('/courses', 'ReportController@courses');
+        Route::get('/percents_quizzes', 'ReportController@percents_quizzes');
+        Route::get('/users_not_finished_webinars', 'ReportController@users_not_finished_webinars');
+        Route::get('/courses_not_started', 'ReportController@courses_not_started');
+        Route::get('/chart_quizzes', 'ReportController@chart_quizzes');
     });
 });

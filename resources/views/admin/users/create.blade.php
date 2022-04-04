@@ -78,7 +78,7 @@
                                             <select class="form-control select2 @error('role_id') is-invalid @enderror" id="roleId" name="role_id">
                                                 <option disabled selected>{{ trans('admin/main.select_role') }}</option>
                                                 @foreach ($roles as $role)
-                                                    <option value="{{ $role->id }}" {{ old('role_id') === $role->id ? 'selected' :''}}>{{ $role->name }} - {{ $role->caption }}</option>
+                                                    <option value="{{ $role->id }}" {{ old('role_id') == $role->id ? 'selected' :''}}>{{ $role->name }} - {{ $role->caption }}</option>
                                                 @endforeach
                                             </select>
                                             @error('role_id')
@@ -90,7 +90,7 @@
 
                                         <div class="form-group" id="groupSelect">
                                             <label class="input-label d-block">{{ trans('admin/main.group') }}</label>
-                                            <select name="group_id" class="form-control select2 @error('group_id') is-invalid @enderror">
+                                            <select name="group_id" id="group_id" class="form-control select2 @error('group_id') is-invalid @enderror">
                                                 <option value="" selected disabled></option>
 
                                                 @foreach($userGroups as $userGroup)
@@ -131,6 +131,12 @@
 @endsection
 
 @push('scripts_bottom')
+<script>
+        $(document).ready(()=>{
 
+            $('#roleId').trigger('change.select2');
+            $('#group_id').trigger('change.select2');
+        });
+    </script>
 @endpush
 

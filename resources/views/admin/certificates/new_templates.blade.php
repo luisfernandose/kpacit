@@ -47,7 +47,7 @@
                                         <i class="fa fa-upload"></i>
                                     </button>
                                 </div>
-                                <input type="text" name="image" id="image" value="{{ !empty($template) ? $template->image : old('image') }}" class="form-control @error('image') is-invalid @enderror"/>
+                                <input type="text" name="image" id="image" value="{{ !empty($template) ? str_replace(env('AWS_URL'),'/',$template->image) : old('image') }}" class="form-control validate-path @error('image') is-invalid @enderror"/>
                                 <div class="invalid-feedback">@error('image') {{ $message }} @enderror</div>
                             </div>
                             <div class="invalid-feedback">@error('image') {{ $message }} @enderror</div>
@@ -96,7 +96,7 @@
                         <div class="form-group custom-switches-stacked">
                             <label class="custom-switch">
                                 <input type="hidden" name="status" value="draft">
-                                <input type="checkbox" id="status" name="status" value="publish" {{ (!empty($template) and $template->status == 'publish') ? 'checked="checked"' : '' }} class="custom-switch-input"/>
+                                <input type="checkbox" id="status" name="status" value="publish" {{ ( (!empty($template) and $template->status == 'publish') || old('status')=='publish') ? 'checked="checked"' : '' }} class="custom-switch-input"/>
                                 <span class="custom-switch-indicator"></span>
                                 <label class="custom-switch-description mb-0 cursor-pointer" for="status">{{ trans('admin/main.active') }}</label>
                             </label>

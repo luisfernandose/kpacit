@@ -18,8 +18,8 @@ class TicketController extends Controller
         $this->validate($request, [
             'title' => 'required|max:64',
             'date' => 'required',
-            'discount' => 'required',
-            'capacity' => 'nullable',
+            'discount' => 'required|numeric',
+            'capacity' => 'nullable|numeric',
         ]);
 
 

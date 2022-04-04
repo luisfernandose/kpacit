@@ -36,7 +36,7 @@
         </div>
     </div>
 
-    <div class="d-flex sidebar-user-stats pb-10 ml-20 pb-lg-20 mt-15 mt-lg-30">
+    <!-- <div class="d-flex sidebar-user-stats pb-10 ml-20 pb-lg-20 mt-15 mt-lg-30">
         <div class="sidebar-user-stat-item d-flex flex-column">
             <strong class="text-center">{{ $authUser->webinars()->count() }}</strong>
             <span class="font-12">{{ trans('webinars.classes') }}</span>
@@ -55,7 +55,7 @@
                 <span class="font-12">{{ trans('panel.followers') }}</span>
             </div>
         @endif
-    </div>
+    </div> -->
 
     <ul class="sidebar-menu pt-10 @if(!empty($authUser->userGroup)) has-user-group @endif" data-simplebar @if((!empty($isRtl) and $isRtl)) data-simplebar-direction="rtl" @endif>
 
@@ -127,6 +127,34 @@
                         </li>
                         <li class="mt-5 {{ (request()->is('panel/manage/students')) ? 'active' : '' }}">
                             <a href="/panel/manage/students">{{ trans('public.list') }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="sidenav-item {{ request()->is('panel/reports*')  ? 'sidenav-item-active' : '' }}">
+                <a class="d-flex align-items-center" data-toggle="collapse" href="#reportsCollapse" role="button" aria-expanded="false" aria-controls="reportsCollapse">
+                <span class="sidenav-item-icon mr-10">
+                    @include('web.default.panel.includes.sidebar_icons.experience')
+                </span>
+                    <span class="font-14 text-dark-blue font-weight-500">{{ trans('panel.reports') }}</span>
+                </a>
+
+                <div class="collapse {{ request()->is('panel/reports*') ? 'show' : '' }}" id="reportsCollapse">
+                    <ul class="sidenav-item-collapse">
+                        <li class="mt-5 {{ (request()->is('/panel/reports/courses')) ? 'active' : '' }}">
+                            <a href="/panel/reports/courses">{{ trans('panel.courses') }}</a>
+                        </li>
+                        <li class="mt-5 {{ (request()->is('/panel/reports/percents_quizzes')) ? 'active' : '' }}">
+                            <a href="/panel/reports/percents_quizzes">{{ trans('panel.percents_quizzes') }}</a>
+                        </li>
+                        <li class="mt-5 {{ (request()->is('/panel/reports/users_not_finished_webinars')) ? 'active' : '' }}">
+                            <a href="/panel/reports/users_not_finished_webinars">{{ trans('panel.users_not_finished_webinars') }}</a>
+                        </li>
+                        <li class="mt-5 {{ (request()->is('/panel/reports/courses_not_started')) ? 'active' : '' }}">
+                            <a href="/panel/reports/courses_not_started">{{ trans('panel.courses_not_started') }}</a>
+                        </li>
+                        <li class="mt-5 {{ (request()->is('/panel/reports/chart_quizzes')) ? 'active' : '' }}">
+                            <a href="/panel/reports/chart_quizzes">{{ trans('panel.chart_quizzes') }}</a>
                         </li>
                     </ul>
                 </div>
@@ -439,11 +467,11 @@
         $getPanelSidebarSettings = getPanelSidebarSettings();
     @endphp
 
-    @if(!empty($getPanelSidebarSettings))
+    <!-- @if(!empty($getPanelSidebarSettings))
         <div class="sidebar-create-class d-none d-md-block">
             <a href="{{ !empty($getPanelSidebarSettings['link']) ? $getPanelSidebarSettings['link'] : '' }}" class="sidebar-create-class-btn d-block text-right p-5">
                 <img src="{{ !empty($getPanelSidebarSettings['background']) ? $getPanelSidebarSettings['background'] : '' }}" alt="">
             </a>
         </div>
-    @endif
+    @endif -->
 </div>

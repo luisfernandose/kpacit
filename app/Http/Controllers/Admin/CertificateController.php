@@ -11,6 +11,7 @@ use App\Models\CertificateTemplate;
 use Intervention\Image\Facades\Image;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 
 class CertificateController extends Controller
 {
@@ -173,7 +174,15 @@ class CertificateController extends Controller
         $body = str_replace('[grade]', 'xx', $body);
         $body = str_replace('[certificate_id]', 'xx', $body);
 
-        $imgPath = public_path($data['image']);
+        if(strpos($data['image'], "/store/") !== false){
+            $imgPath = public_path($data['image']);
+
+        }else{
+            $imgPath = Storage::url($data['image']);
+
+        }
+        
+       
         $img = Image::make($imgPath);
 
         $img->text($body, $data['position_x'], $data['position_y'], function ($font) use ($data) {

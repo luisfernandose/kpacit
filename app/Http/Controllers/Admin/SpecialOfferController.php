@@ -114,10 +114,10 @@ class SpecialOfferController extends Controller
 
         $this->validate($request, [
             'webinar_id' => 'required',
-            'percent' => 'required',
+            'percent' => 'required|numeric',
             'status' => 'nullable|in:active,inactive',
-            'from_date' => 'required',
-            'to_date' => 'required',
+            'from_date' => 'required|numeric',
+            'to_date' => 'required|numeric',
         ]);
 
         $data = $request->all();
@@ -169,10 +169,10 @@ class SpecialOfferController extends Controller
 
         $this->validate($request, [
             'webinar_id' => 'required',
-            'percent' => 'required',
+            'percent' => 'required|numeric',
             'status' => 'nullable|in:active,inactive',
-            'from_date' => 'required',
-            'to_date' => 'required',
+            'from_date' => 'required|numeric',
+            'to_date' => 'required|numeric',
         ]);
 
         $specialOffer = SpecialOffer::findOrfail($id);

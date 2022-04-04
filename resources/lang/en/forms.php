@@ -18,5 +18,5 @@ return [
     'subscribe_hint' => 'Students will be able to subscribe to your course in addition of direct purchasing.',
     'webinar_description_placeholder' => 'Minimum 300 words. HTML and images supported.',
     'empty_means_unlimited' => 'Leave it blank for unlimited.',
-
+    'limit_device' => '0 or white for unlimited',
 ];

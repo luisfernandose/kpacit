@@ -105,7 +105,7 @@ class GroupController extends Controller
 
         $this->validate($request, [
             'users' => 'required|array',
-            'percent' => 'nullable',
+            'percent' => 'nullable|numeric',
             'name' => 'required',
         ]);
 

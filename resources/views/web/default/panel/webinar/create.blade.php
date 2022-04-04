@@ -15,6 +15,7 @@
             <input type="hidden" name="draft" value="no" id="forDraft"/>
             <input type="hidden" name="get_next" value="no" id="getNext"/>
             <input type="hidden" name="get_step" value="0" id="getStep"/>
+            <input type="hidden" name="save_course" value="0" id="saveCourse"/>
 
 
             @if($currentStep == 1)
@@ -34,15 +35,26 @@
                 @else
                     <a href="" class="btn btn-sm btn-primary disabled">{{ trans('webinars.previous') }}</a>
                 @endif
-
-                <button type="button" id="getNextStep" class="btn btn-sm btn-primary ml-15" @if($currentStep >= 8) disabled @endif>{{ trans('webinars.next') }}</button>
+                @if((auth()->user()->isOrganization() and $currentStep == 7 ) || (!auth()->user()->isOrganization() and $currentStep == 8 ))
+                    <button type="button" id="saveCourseOrganization" class="btn btn-sm btn-primary ml-15">{{ trans('public.finish') }}</button>
+                @else
+                    <button type="button" id="getNextStep" class="btn btn-sm btn-primary ml-15" @if($currentStep >= 8) disabled @endif>{{ trans('webinars.next') }}</button>
+                @endif
             </div>
 
             <div class="mt-20 mt-md-0">
-                <button type="button" id="sendForReview" class="btn btn-sm btn-primary">{{ trans('public.send_for_review') }}</button>
+         
 
-                <button type="button" id="saveAsDraft" class=" btn btn-sm btn-primary">{{ trans('public.save_as_draft') }}</button>
 
+                @if(!auth()->user()->isOrganization() and $currentStep != 8)
+                    <button type="button" id="sendForReview" class="btn btn-sm btn-primary">{{ trans('public.send_for_review') }}</button>
+
+                    <button type="button" id="saveAsDraft" class=" btn btn-sm btn-primary">{{ trans('public.save_as_draft') }}</button>
+                @elseif(auth()->user()->isOrganization() and $currentStep != 7)
+                    <button type="button" id="sendForReview" class="btn btn-sm btn-primary">{{ trans('public.send_for_review') }}</button>
+
+                    <button type="button" id="saveAsDraft" class=" btn btn-sm btn-primary">{{ trans('public.save_as_draft') }}</button>
+                @endif
                 @if(!empty($webinar) and $webinar->creator_id == $authUser->id)
                     <a href="/panel/webinars/{{ $webinar->id }}/delete?redirect_to=/panel/webinars" class="delete-action webinar-actions btn btn-sm btn-danger mt-20 mt-md-0">{{ trans('public.delete') }}</a>
                 @endif
@@ -56,7 +68,13 @@
         var saveSuccessLang = '{{ trans('webinars.success_store') }}';
         var zoomJwtTokenInvalid = '{{ trans('webinars.zoom_jwt_token_invalid') }}';
         var hasZoomApiToken = '{{ (!empty($authUser->zoomApi) and $authUser->zoomApi->jwt_token) ? 'true' : 'false' }}';
+
+        $(document).ready(()=>{
+       
+             $('.only_number').mask('0#');       
+        });
     </script>
 
     <script src="/assets/default/js/panel/webinar.min.js"></script>
+    <script src="/assets/default/vendors/jQuery-Mask-Plugin-master/dist/jquery.mask.min.js"></script>
 @endpush

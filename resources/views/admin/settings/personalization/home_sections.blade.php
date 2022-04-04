@@ -34,7 +34,7 @@
                                         <div class="form-group custom-switches-stacked">
                                             <label class="custom-switch pl-0">
                                                 <input type="hidden" name="value[{{ $section }}]" value="0">
-                                                <input type="checkbox" name="value[{{ $section }}]" id="{{ $section }}Switch" value="1" {{ (!empty($itemValue) and !empty($itemValue[$section]) and $itemValue[$section]) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
+                                                <input type="checkbox" name="value[{{ $section }}]" id="{{ $section }}Switch" value="1" {{ ((!empty($itemValue) and !empty($itemValue[$section]) and $itemValue[$section])|| !empty(old('value[$section]'))) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
                                                 <span class="custom-switch-indicator"></span>
                                                 <label class="custom-switch-description mb-0 cursor-pointer" for="{{ $section }}Switch">{{ trans('admin/main.'.$section) }}</label>
                                             </label>

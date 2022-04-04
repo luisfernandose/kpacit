@@ -25,20 +25,26 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $minutes = 60 * 60; // 1 hour
-        $sections = Cache::remember('sections', $minutes, function () {
-            return Section::all();
-        });
+        if(!app()->runningInConsole()) {
+        
 
-        $scopes = [];
-        foreach ($sections as $section) {
-            $scopes[$section->name] = $section->caption;
-            Gate::define($section->name, function ($user) use ($section) {
-                return $user->hasPermission($section->name);
+            $minutes = 60 * 60; // 1 hour
+            $sections = Cache::remember('sections', $minutes, function () {
+                return Section::all();
             });
+    
+            $scopes = [];
+            foreach ($sections as $section) {
+                $scopes[$section->name] = $section->caption;
+                Gate::define($section->name, function ($user) use ($section) {
+                    return $user->hasPermission($section->name);
+                });
+            }
+    
+            $this->registerPolicies();
+          
         }
 
-        $this->registerPolicies();
 
         //
     }

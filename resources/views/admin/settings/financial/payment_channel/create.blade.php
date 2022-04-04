@@ -77,7 +77,7 @@
                                         <div class="form-group custom-switches-stacked">
                                             <label class="custom-switch pl-0">
                                                 <input type="hidden" name="status" value="inactive">
-                                                <input type="checkbox" name="status" id="statusSwitch" value="active" {{ (!empty($paymentChannel) and $paymentChannel->status == 'active') ? 'checked="checked"' : '' }} class="custom-switch-input"/>
+                                                <input type="checkbox" name="status" id="statusSwitch" value="active" {{ ((!empty($paymentChannel) and $paymentChannel->status == 'active')|| !empty(old('status'))) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
                                                 <span class="custom-switch-indicator"></span>
                                                 <label class="custom-switch-description mb-0 cursor-pointer" for="statusSwitch">{{ trans('admin/main.active') }}</label>
                                             </label>

@@ -261,11 +261,15 @@
   {{-- Use the line below instead of the above if you need to cache the script. --}}
   {{-- <script src="{{ asset('vendor/laravel-filemanager/js/script.js') }}"></script> --}}
   <script>
+
+
     Dropzone.options.uploadForm = {
       paramName: "upload[]", // The name that will be used to transfer the file
       uploadMultiple: false,
       parallelUploads: 5,
       timeout:0,
+      addRemoveLinks: true,
+      dictRemoveFile: 'Remove file',
       clickable: '#upload-button',
       dictDefaultMessage: lang['message-drop'],
       init: function() {
@@ -275,7 +279,15 @@
             loadFolders();
           } else {
             this.defaultOptions.error(file, response.join('\n'));
+            setTimeout(function() {
+                $('.dz-error').fadeOut('slow');
+            }, 5000); 
           }
+        });
+        this.on("error", function (file, responseText) {
+            setTimeout(function() {
+                $('.dz-error').fadeOut('slow');
+            }, 5000); 
         });
       },
       headers: {
@@ -284,29 +296,18 @@
       acceptedFiles: "{{ implode(',', $helper->availableMimeTypes()) }}",
       maxFilesize: ({{ $helper->maxUploadSize() }} / 1000)
     }
-
     $(document).ready(() => {
-
       setInterval(() => {
-
         $('.dz-progress .dz-upload').each(function (i, obj) {
-
           const span = $(this)[0];
-
-
-
           $(`#percentage_span_${i}`).remove();
-
           const e = document.createElement('span');
           e.id = `percentage_span_${i}`;
           let value = span.style.width;
-
           value = value.replace('%','');
           e.innerText = parseFloat(value).toFixed(2)+'%';
           span.parentElement.previousElementSibling.appendChild(e);
-
         });
-
       }, 1000);
 
     })

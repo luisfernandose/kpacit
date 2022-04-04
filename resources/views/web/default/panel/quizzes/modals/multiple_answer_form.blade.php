@@ -22,7 +22,7 @@
                             <i data-feather="arrow-up" width="18" height="18" class="text-white"></i>
                         </button>
                     </div>
-                    <input id="file{{ !empty($answer) ? $answer->id : '' }}" type="text" name="ajax[answers][{{ !empty($answer) ? $answer->id : 'record' }}][file]" value="{{ !empty($answer) ? $answer->image : '' }}" class="form-control lfm-input"/>
+                    <input id="file{{ !empty($answer) ? $answer->id : '' }}" readonly type="text" name="ajax[answers][{{ !empty($answer) ? $answer->id : 'record' }}][file]" value="{{ !empty($answer) ? str_replace(env('AWS_URL'),'/',$answer->image) : '' }}" class="form-control validate-path lfm-input"/>
                 </div>
             </div>
         </div>
