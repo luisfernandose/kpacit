@@ -21,6 +21,7 @@ class InsertWebinarContent extends Migration
     {
         $webinars = Webinar::all();
 
+
         if(!empty($webinars)){
             foreach($webinars as $webinar){
 
