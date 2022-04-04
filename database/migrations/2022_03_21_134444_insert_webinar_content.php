@@ -19,7 +19,8 @@ class InsertWebinarContent extends Migration
      */
     public function up()
     {
-        $webinars = Webinar::has('files')->get();
+        $webinars = Webinar::all();
+
 
         if(!empty($webinars)){
             foreach($webinars as $webinar){
