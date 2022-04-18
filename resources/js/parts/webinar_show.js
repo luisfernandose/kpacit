@@ -423,6 +423,12 @@
                 player.pause();
                 player.dispose();
             }
+            if($('.modal-content').find('iframe').length){
+                $('.modal-content').find('iframe').remove();
+            }
+            if($('.modal-content').find('.img-visor').length){
+                $('.modal-content').find('.img-visor').remove();
+            }
         })
     });
 })(jQuery);
