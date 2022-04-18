@@ -13,7 +13,7 @@ return [
     'text_course' => 'Text Course',
   	'video_course' => 'Video Course',
     'information' => 'Information',
-    'content' => 'Content',
+    'comments' => 'Comments',
     'review' => 'Review',
     'reviews' => 'Reviews',
 
