@@ -95,6 +95,12 @@
                 </div>
 
             </div>
+
+            <div  class="nav-icons-or-start-live navbar-order" style="margin-left: 1%;">
+                <a href="{{ empty($authUser) ? '/login' : ($authUser->isAdmin() ? '/admin/webinars' : (($authUser->isUser()) ? '/panel/webinars/organization_classes' : '/panel/webinars')) }}" class="d-none d-lg-flex btn btn-sm btn-primary nav-start-a-live-btn" >
+                    {{ (empty($authUser) or !$authUser->isUser()) ? trans('navbar.go_to_classes') : ($authUser->isUser() ? trans('navbar.go_to_classes') : '') }}
+                </a>
+            </div>
         </div>
     </div>
 </nav>

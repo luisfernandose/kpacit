@@ -18,6 +18,7 @@ return [
     'menu' => 'Menu',
     'title' => 'Title',
     'start_a_live_class' => 'Start a new class',
+    'go_to_classes' => 'My courses'
 
 
 

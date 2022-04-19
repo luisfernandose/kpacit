@@ -13,7 +13,7 @@ return [
     'text_course' => 'دورة كتابية',
   	'video_course' => 'دورة فيديو',
     'information' => 'معلومات',
-    'content' => 'محتوي',
+    'comments' => 'تعليقات',
     'review' => 'مراجعة',
     'reviews' => 'مراجعات',
 
