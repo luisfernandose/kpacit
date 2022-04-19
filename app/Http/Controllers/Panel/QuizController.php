@@ -346,9 +346,10 @@ class QuizController extends Controller
         if ($quiz) {
             $progress_course = $quiz->webinar->getProgress(FALSE);
 
-            if($progress_course != 100){
+            if(intval($progress_course) < 100){
                 return back()->with('msg', trans('quiz.cant_start_quiz'));
             }
+
             $userQuizDone = QuizzesResult::where('quiz_id', $quiz->id)
                 ->where('user_id', $user->id)
                 ->get();
@@ -360,7 +361,7 @@ class QuizController extends Controller
                 }
             }
 
-            if (!isset($quiz->attempt) or ($userQuizDone->count() < $quiz->attempt and !$status_pass)) {
+            if (!isset($quiz->attempt) or ($userQuizDone->count() < $quiz->attempt )) {
                 $newQuizStart = QuizzesResult::create([
                     'quiz_id' => $quiz->id,
                     'user_id' => $user->id,
