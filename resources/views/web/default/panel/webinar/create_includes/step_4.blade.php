@@ -283,7 +283,14 @@
                     $("#editTextLessonForm"+id).find('[name="ajax[new][title]"]').val(result.data.text_lesson.title);
                     $("#editTextLessonForm"+id).find('[name="ajax[new][study_time]"]').val(result.data.text_lesson.study_time);
                     $("#editTextLessonForm"+id).find('[name="ajax[new][study_time]"]').val(result.data.text_lesson.study_time);
-                    $("#editTextLessonForm"+id).find('[name="ajax[new][image]"]').val(result.data.text_lesson.image);
+                    let urlImgaLesson='';
+                    if(result.data && result.data.text_lesson && result.data.text_lesson.image){
+                        var path = '{{ env('AWS_URL') }}';
+                        let value = result.data.text_lesson.image;
+                        value = value.replace(path,'/')
+                        urlImgaLesson=value;
+                    }
+                    $("#editTextLessonForm"+id).find('[name="ajax[new][image]"]').val(urlImgaLesson);
 
                     if(result.data.text_lesson.accessibility == 'free'){
                         $("#editTextLessonForm"+id).find('#accessibilityRadio'+result.data.module_id+'1T_recordE').prop("checked", true);
