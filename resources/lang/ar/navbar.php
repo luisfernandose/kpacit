@@ -18,6 +18,7 @@ return [
     'menu' => 'القائمة',
     'title' => 'العنوان',
     'start_a_live_class' => 'ابدأ فصل مباشر جديد',
+    'go_to_classes' => 'دوراتي'
 
 
 

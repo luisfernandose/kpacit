@@ -357,7 +357,7 @@ return [
     'i_passed_this_lesson' => 'I passed this lesson',
     'course_learning_change_status_success' => 'Your learning status successfully changed.',
     'course_learning_change_status_error' => 'Failed to change learning status.',
-    'course_learning_passed' => ':percent% of the course is passed.',
+    'course_learning_passed' => 'of the course is passed.',
 
     'not_login_toast_lang' => 'Restricted Content',
     'not_login_toast_msg_lang' => 'Please login to access the content.',
@@ -375,4 +375,5 @@ return [
     'how_zoom_jwt_token' => 'How to create Zoom JWT token',
     'instructor_is_not_available' => 'Instructor is temporarily unavailable.',
     'unlimited' => 'Unlimited',
+    'seen' => 'Visto',
 ];

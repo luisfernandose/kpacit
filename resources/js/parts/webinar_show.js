@@ -336,7 +336,7 @@
                 $('.modal-content').find('.img-visor').remove();
                 let html = '';
                 if (storage === 'local' && (type=='mp4'|| type=='mkv'|| type=='avi')) {
-                    html = '<video id="my-video" class="video-js" controls preload="auto" width="870" height="364"><source src="' + result.path + '" type="video/'+type+'"/></video>';
+                    html = '<video id="my-video" class="video-js" controls preload="auto" width="870" height="600"><source src="' + result.path + '" type="video/'+type+'"/></video>';
                     isVideo=true;
                 } else if(storage === 'online' && type == 'video') {
                     let vimeoControls = (result.storageService =='vimeo' ? ', "vimeo": { "ytControls": 2 }':'');
@@ -346,7 +346,7 @@
                         class="video-js"
                         controls
                         preload="auto"
-                        width="870" height="364"
+                        width="870" height="600"
                         data-setup='{ "techOrder": ["${result.storageService}"], "sources": [{ "type": "video/${result.storageService}", "src": "${result.path}"}] ${vimeoControls}  }'
                         >
                      </video>
@@ -422,6 +422,12 @@
             if ($('#my-video').length) {
                 player.pause();
                 player.dispose();
+            }
+            if($('.modal-content').find('iframe').length){
+                $('.modal-content').find('iframe').remove();
+            }
+            if($('.modal-content').find('.img-visor').length){
+                $('.modal-content').find('.img-visor').remove();
             }
         })
     });
