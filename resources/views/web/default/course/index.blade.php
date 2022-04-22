@@ -416,9 +416,6 @@
                     <textarea style="display: none;">
                         <div class="text-show" style="overflow-y: scroll; padding: 10px;">
                             <div>
-                                <img src="{{ $textLesson->image }}" alt="{{ $textLesson->title }}"/>
-                            </div>
-                            <div>
                                 <div>{!! nl2br($textLesson->content) !!}</div>
                             </div>
                         </div>
@@ -627,6 +624,7 @@
         $(".modal-content")
             .find("iframe")
             .remove();
+            $(".modal-content").find(".loading-img").hide();
         $(".js-modal-video-content").html(textContent);
     }
     $(document).ready(function() {
@@ -636,13 +634,6 @@
 
     $("body").on("click", "input[type='checkbox']", function(e) {
         calculateBar();
-    });
-
-    $("body").on("click", ".text", function(e) {
-        $(".modal-content")
-            .find("iframe")
-            .remove();
-        $(".js-modal-video-content").html(xd);
     });
 
     function calculateBar(e) {
