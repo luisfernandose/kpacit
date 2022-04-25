@@ -122,6 +122,9 @@
         </section>
             @endif
 
+            @php
+                $c = 0;
+            @endphp
 {{-- Files --}}
 @if(!empty($course->files) and $course->files->count() > 0)
     @if($hasBought or $course->isWebinar())
@@ -174,6 +177,14 @@
                                 </div>
                                 <ul class="menu-list" id="collapse{{$module->id}}">
                                     @foreach($module->files as $file)
+                                    <label hidden>
+                                        @if ($c==0)                                                                                  
+                                            @php
+                                                $c++;  
+                                            @endphp
+                                            <label id="first-id">{{ $file->id }}</label>
+                                        @endif
+                                    </label>
                                     <li class="menu-video">
                                         <div class="video-title">
                                             <div>
@@ -244,7 +255,7 @@
                                                         </svg>
                                                     </a>
                                                 @else
-                                                    <button type="button" data-id="{{ $file->id }}" class="js-play-video btn-play click.dismiss.bs.modal" id="prueba{{ $file->id }}" data-toggle="tooltip" data-placement="top" title="{{ trans('public.play') }}">
+                                                    <button type="button" data-id="{{ $file->id }}" class="js-play-video btn-play click.dismiss.bs.modal" id="primero{{ $file->id }}" data-toggle="tooltip" data-placement="top" title="{{ trans('public.play') }}">
                                                         @if($file->file_type=='doc' || $file->file_type=='docx' || $file->file_type=='xls'|| $file->file_type=='xlsx'|| $file->file_type=='xls'|| $file->file_type=='ppt'|| $file->file_type=='pptx'|| $file->file_type=='pdf')
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file" width="20" height="20" viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                               <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -669,7 +680,8 @@
     }
 
     $(document).ready(function() {
-        document.querySelector("#prueba1").click();
+        var first = $("#first-id").text();
+        $("#primero" + first).click();
         calculateBar();
     });
 
