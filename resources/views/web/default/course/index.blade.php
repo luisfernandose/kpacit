@@ -16,7 +16,7 @@
                     <div class="js-modal-video-content click.dismiss.bs.modal"></div>
                 </div>
             </div>
-            
+
             <div style="margin: 2%;">
                 <div class="@if(!$course->isCourse()) mt-35 @else mt-40 @if(empty(session()->has('msg')))  @endif @endif">
                     <ul class="nav nav-tabs bg-secondary rounded-sm p-15 d-flex align-items-center justify-content-around" id="tabs-tab" role="tablist">
@@ -48,7 +48,7 @@
                             @include(getTemplate().'.course.tabs.reviews')
                         </div>
                     </div>
-                </div>           
+                </div>
             </div>
         </section>
     </div>
@@ -122,6 +122,9 @@
         </section>
             @endif
 
+            @php
+                $c = 0;
+            @endphp
 {{-- Files --}}
 @if(!empty($course->files) and $course->files->count() > 0)
     @if($hasBought or $course->isWebinar())
@@ -145,10 +148,10 @@
                                     </span>
                                 </div>
                                 <div class="progress course-progress shadow-xs rounded-sm">
-                                    <span id="percent-bar" class="progress-bar rounded-sm bg-done" ></span>                                 
+                                    <span id="percent-bar" class="progress-bar rounded-sm bg-done" ></span>
                                 </div>
-                                
-                                
+
+
                             </div>
                         @endif
 
@@ -174,12 +177,20 @@
                                 </div>
                                 <ul class="menu-list" id="collapse{{$module->id}}">
                                     @foreach($module->files as $file)
+                                    <label hidden>
+                                        @if ($c==0)                                                                                  
+                                            @php
+                                                $c++;  
+                                            @endphp
+                                            <label id="first-id">{{ $file->id }}</label>
+                                        @endif
+                                    </label>
                                     <li class="menu-video">
                                         <div class="video-title">
                                             <div>
                                                 <label class="font-12 text-gray seen">{{ trans('public.seen') }}</label>
                                                 <div class="custom-control custom-switch" style="display: inline-block;" data-toggle="tooltip" data-placement="top" title="{{ trans('public.i_passed_this_lesson') }}">
-                                                    <input type="checkbox" id="fileReadToggle{{ $file->id }}" data-file-id="{{ $file->id }}" value="{{ $course->id }}" class="js-file-learning-toggle custom-control-input" @if(!empty($file->learningStatus)) checked @endif>
+                                                    <input type="checkbox" id="fileReadToggle{{ $file->id }}" data-file-id="{{ $file->id }}" value="{{ $course->id }}" class="js-file-learning-toggle custom-control-input checkbox" @if(!empty($file->learningStatus)) checked @endif>
                                                     <label class="custom-control-label" for="fileReadToggle{{ $file->id }}"></label>
                                                 </div>
                                             </div>
@@ -188,7 +199,7 @@
                                                 @if(!empty($user) and $hasBought)
                                                     @if($file->downloadable)
                                                         <a href="{{ $course->getUrl() }}/file/{{ $file->id }}/download" class="btn-play" data-toggle="tooltip" data-placement="top" title="{{ trans('home.download') }}">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-download" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-download" width="20" height="20" viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                               <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                                                               <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
                                                               <polyline points="7 11 12 16 17 11" />
@@ -197,13 +208,21 @@
                                                         </a>
                                                     @else
                                                         <button type="button" data-id="{{ $file->id }}" class="js-play-video btn-play" data-toggle="tooltip" data-placement="top" title="{{ trans('public.play') }}">
-                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                class="icon icon-tabler icon-tabler-player-play" width="20" height="20"
-                                                                viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none"
-                                                                stroke-linecap="round" stroke-linejoin="round">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                <path d="M7 4v16l13 -8z" />
-                                                            </svg>
+                                                            @if($file->file_type=='doc' || $file->file_type=='docx' || $file->file_type=='xls'|| $file->file_type=='xlsx'|| $file->file_type=='xls'|| $file->file_type=='ppt'|| $file->file_type=='pptx'|| $file->file_type=='pdf')
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file" width="20" height="20" viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                                  <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                                                  <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                                                                </svg>
+                                                            @else
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    class="icon icon-tabler icon-tabler-player-play" width="20" height="20"
+                                                                    viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                    <path d="M7 4v16l13 -8z" />
+                                                                </svg>
+                                                            @endif
                                                         </button>
                                                     @endif
                                                 @else
@@ -216,13 +235,11 @@
                                                               <line x1="12" y1="4" x2="12" y2="16" />
                                                             </svg>
                                                         @else
-                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                            class="icon icon-tabler icon-tabler-player-play" width="20" height="20"
-                                                            viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none"
-                                                            stroke-linecap="round" stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path d="M7 4v16l13 -8z" />
-                                                        </svg>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file" width="20" height="20" viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                              <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                                              <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                                                            </svg>
                                                         @endif
                                                     </button>
                                                 @endif
@@ -230,7 +247,7 @@
                                             @else
                                                 @if($file->downloadable)
                                                     <a href="{{ $course->getUrl() }}/file/{{ $file->id }}/download" class="btn-play" data-toggle="tooltip" data-placement="top" title="{{ trans('home.download') }}">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-download" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-download" width="20" height="20" viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                           <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                                                           <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
                                                           <polyline points="7 11 12 16 17 11" />
@@ -238,14 +255,22 @@
                                                         </svg>
                                                     </a>
                                                 @else
-                                                    <button type="button" data-id="{{ $file->id }}" class="js-play-video btn-play click.dismiss.bs.modal" id="prueba{{ $file->id }}" data-toggle="tooltip" data-placement="top" title="{{ trans('public.play') }}"> 
-                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                            class="icon icon-tabler icon-tabler-player-play" width="20" height="20"
-                                                            viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none"
-                                                            stroke-linecap="round" stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path d="M7 4v16l13 -8z" />
-                                                        </svg>
+                                                    <button type="button" data-id="{{ $file->id }}" class="js-play-video btn-play click.dismiss.bs.modal" id="primero{{ $file->id }}" data-toggle="tooltip" data-placement="top" title="{{ trans('public.play') }}">
+                                                        @if($file->file_type=='doc' || $file->file_type=='docx' || $file->file_type=='xls'|| $file->file_type=='xlsx'|| $file->file_type=='xls'|| $file->file_type=='ppt'|| $file->file_type=='pptx'|| $file->file_type=='pdf')
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file" width="20" height="20" viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                              <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                                              <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                                                            </svg>
+                                                        @else
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                class="icon icon-tabler icon-tabler-player-play" width="20" height="20"
+                                                                viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                <path d="M7 4v16l13 -8z" />
+                                                            </svg>
+                                                        @endif
                                                     </button>
                                                 @endif
                                             @endif
@@ -289,7 +314,7 @@
                                                     <input type="checkbox" id="fileReadToggle{{ $file->id }}" data-file-id="{{ $file->id }}" value="{{ $course->id }}" class="js-file-learning-toggle custom-control-input" @if(!empty($file->learningStatus)) checked @endif>
                                                     <label class="custom-control-label" for="fileReadToggle{{ $file->id }}"></label>
                                                 </div>
-                                            </div>                                            
+                                            </div>
                                             <a href="#" class="font-14 ">{{ $file->title }}</a>
                                             @if($file->accessibility == 'paid')
                                                 @if(!empty($user) and $hasBought)
@@ -304,13 +329,21 @@
                                                         </a>
                                                     @else
                                                         <button type="button" data-id="{{ $file->id }}" class="js-play-video btn-play" data-toggle="tooltip" data-placement="top" title="{{ trans('public.play') }}">
-                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                class="icon icon-tabler icon-tabler-player-play" width="20" height="20"
-                                                                viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none"
-                                                                stroke-linecap="round" stroke-linejoin="round">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                <path d="M7 4v16l13 -8z" />
-                                                            </svg>
+                                                            @if($file->file_type=='doc' || $file->file_type=='docx' || $file->file_type=='xls'|| $file->file_type=='xlsx'|| $file->file_type=='xls'|| $file->file_type=='ppt'|| $file->file_type=='pptx'|| $file->file_type=='pdf')
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file" width="20" height="20" viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                                  <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                                                  <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                                                                </svg>
+                                                            @else
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    class="icon icon-tabler icon-tabler-player-play" width="20" height="20"
+                                                                    viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                    <path d="M7 4v16l13 -8z" />
+                                                                </svg>
+                                                            @endif
                                                         </button>
                                                     @endif
                                                 @else
@@ -346,13 +379,21 @@
                                                     </a>
                                                 @else
                                                     <button type="button" data-id="{{ $file->id }}" class="js-play-video btn-play" data-toggle="tooltip" data-placement="top" title="{{ trans('public.play') }}">
-                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                            class="icon icon-tabler icon-tabler-player-play" width="20" height="20"
-                                                            viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none"
-                                                            stroke-linecap="round" stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path d="M7 4v16l13 -8z" />
-                                                        </svg>
+                                                        @if($file->file_type=='doc' || $file->file_type=='docx' || $file->file_type=='xls'|| $file->file_type=='xlsx'|| $file->file_type=='xls'|| $file->file_type=='ppt'|| $file->file_type=='pptx'|| $file->file_type=='pdf')
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file" width="20" height="20" viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                              <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                                              <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                                                            </svg>
+                                                        @else
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                class="icon icon-tabler icon-tabler-player-play" width="20" height="20"
+                                                                viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                <path d="M7 4v16l13 -8z" />
+                                                            </svg>
+                                                        @endif
                                                     </button>
                                                 @endif
                                             @endif
@@ -411,8 +452,8 @@
                     @endif
                     @else
                     <button id="text{{$textLesson->id}}" onclick="showTextLesson('{{$textLesson->id}}')" class="btn-play" data-toggle="tooltip" data-placement="top" title="{{ trans('public.read') }}">
-                        <i data-feather="file-text" width="20" height="20" style="color: white;"></i>   
-                    </button> 
+                        <i data-feather="file-text" width="20" height="20" style="color: white;"></i>
+                    </button>
                     <textarea style="display: none;">
                         <div class="text-show" style="overflow-y: scroll; padding: 10px;">
                             <div>
@@ -430,66 +471,80 @@
 @endif
 {{-- Quizzes --}}
 @if(!empty($course->quizzes) and $course->quizzes->count() > 0)
-<div class="section">
-    <div class="section-menu">
-        <div class="menu-title" onClick="display('quiz')">
-            <a href="#">{{ trans('quiz.quizzes') }}</a>
-            <svg id="arrow-downquiz" xmlns="http://www.w3.org/2000/svg"
-                class="icon icon-tabler icon-tabler-chevron-down" width="25" height="25"
-                viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <polyline points="6 9 12 15 18 9" />
-            </svg>
-            <svg id="arrow-upquiz" style="display: none;" xmlns="http://www.w3.org/2000/svg"
-                class="icon icon-tabler icon-tabler-chevron-up" width="25" height="25"
-                viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <polyline points="6 15 12 9 18 15" />
-            </svg>
-        </div>
-        <ul class="menu-list" id="collapsequiz">
-        @foreach($course->quizzes as $quiz)
+    @php    
+        $x=0;
+    @endphp
+
+    @foreach($course->quizzes as $quiz)
         @if ($quiz->status===\App\Models\Quiz::ACTIVE)
-            <li class="menu-video">
-                <div class="video-title quiz">
-                    <div>
-                        <a href="#">{{ $quiz->title }}</a>
-                    </div>
-                    <div>
-                        <div class="font-12 text-gray" >
-                            {{ trans('quiz.attempts') }}
-                            {{ (!empty($user) and !empty($quiz->result_count)) ? $quiz->result_count : '0' }}/{{ $quiz->attempt }}
-                        </div>
-                    </div>
-                    <div>
-                        @if($quiz->result_status == 'failed')
-                            <span class="font-12" style="color: #ff1e58;">{{ trans('quiz.failed') }}</span>
-                        @elseif($quiz->result_status == 'passed')
-                            <span class="font-12 quiz_passed" style="color: #43d477;">{{ trans('quiz.passed') }}</span>
-                        @elseif($quiz->result_status == 'waiting')
-                            <span class="font-12" style="color: orange;">{{ trans('quiz.waiting') }}</span>
-                        @endif
-                    </div>
+            @php
+                $x=1;
+            @endphp
+        @endif
+    @endforeach
+    
+    @if ($x==1)
+        <div class="section">
+            <div class="section-menu">
+                <div class="menu-title" onClick="display('quiz')">
+                    <a href="#">{{ trans('quiz.quizzes') }}</a>
+                    <svg id="arrow-downquiz" xmlns="http://www.w3.org/2000/svg"
+                        class="icon icon-tabler icon-tabler-chevron-down" width="25" height="25"
+                        viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                    <svg id="arrow-upquiz" style="display: none;" xmlns="http://www.w3.org/2000/svg"
+                        class="icon icon-tabler icon-tabler-chevron-up" width="25" height="25"
+                        viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <polyline points="6 15 12 9 18 15" />
+                    </svg>
                 </div>
+                <ul class="menu-list" id="collapsequiz">
+                @foreach($course->quizzes as $quiz)
+                @if ($quiz->status===\App\Models\Quiz::ACTIVE)
+                    <li class="menu-video">
+                        <div class="video-title quiz">
+                            <div>
+                                <a href="#">{{ $quiz->title }}</a>
+                            </div>
+                            <div>
+                                <div class="font-12 text-gray" >
+                                    {{ trans('quiz.attempts') }}
+                                    {{ (!empty($user) and !empty($quiz->result_count)) ? $quiz->result_count : '0' }}/{{ $quiz->attempt }}
+                                </div>
+                            </div>
+                            <div>
+                                @if($quiz->result_status == 'failed')
+                                    <span class="font-12" style="color: #ff1e58;">{{ trans('quiz.failed') }}</span>
+                                @elseif($quiz->result_status == 'passed')
+                                    <span class="font-12 quiz_passed" style="color: #43d477;">{{ trans('quiz.passed') }}</span>
+                                @elseif($quiz->result_status == 'waiting')
+                                    <span class="font-12" style="color: orange;">{{ trans('quiz.waiting') }}</span>
+                                @endif
+                            </div>
+                        </div>
 
-                <div>
-                   @if(!empty($user) and $quiz->can_try and $hasBought)
-                       <a href="/panel/quizzes/{{ $quiz->id }}/start" class="course-content-btns btn btn-sm btn-primary flex-grow-1">{{ trans('quiz.quiz_start') }}</a>
-                   @else
-                       <button type="button" class="course-content-btns btn btn-sm btn-gray flex-grow-1 disabled {{ ((empty($user)) ? 'not-login-toast' : (!$hasBought ? 'not-access-toast' : (!$quiz->can_try ? 'can-not-try-again-quiz-toast' : ''))) }}">
-                           {{ trans('quiz.quiz_start') }}
-                       </button>
-                   @endif
-               </div>
+                        <div>
+                           @if(!empty($user) and $quiz->can_try and $hasBought)
+                               <a href="/panel/quizzes/{{ $quiz->id }}/start" class="course-content-btns btn btn-sm btn-primary flex-grow-1">{{ trans('quiz.quiz_start') }}</a>
+                           @else
+                               <button type="button" class="course-content-btns btn btn-sm btn-gray flex-grow-1 disabled {{ ((empty($user)) ? 'not-login-toast' : (!$hasBought ? 'not-access-toast' : (!$quiz->can_try ? 'can-not-try-again-quiz-toast' : ''))) }}">
+                                   {{ trans('quiz.quiz_start') }}
+                               </button>
+                           @endif
+                       </div>
 
-            </li>
-            @endif
-            @endforeach
-        </ul>
-    </div>
-</div>
+                    </li>
+                    @endif
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+    @endif
 @endif
 {{-- Certificates --}}
 @if(!empty($course->quizzes) and $course->quizzes->count() > 0 and ($quiz->certificate) )
@@ -618,17 +673,15 @@
     }
 
     function showTextLesson(id) {
-        var textContent = $("#text" + id)
-            .next()
-            .val();
-        $(".modal-content")
-            .find("iframe")
-            .remove();
-            $(".modal-content").find(".loading-img").hide();
+        var textContent = $("#text" + id).next().val();
+        $(".modal-content").find("iframe").remove();
+        $(".modal-content").find(".loading-img").hide();
         $(".js-modal-video-content").html(textContent);
     }
+
     $(document).ready(function() {
-        document.querySelector("#prueba1").click();
+        var first = $("#first-id").text();
+        $("#primero" + first).click();
         calculateBar();
     });
 
@@ -639,18 +692,12 @@
     function calculateBar(e) {
         var percent_bar = document.getElementById("percent-bar");
         var checkbox = document.querySelectorAll("input[type='checkbox']");
-        var checked = document.querySelectorAll(
-            "input[type='checkbox']:checked"
-        );
+        var checked = document.querySelectorAll("input[type='checkbox']:checked");
         var quizzes = document.querySelectorAll(".quiz");
         var quizzes_passed = document.querySelectorAll(".quiz_passed");
         var percent_progress = document.getElementById("percent-progress");
 
-        var input_percent = (
-            ((checked.length + quizzes_passed.length) /
-                (checkbox.length + quizzes.length)) *
-            100
-        ).toFixed(2);
+        var input_percent = (((checked.length + quizzes_passed.length) / (checkbox.length + quizzes.length)) * 100).toFixed(2);
         var input_checked = input_percent + "%";
         percent_bar.style.width = input_checked;
         percent_progress.textContent = input_checked;
