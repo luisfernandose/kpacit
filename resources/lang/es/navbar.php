@@ -13,12 +13,10 @@ return [
     'about_us' => 'Nosotros',
     'contact' => 'Contacto',
     'blog' => 'Blog',
-    'terms' => 'Terms',
-    'items' => 'Items',
-    'menu' => 'Menu',
-    'title' => 'Titulo',
-    'start_a_live_class' => 'Iniciar nueva clase',
-
-
+    'terms' => 'Términos',
+    'items' => 'Artículos',
+    'menu' => 'Menú',
+    'title' => 'Título',
+    'start_a_live_class' => 'Iniciar nuevo curso',
 
 ];
