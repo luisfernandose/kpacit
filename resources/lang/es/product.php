@@ -7,35 +7,35 @@ return [
     | Class page
     |--------------------------------------------------------------------------
     */
-
-    'course' => 'Class',
-    'courses' => 'Classes',
-    'text_course' => 'Text Course',
-  	'video_course' => 'Video Course',
-    'information' => 'Information',
-    'comments' => 'Comments',
+    'course' => 'Curso',
+    'courses' => 'Cursos',
+    'text_course' => 'Curso de texto',
+  	'video_course' => 'Video Curso',
+    'information' => 'Información',
+    'content' => 'Contenido',   
+    'comments' => 'Commentario',
     'review' => 'Review',
     'reviews' => 'Reviews',
 
-    'Webinar_description' => 'About this class',
+    'Webinar_description' => 'Sobre este curso',
 
-    'post_comment' => 'Post comment',
-    'post_review' => 'Post review',
+    'post_comment' => 'Publicar comentario',
+    'post_review' => 'Publica un review',
 
-    'comment_success_store' => 'Comment sent successfully!',
-    'comment_success_store_msg' => 'Your comment will be published after approved by admin.',
+    'comment_success_store' => '¡Comentario enviado con éxito!',
+    'comment_success_store_msg' => 'Su comentario será publicado después de aprobado por el administrador.',
 
     'guarantee_text' => '30 días de garantía de devolución del dinero',
 
-    'product_designer' => 'Product Designer',
+    'product_designer' => 'Diseñador de productos',
 
-    'content_quality' => 'Content quality',
-    'instructor_skills' => 'Instructor skills',
-    'purchase_worth' => 'Purchase worth',
-    'support_quality' => 'Support quality',
+    'content_quality' => 'Calidad del contenido',
+    'instructor_skills' => 'Habilidades del instructor',
+    'purchase_worth' => 'Valor de compra',
+    'support_quality' => 'Soporte de calidad',
 
     'report_the_course' => 'Reportar Curso',
-    'reason' => 'Eazon',
-    'select_reason' => 'Seleccionar Razon',
+    'reason' => 'razón',
+    'select_reason' => 'Seleccionar razón',
     'report_modal_hint' => 'Describa el problema de forma breve y clara.',
 ];
