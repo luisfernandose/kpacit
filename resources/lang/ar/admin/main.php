@@ -1175,4 +1175,5 @@ return [
    	'new_support_ticket_title' => 'تذكرة دعم جديدة',
    	'edit_support_ticket_title' => 'تعديل تذكرة الدعم',
    	'staff_list_title' => 'قائمة طاقم العمل',
+    'use_devices' => 'Allow number devices (cero(0) for any)',
 ];

@@ -7,7 +7,6 @@ return [
     | Quiz & Certificates
     |--------------------------------------------------------------------------
     */
-
     'quiz' => 'Examen',
     'quizzes' => 'Exámenes',
     'my_quizzes' => 'Mi Exámenes',
@@ -121,4 +120,5 @@ return [
 
     'new_quiz_page_title' => 'Nuevo examen',
     'quizzes_list_page_title' => 'Lista de exámenes',
+    'course_back' => 'Volver al Curso'
 ];

@@ -1176,4 +1176,5 @@ return [
    	'new_support_ticket_title' => 'New Support Ticket',
    	'edit_support_ticket_title' => 'Edit Support Ticket',
    	'staff_list_title' => 'Staff List',
+    'use_devices' => 'Allow number devices (cero(0) for any)',
 ];

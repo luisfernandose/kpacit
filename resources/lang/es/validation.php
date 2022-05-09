@@ -144,7 +144,12 @@ return [
     | of "email". This simply helps us make our message more expressive.
     |
     */
-
+    'values' => [
+        'type' => [
+            'platform_support' => 'platform support',
+            'course_support' => 'course support'
+        ],
+    ],
     'attributes' => [],
     'max_grade' => ' :attribute no puede ser mayor que :max value.',
     'can_active_quiz' => 'El examen no está activo, complete todas las preguntas para obtener una puntuación total de 100.',

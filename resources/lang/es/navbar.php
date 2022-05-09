@@ -18,5 +18,5 @@ return [
     'menu' => 'Menú',
     'title' => 'Título',
     'start_a_live_class' => 'Iniciar nuevo curso',
-
+    'go_to_classes' => 'Mis Cursos'
 ];

@@ -7,7 +7,6 @@ return [
     | Forms
     |--------------------------------------------------------------------------
     */
-
     'maximum_64_characters' => 'Máximo 64 caracters',
     'maximum_128_characters' => 'Máximo 128 caracters',
     '50_160_characters_preferred' => '155 - 160 caracteres preferiblemente',
@@ -18,5 +17,5 @@ return [
     'subscribe_hint' => 'Los estudiantes podrán suscribirse a su curso además de la compra directa.',
     'webinar_description_placeholder' => 'Mínimo 300 palabras. Compatible con HTML e imágenes.',
     'empty_means_unlimited' => 'Déjelo en blanco para ilimitado.',
-
+    'limit_device' => 'Dejar en blanco ilimitado',
 ];

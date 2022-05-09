@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\FAQ;
 use App\Models\File;
+use App\Models\Module;
 use App\Models\Prerequisite;
 use App\Models\Quiz;
 use App\Models\Role;
@@ -16,6 +17,7 @@ use App\Models\Tag;
 use App\Models\TextLesson;
 use App\Models\Ticket;
 use App\Models\Webinar;
+use App\Models\WebinarContent;
 use App\Models\WebinarFilterOption;
 use App\Models\WebinarPartnerTeacher;
 use App\User;
@@ -256,6 +258,7 @@ class WebinarController extends Controller
         $rules = [
             'type' => 'required|in:webinar,course,text_lesson',
             'title' => 'required|max:255',
+            'limit_device' =>'nullable|numeric',
             'thumbnail' => 'required',
             'image_cover' => 'required',
             'description' => 'required',
@@ -298,6 +301,7 @@ class WebinarController extends Controller
             'private' => $private,
             'title' => $data['title'],
             'seo_description' => $data['seo_description'],
+            'limit_device' => (isset($data['limit_device'])? (int)$data['limit_device'] : null   ),
             'thumbnail' => $data['thumbnail'],
             'image_cover' => $data['image_cover'],
             'video_demo' => $data['video_demo'],
@@ -465,6 +469,7 @@ class WebinarController extends Controller
             $rules = [
                 'type' => 'required|in:webinar,course,text_lesson',
                 'title' => 'required|max:255',
+                'limit_device' => 'nullable|numeric',
                 'thumbnail' => 'required',
                 'image_cover' => 'required',
                 'description' => 'required',
@@ -474,7 +479,7 @@ class WebinarController extends Controller
         if ($currentStep == 2) {
             $rules = [
                 'category_id' => 'required',
-                'duration' => 'required',
+                'duration' => 'required|integer',
             ];
 
             if ($webinar->isWebinar()) {
@@ -495,6 +500,7 @@ class WebinarController extends Controller
 
         if ($currentStep == 1) {
             $data['private'] = (!empty($data['private']) and $data['private'] == 'on');
+            $data['limit_device'] = (isset($data['limit_device']) ? (int)$data['limit_device']: null);
             $webinar->slug = null; // regenerate slug in model
         }
 
@@ -603,7 +609,7 @@ class WebinarController extends Controller
             $url = '/panel/webinars/' . $webinar->id . '/step/' . (($nextStep <= 8) ? $nextStep : 8);
         }
 
-        if ($webinarRulesRequired) {
+        if ($webinarRulesRequired and !$user->isOrganization()) {
             $url = '/panel/webinars/' . $webinar->id . '/step/8';
 
             return redirect($url)->withErrors(['rules' => trans('validation.required', ['attribute' => 'rules'])]);
@@ -613,6 +619,9 @@ class WebinarController extends Controller
             sendNotification('course_created', ['[c.title]' => $webinar->title], $user->id);
         }
 
+        if ($user->isOrganization() && $data['save_course'] == 'si') {
+            $url = '/panel/webinars';
+        }
         return redirect($url);
     }
 
@@ -1020,12 +1029,55 @@ class WebinarController extends Controller
                             ->update(['order' => ($order + 1)]);
                     }
                     break;
+                case 'webinars_contents':
+                    foreach ($itemIds as $order => $id) {
+                        WebinarContent::where('id', $id)
+                            ->where('creator_id', $user->id)
+                            ->update(['order' => ($order + 1)]);
+                    }
+                    break;
+                case 'modules':
+                    foreach ($itemIds as $order => $id) {
+                        Module::where('id', $id)
+                            ->where('creator_id', $user->id)
+                            ->update(['order' => ($order + 1)]);
+                    }
+                    break;
 
             }
         }
 
         return response()->json([
             'code' => 200,
+        ], 200);
+    }
+
+    public function deleteContent(Request $request)
+    {
+        WebinarContent::find($request->get('id'))->delete();
+        return response()->json([
+            'code' => 200,
+        ], 200);
+    }
+    public function editContent($content_id)
+    {
+
+        $data = WebinarContent::find($content_id);
+        switch ($data->resource_type) {
+            case "file":
+                $data = WebinarContent::with('file')->find($content_id);
+                break;
+            case "session":
+                $data = WebinarContent::with('session')->find($content_id);
+                $data->session->date = date("Y-m-d H:i:s", $data->session->date);
+                break;
+            case "text":
+                $data = WebinarContent::with('textLesson')->with('textLesson.attachments')->find($content_id);
+                break;
+        }
+        return response()->json([
+            'code' => 200,
+            'data' => $data,
         ], 200);
     }
 }

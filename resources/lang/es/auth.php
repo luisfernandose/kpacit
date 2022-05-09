@@ -87,4 +87,6 @@ return [
     'login_failed_your_account_is_not_verified' => 'Error en el inicio de sesión. Su correo electrónico/teléfono no ha sido verificado.',
     'document_type' => 'Tipo de documento',
     'document_id' => 'Cédula de Identidad',
+
+    'limit_devices' => 'Limite de dispositivos alcanzados contacte al administrador',
 ];

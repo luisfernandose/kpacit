@@ -131,6 +131,34 @@
                     </ul>
                 </div>
             </li>
+            <li class="sidenav-item {{ request()->is('panel/reports*')  ? 'sidenav-item-active' : '' }}">
+                <a class="d-flex align-items-center" data-toggle="collapse" href="#reportsCollapse" role="button" aria-expanded="false" aria-controls="reportsCollapse">
+                <span class="sidenav-item-icon mr-10">
+                    @include('web.default.panel.includes.sidebar_icons.experience')
+                </span>
+                    <span class="font-14 text-dark-blue font-weight-500">{{ trans('panel.reports') }}</span>
+                </a>
+
+                <div class="collapse {{ request()->is('panel/reports*') ? 'show' : '' }}" id="reportsCollapse">
+                    <ul class="sidenav-item-collapse">
+                        <li class="mt-5 {{ (request()->is('/panel/reports/courses')) ? 'active' : '' }}">
+                            <a href="/panel/reports/courses">{{ trans('panel.courses') }}</a>
+                        </li>
+                        <li class="mt-5 {{ (request()->is('/panel/reports/percents_quizzes')) ? 'active' : '' }}">
+                            <a href="/panel/reports/percents_quizzes">{{ trans('panel.percents_quizzes') }}</a>
+                        </li>
+                        <li class="mt-5 {{ (request()->is('/panel/reports/users_not_finished_webinars')) ? 'active' : '' }}">
+                            <a href="/panel/reports/users_not_finished_webinars">{{ trans('panel.users_not_finished_webinars') }}</a>
+                        </li>
+                        <li class="mt-5 {{ (request()->is('/panel/reports/courses_not_started')) ? 'active' : '' }}">
+                            <a href="/panel/reports/courses_not_started">{{ trans('panel.courses_not_started') }}</a>
+                        </li>
+                        <li class="mt-5 {{ (request()->is('/panel/reports/chart_quizzes')) ? 'active' : '' }}">
+                            <a href="/panel/reports/chart_quizzes">{{ trans('panel.chart_quizzes') }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
         @endif
 
         <li class="sidenav-item {{ (request()->is('panel/webinars') or request()->is('panel/webinars/*')) ? 'sidenav-item-active' : '' }}">

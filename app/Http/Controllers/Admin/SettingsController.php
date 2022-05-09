@@ -23,6 +23,7 @@ class SettingsController extends Controller
 
     public function page($page)
     {
+
         $this->authorize('admin_settings_' . $page);
 
         $settings = Setting::where('page', $page)->get()->keyBy('name');

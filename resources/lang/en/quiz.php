@@ -121,4 +121,5 @@ return [
 
     'new_quiz_page_title' => 'New Quiz',
     'quizzes_list_page_title' => 'Quizzes lists',
+    'course_back' => 'Back to Course'
 ];

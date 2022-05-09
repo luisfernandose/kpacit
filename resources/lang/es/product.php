@@ -7,13 +7,13 @@ return [
     | Class page
     |--------------------------------------------------------------------------
     */
-
     'course' => 'Curso',
     'courses' => 'Cursos',
     'text_course' => 'Curso de texto',
   	'video_course' => 'Video Curso',
     'information' => 'Información',
-    'content' => 'Contenido',
+    'content' => 'Contenido',   
+    'comments' => 'Commentario',
     'review' => 'Review',
     'reviews' => 'Reviews',
 

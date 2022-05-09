@@ -118,7 +118,7 @@
                                                             <i class="fa fa-upload"></i>
                                                         </button>
                                                     </div>
-                                                    <input type="text" name="thumbnail" id="thumbnail" value="{{ !empty($webinar) ? $webinar->thumbnail : old('thumbnail') }}" class="form-control @error('thumbnail')  is-invalid @enderror"/>
+                                                    <input type="text" name="thumbnail" id="thumbnail" value="{{ !empty($webinar) ? str_replace(env('AWS_URL'),'/',$webinar->thumbnail) : old('thumbnail') }}" class="form-control validate-path @error('thumbnail')  is-invalid @enderror"/>
                                                     <div class="input-group-append">
                                                         <button type="button" class="input-group-text admin-file-view" data-input="thumbnail">
                                                             <i class="fa fa-eye"></i>
@@ -141,7 +141,7 @@
                                                             <i class="fa fa-upload"></i>
                                                         </button>
                                                     </div>
-                                                    <input type="text" name="image_cover" id="cover_image" value="{{ !empty($webinar) ? $webinar->image_cover : old('image_cover') }}" class="form-control @error('image_cover')  is-invalid @enderror"/>
+                                                    <input type="text" name="image_cover" id="cover_image" value="{{ !empty($webinar) ? str_replace(env('AWS_URL'),'/',$webinar->image_cover) : old('image_cover') }}" class="form-control validate-path @error('image_cover')  is-invalid @enderror"/>
                                                     <div class="input-group-append">
                                                         <button type="button" class="input-group-text admin-file-view" data-input="cover_image">
                                                             <i class="fa fa-eye"></i>
@@ -163,7 +163,7 @@
                                                             <i class="fa fa-upload"></i>
                                                         </button>
                                                     </div>
-                                                    <input type="text" name="video_demo" id="demo_video" value="{{ !empty($webinar) ? $webinar->video_demo : old('video_demo') }}" class="form-control @error('video_demo')  is-invalid @enderror"/>
+                                                    <input type="text" name="video_demo" id="demo_video" value="{{ !empty($webinar) ? str_replace(env('AWS_URL'),'/',$webinar->video_demo) : old('video_demo') }}" class="form-control validate-path @error('video_demo')  is-invalid @enderror"/>
                                                     @error('video_demo')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
@@ -255,7 +255,7 @@
                                                 <div class="form-group mt-30 d-flex align-items-center justify-content-between">
                                                     <label class="" for="privateSwitch">{{ trans('webinars.private') }}</label>
                                                     <div class="custom-control custom-switch">
-                                                        <input type="checkbox" name="private" class="custom-control-input" id="privateSwitch" {{ (!empty($webinar) and $webinar->private) || !isset($webinar) ? 'checked' :  '' }}>
+                                                        <input type="checkbox" name="private" class="custom-control-input" id="privateSwitch" {{ (!empty($webinar) and $webinar->private) || !isset($webinar) || old('private')=='on' ? 'checked' :  '' }}>
                                                         <label class="custom-control-label" for="privateSwitch"></label>
                                                     </div>
                                                 </div>
@@ -264,7 +264,7 @@
                                             <div class="form-group mt-30 d-flex align-items-center justify-content-between">
                                                 <label class="" for="supportSwitch">{{ trans('panel.support') }}</label>
                                                 <div class="custom-control custom-switch">
-                                                    <input type="checkbox" name="support" class="custom-control-input" id="supportSwitch" {{ !empty($webinar) && $webinar->support ? 'checked' : '' }}>
+                                                    <input type="checkbox" name="support" class="custom-control-input" id="supportSwitch" {{ !empty($webinar) && $webinar->support || old('support')=='on' ? 'checked' : '' }}>
                                                     <label class="custom-control-label" for="supportSwitch"></label>
                                                 </div>
                                             </div>
@@ -272,7 +272,7 @@
                                             <div class="form-group mt-30 d-flex align-items-center justify-content-between">
                                                 <label class="cursor-pointer" for="downloadableSwitch">{{ trans('home.downloadable') }}</label>
                                                 <div class="custom-control custom-switch">
-                                                    <input type="checkbox" name="downloadable" class="custom-control-input" id="downloadableSwitch" {{ !empty($webinar) && $webinar->downloadable ? 'checked' : '' }}>
+                                                    <input type="checkbox" name="downloadable" class="custom-control-input" id="downloadableSwitch" {{ !empty($webinar) && $webinar->downloadable || old('downloadable')=='on'? 'checked' : '' }}>
                                                     <label class="custom-control-label" for="downloadableSwitch"></label>
                                                 </div>
                                             </div>
@@ -280,7 +280,7 @@
                                             <div class="form-group mt-30 d-flex align-items-center justify-content-between">
                                                 <label class="" for="partnerInstructorSwitch">{{ trans('public.partner_instructor') }}</label>
                                                 <div class="custom-control custom-switch">
-                                                    <input type="checkbox" name="partner_instructor" class="custom-control-input" id="partnerInstructorSwitch" {{ !empty($webinar) && $webinar->partner_instructor ? 'checked' : ''  }}>
+                                                    <input type="checkbox" name="partner_instructor" class="custom-control-input" id="partnerInstructorSwitch" {{ !empty($webinar) && $webinar->partner_instructor || old('partner_instructor')=='on' ? 'checked' : ''  }}>
                                                     <label class="custom-control-label" for="partnerInstructorSwitch"></label>
                                                 </div>
                                             </div>
@@ -288,7 +288,7 @@
                                             <div class="form-group mt-30 d-flex align-items-center justify-content-between">
                                                 <label class="" for="subscribeSwitch">{{ trans('public.subscribe') }}</label>
                                                 <div class="custom-control custom-switch">
-                                                    <input type="checkbox" name="subscribe" class="custom-control-input" id="subscribeSwitch" {{ !empty($webinar) && $webinar->subscribe ? 'checked' : ''  }}>
+                                                    <input type="checkbox" name="subscribe" class="custom-control-input" id="subscribeSwitch" {{ !empty($webinar) && $webinar->subscribe || old('subscribe')=='on' ? 'checked' : ''  }}>
                                                     <label class="custom-control-label" for="subscribeSwitch"></label>
                                                 </div>
                                             </div>
@@ -315,7 +315,7 @@
 
                                             <div class="form-group mt-15">
                                                 <label class="input-label d-block">{{ trans('public.tags') }}</label>
-                                                <input type="text" name="tags" data-max-tag="5" value="{{ !empty($webinar) ? implode(',',$webinarTags) : '' }}" class="form-control inputtags" placeholder="{{ trans('public.type_tag_name_and_press_enter') }} ({{ trans('admin/main.max') }} : 5)"/>
+                                                <input type="text" name="tags" data-max-tag="5" value="{{ (!empty($webinar) && !empty($webinarTags) ? implode(',',$webinarTags) :  (!empty(old('tags'))  ? old('tags'): '') ) }}" class="form-control inputtags" placeholder="{{ trans('public.type_tag_name_and_press_enter') }} ({{ trans('admin/main.max') }} : 5)"/>
                                             </div>
 
 
@@ -347,7 +347,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group mt-15 {{ (!empty($webinarCategoryFilters) and count($webinarCategoryFilters)) ? '' : 'd-none' }}" id="categoriesFiltersContainer">
+                                    <div class="form-group mt-15 {{ (!empty($webinarCategoryFilters) and count($webinarCategoryFilters)) || !empty(old('category_id')) ? '' : 'd-none' }}" id="categoriesFiltersContainer">
                                         <span class="input-label d-block">{{ trans('public.category_filters') }}</span>
                                         <div id="categoriesFiltersCard" class="row mt-3">
 
@@ -795,6 +795,7 @@
     <script>
         var saveSuccessLang = '{{ trans('webinars.success_store') }}';
         var zoomJwtTokenInvalid = '{{ trans('admin/main.teacher_zoom_jwt_token_invalid') }}';
+        var prefixImg = '{{ substr_replace(env('AWS_URL'),"",-1) }}';
     </script>
 
     <script src="/assets/default/vendors/sweetalert2/dist/sweetalert2.min.js"></script>
@@ -810,6 +811,10 @@
         $(document).ready(()=>{
             $('.only_number').mask('0#');
             $('.money').mask('####0.00',{reverse: true});
+            var changeCategory = {{!empty(old('category_id')) ? 'true': 'false'}}
+            if(changeCategory){
+                $('#categories').trigger('change');
+            }
         });
     </script>
 @endpush

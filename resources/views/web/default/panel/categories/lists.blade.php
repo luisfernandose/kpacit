@@ -18,7 +18,7 @@
                 <div class="row">
                     <div class="col-12 ">
                         <div class="table-responsive">
-                            <table class="table table-striped font-14">
+                            <table class="table table-striped font-14 text-center">
                                 <tr>
                                     <th>{{ trans('admin/main.icon') }}</th>
                                     <th class="text-left">{{ trans('admin/main.title') }}</th>

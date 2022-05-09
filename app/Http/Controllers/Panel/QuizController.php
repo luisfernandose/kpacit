@@ -160,9 +160,9 @@ class QuizController extends Controller
             'webinar_id' => !empty($webinar) ? $webinar->id : null,
             'creator_id' => $user->id,
             'webinar_title' => !empty($webinar) ? $webinar->title : null,
-            'attempt' => $data['attempt'] ?? null,
+            'attempt' => isset($data['attempt']) ? (int)$data['attempt'] : null,
             'pass_mark' => $data['pass_mark'],
-            'time' => $data['time'] ?? null,
+            'time' => isset($data['time']) ? (int)$data['time'] : null,
             'status' => (!empty($data['status']) and $data['status'] == 'on') ? Quiz::ACTIVE : Quiz::INACTIVE,
             'certificate' => (!empty($data['certificate']) and $data['certificate'] == 'on') ? true : false,
             'created_at' => time(),
@@ -296,9 +296,9 @@ class QuizController extends Controller
             'title' => $data['title'],
             'webinar_id' => !empty($webinar) ? $webinar->id : null,
             'webinar_title' => !empty($webinar) ? $webinar->title : null,
-            'attempt' => $data['attempt'] ?? null,
+            'attempt' => isset($data['attempt']) ? (int)$data['attempt'] : null,
             'pass_mark' => $data['pass_mark'],
-            'time' => $data['time'] ?? null,
+            'time' => isset($data['time']) ? (int)$data['time'] : null,
             'status' =>  $status,
             'certificate' => (!empty($data['certificate']) and $data['certificate'] == 'on') ? true : false,
             'updated_at' => time(),
@@ -344,6 +344,12 @@ class QuizController extends Controller
         $user = auth()->user();
 
         if ($quiz) {
+            $progress_course = $quiz->webinar->getProgress(FALSE);
+
+            if(intval($progress_course) < 100){
+                return back()->with('msg', trans('quiz.cant_start_quiz'));
+            }
+
             $userQuizDone = QuizzesResult::where('quiz_id', $quiz->id)
                 ->where('user_id', $user->id)
                 ->get();
@@ -355,7 +361,7 @@ class QuizController extends Controller
                 }
             }
 
-            if (!isset($quiz->attempt) or ($userQuizDone->count() < $quiz->attempt and !$status_pass)) {
+            if (!isset($quiz->attempt) or ($userQuizDone->count() < $quiz->attempt )) {
                 $newQuizStart = QuizzesResult::create([
                     'quiz_id' => $quiz->id,
                     'user_id' => $user->id,

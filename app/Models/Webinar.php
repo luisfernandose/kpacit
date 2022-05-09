@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Jorenvh\Share\ShareFacade;
 use Spatie\CalendarLinks\Link;
 
@@ -26,12 +27,17 @@ class Webinar extends Model
     static $textLesson = 'text_lesson';
 
     static $statuses = [
-        'active', 'pending', 'is_draft', 'inactive'
+        'active', 'pending', 'is_draft', 'inactive',
     ];
 
     public function creator()
     {
         return $this->belongsTo('App\User', 'creator_id', 'id');
+    }
+
+    public function content()
+    {
+        return $this->hasMany('App\Models\WebinarContent', 'webinar_id', 'id')->orderBy('order', 'asc');
     }
 
     public function teacher()
@@ -61,7 +67,7 @@ class Webinar extends Model
 
     public function files()
     {
-        return $this->hasMany('App\Models\File', 'webinar_id', 'id');
+        return $this->hasMany('App\Models\WebinarContent', 'webinar_id', 'id')->where('resource_type', 'file');
     }
 
     public function textLessons()
@@ -123,7 +129,7 @@ class Webinar extends Model
 
     public function modules()
     {
-        return $this->hasMany('App\Models\Module', 'webinar_id', 'id');
+        return $this->hasMany('App\Models\Module', 'webinar_id', 'id')->orderBy('order', 'asc');
     }
 
     public function getRate()
@@ -142,7 +148,6 @@ class Webinar extends Model
             }
         }
 
-
         if ($rate > 5) {
             $rate = 5;
         }
@@ -159,8 +164,8 @@ class Webinar extends Model
     {
         return [
             'slug' => [
-                'source' => 'title'
-            ]
+                'source' => 'title',
+            ],
         ];
     }
 
@@ -191,7 +196,7 @@ class Webinar extends Model
         if ($with_percent) {
             return [
                 'bestTicket' => $bestTicket,
-                'percent' => $ticketPercent
+                'percent' => $ticketPercent,
             ];
         }
 
@@ -274,7 +279,7 @@ class Webinar extends Model
                             ->first();
 
                         if (!empty($subscribeSale)) {
-                            $usedDays = (int)diffTimestampDay(time(), $subscribeSale->created_at);
+                            $usedDays = (int) diffTimestampDay(time(), $subscribeSale->created_at);
 
                             if ($usedDays > $subscribe->days) {
                                 $hasBought = false;
@@ -290,14 +295,76 @@ class Webinar extends Model
         return $hasBought;
     }
 
-    public function getProgress()
+    public function getProgressByUser($u = null)
     {
         $progress = 0;
+        $quizzes_count = 0;
+        $user_id = $u ? $u : auth()->id();
+
+        $sessions = $this->sessions;
+        $textLessons = $this->textLessons;
+        $files = $this->files->where('resource_type','file');
+        $quizzes = $this->quizzes->where('status', Quiz::ACTIVE);
+        $passed = 0;
+
+        foreach ($files as $file) {
+            $status = CourseLearning::where('user_id', $user_id)
+                ->where('file_id', $file->id)
+                ->first();
+
+            if (!empty($status)) {
+                $passed += 1;
+            }
+        }
+
+        foreach ($sessions as $session) {
+            $status = CourseLearning::where('user_id', $user_id)
+                ->where('session_id', $session->id)
+                ->first();
+
+            if (!empty($status)) {
+                $passed += 1;
+            }
+        }
+        foreach ($textLessons as $textLesson) {
+            $status = CourseLearning::where('user_id', $user_id)
+                ->where('text_lesson_id', $textLesson->id)
+                ->first();
+
+            if (!empty($status)) {
+                $passed += 1;
+            }
+        }
+        foreach ($quizzes as $quiz) {
+            $status = QuizzesResult::where('user_id', $user_id)
+                ->where('quiz_id', $quiz->id)
+                ->where('status', QuizzesResult::$passed)
+                ->first();
+
+            if (!empty($status)) {
+                $passed += 1;
+            }
+        }
+        $quizzes_count = $quizzes->count();
+
+        if ($passed > 0) {
+            $progress = ($passed * 100) / ($sessions->count() + $files->count() + $textLessons->count() + $quizzes_count);
+        }
+
+        return round($progress) . "%";
+
+    }
+    public function getProgress($with_quizzes = true, $u = null)
+    {
+        $progress = 0;
+        $quizzes_count = 0;
+        $user_id = $u ? $u : auth()->id();
+
         if ($this->isWebinar() and !empty($this->capacity)) {
             if ($this->isProgressing() and $this->checkUserHasBought()) {
-                $user_id = auth()->id();
                 $sessions = $this->sessions;
-                $files = $this->files;
+                $files = $this->files->where('resource_type','file');
+                $textLessons = $this->textLessons;
                 $quizzes = $this->quizzes->where('status', Quiz::ACTIVE);
                 $passed = 0;
 
@@ -320,20 +387,33 @@ class Webinar extends Model
                         $passed += 1;
                     }
                 }
-
-                foreach ($quizzes as $quiz) {
-                    $status = QuizzesResult::where('user_id', $user_id)
-                        ->where('quiz_id',$quiz->id)
-                        ->where('status', QuizzesResult::$passed)
+                foreach ($textLessons as $textLesson) {
+                    $status = CourseLearning::where('user_id', $user_id)
+                        ->where('text_lesson_id', $textLesson->id)
                         ->first();
-
+    
                     if (!empty($status)) {
                         $passed += 1;
                     }
                 }
 
+                if ($with_quizzes === true) {
+
+                    foreach ($quizzes as $quiz) {
+                        $status = QuizzesResult::where('user_id', $user_id)
+                            ->where('quiz_id', $quiz->id)
+                            ->where('status', QuizzesResult::$passed)
+                            ->first();
+
+                        if (!empty($status)) {
+                            $passed += 1;
+                        }
+                    }
+                    $quizzes_count = $quizzes->count();
+                }
+
                 if ($passed > 0) {
-                    $progress = ($passed * 100) / ($sessions->count() + $files->count() + $quizzes->count());
+                    $progress = ($passed * 100) / ($sessions->count() + $files->count() + $textLessons->count() + $quizzes_count);
                 }
             } else {
                 $salesCount = !empty($this->sales_count) ? $this->sales_count : $this->sales()->count();
@@ -343,15 +423,27 @@ class Webinar extends Model
                 }
             }
         } elseif (!$this->isWebinar() and auth()->check() and $this->checkUserHasBought()) {
-            $user_id = auth()->id();
-            $files = $this->files;
+            $sessions = $this->sessions;
+            $files = $this->files->where('resource_type','file');
             $textLessons = $this->textLessons;
             $quizzes = $this->quizzes->where('status', Quiz::ACTIVE);
             $passed = 0;
+            
 
             foreach ($files as $file) {
+
                 $status = CourseLearning::where('user_id', $user_id)
-                    ->where('file_id', $file->id)
+                    ->where('file_id', $file->resource_id)
+                    ->first();
+               
+                if (!empty($status)) {
+                    $passed += 1;
+                }
+            }
+
+            foreach ($sessions as $session) {
+                $status = CourseLearning::where('user_id', $user_id)
+                    ->where('session_id', $session->id)
                     ->first();
 
                 if (!empty($status)) {
@@ -368,19 +460,22 @@ class Webinar extends Model
                     $passed += 1;
                 }
             }
-            foreach ($quizzes as $quiz) {
-                $status = QuizzesResult::where('user_id', $user_id)
-                    ->where('quiz_id',$quiz->id)
-                    ->where('status', QuizzesResult::$passed)
-                    ->first();
+            if ($with_quizzes === true) {
+                foreach ($quizzes as $quiz) {
+                    $status = QuizzesResult::where('user_id', $user_id)
+                        ->where('quiz_id', $quiz->id)
+                        ->where('status', QuizzesResult::$passed)
+                        ->first();
 
-                if (!empty($status)) {
-                    $passed += 1;
+                    if (!empty($status)) {
+                        $passed += 1;
+                    }
                 }
+                $quizzes_count = $quizzes->count();
             }
 
             if ($passed > 0) {
-                $progress = ($passed * 100) / ($files->count() + $textLessons->count() + $quizzes->count());
+                $progress = ($passed * 100) / ($sessions->count() + $files->count() + $textLessons->count() + $quizzes_count);
             }
         }
 
@@ -389,12 +484,29 @@ class Webinar extends Model
 
     public function getImageCover()
     {
-        return config('app_url') . $this->image_cover;
+        if (strpos($this->image_cover, "http://") !== false || strpos($this->image_cover, "https://") !== false) {
+            return config('app_url') . $this->image_cover;
+
+        }
+        if (!empty($this->image_cover)) {
+
+            return Storage::url($this->image_cover);
+        }
+        return $this->image_cover;
+
     }
 
     public function getImage()
     {
-        return config('app_url') . $this->thumbnail;
+        if (strpos($this->thumbnail, "http://") !== false || strpos($this->thumbnail, "https://") !== false) {
+            return config('app_url') . $this->thumbnail;
+        }
+        if (!empty($this->thumbnail)) {
+
+            return Storage::url($this->thumbnail);
+        }
+        return $this->thumbnail;
+
     }
 
     public function getUrl()
@@ -505,6 +617,15 @@ class Webinar extends Model
                 break;
         }
 
-        return $link;
+        return is_array($link) ? $link[$social] : $link;
+    }
+
+    public function getVideoDemoAttribute($value)
+    {
+        if (!empty($value)) {
+
+            return Storage::url($value);
+        }
+        return $value;
     }
 }

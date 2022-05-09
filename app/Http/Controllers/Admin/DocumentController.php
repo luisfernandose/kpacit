@@ -78,7 +78,7 @@ class DocumentController extends Controller
         $this->authorize('admin_documents_create');
 
         $this->validate($request, [
-            'amount' => 'required',
+            'amount' => 'required|numeric',
             'user_id' => 'required|exists:users,id',
             'type' => 'required',
         ]);

@@ -6,8 +6,7 @@ return [
     |--------------------------------------------------------------------------
     | General Translations
     |--------------------------------------------------------------------------
-    */
-
+     */
     'title' => 'Titulo',
     'sub_title' => 'Subtitulo',
     'name' => 'Nombre',
@@ -30,6 +29,7 @@ return [
     'link' => 'Enlace',
     'duration' => 'Duración',
     'minutes' => 'Minutos',
+    'limit_device' => 'Limite de dispositivos',
     'min' => 'Min',
     'view' => 'Vista',
     'view_profile' => 'Ver perfil',
@@ -55,7 +55,7 @@ return [
     'search_instructors' => 'Buscar instructores...',
     'publish_date' => 'Fecha de publicación',
     'forced' => 'Forzado',
-    'yes' => 'SI',
+    'yes' => 'Si',
     'no' => 'No',
 
     'course_sessions' => 'Sesiones de curso',
@@ -106,6 +106,7 @@ return [
     'choose_category' => 'Seleccione una categoría',
     'category_filters' => 'Filtros de categoría',
     'tickets' => 'Tickets',
+
     'add_ticket' => 'Nuevo plan de precios',
     'add_plan' => 'Nuevo plan',
     'add_new_ticket' => 'Nuevo plan de precios',
@@ -142,13 +143,16 @@ return [
     'file' => 'Archivo',
     'source' => 'Fuente',
     'add_files' => 'Nuevo archivo',
+    'edit_files' => 'Edit file',
     'add_new_files' => 'Agregar nuevo archivo',
     'files_no_result' => '¡No hay ningún archivo definido!',
     'files_no_result_hint' => 'Puede definir partes de video del curso, proyectos, archivos adjuntos y ejercicios como archivos.',
+    'edit_sessions' => 'Edit Live Session',
 
     'test_lesson' => 'Lección de texto',
     'lesson' => 'Lección',
     'add_test_lesson' => 'Nueva lección de texto',
+    'edit_test_lesson' => 'Edit text lesson',
     'add_new_test_lesson' => 'Agregar nueva lección de texto',
     'text_lesson_no_result' => '¡Sin lección de texto!',
     'text_lesson_no_result_hint' => 'Cree lecciones de texto para que los estudiantes puedan inscribirse en ellas y comenzar a aprender.',
@@ -165,7 +169,12 @@ return [
     'extra_information' => 'Información extra',
     'pricing' => 'Precios',
     'content' => 'Contenido',
-
+    'newest' => 'Newest',
+    'expensive' => 'Highest Price',
+    'inexpensive' => 'Lowest Price',
+    'bestsellers' => 'Bestsellers',
+    'best_rates' => 'Best Rated', 
+  
     'faq' => 'FAQ',
     'add_faq' => 'Nueva FAQ',
     'answer' => 'Responder',
@@ -314,6 +323,7 @@ return [
 
     'cart_page_title' => 'Carrito',
     'checkout_page_title' => 'Checkout',
+
     'channel_payment_disabled' => 'La pasarela de pago está deshabilitada.',
     'income_los_then_minimum_payout' => 'Su ingreso es menor que el monto mínimo de pago. Espere a pasar la limitación.',
 
@@ -368,7 +378,8 @@ return [
 
     'zoom_api' => 'Zoom API',
     'zoom_jwt_token' => 'Zoom JWT Token',
- 	'how_zoom_jwt_token' => 'How to create Zoom JWT token',
+ 	  'how_zoom_jwt_token' => 'How to create Zoom JWT token',
     'instructor_is_not_available' => 'El instructor no está disponible temporalmente.',
     'unlimited' => 'Ilimitado',
+    'seen' => 'Visto'
 ];

@@ -57,7 +57,7 @@ class SubscribesController extends Controller
         $financialSettings = getFinancialSettings();
         $tax = $financialSettings['tax'];
 
-        $amount = $request->input('amount');
+        $amount = (int)$request->input('amount');
 
         $taxPrice = $amount *  $tax / 100;
 

@@ -16,10 +16,12 @@ use App\Models\Section;
 use App\Models\Webinar;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
+use IvanoMatteo\LaravelDeviceTracking\Traits\UseDevices;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, UseDevices;
 
     static $active = 'active';
     static $pending = 'pending';
@@ -117,7 +119,7 @@ class User extends Authenticatable
         if (!empty($this->cover_img)) {
             $path = str_replace('/storage', '', $this->cover_img);
 
-            $imgUrl = url($path);
+            $imgUrl = Storage::url($path);
         } else {
             $imgUrl = getPageBackgroundSettings('user_cover');
         }

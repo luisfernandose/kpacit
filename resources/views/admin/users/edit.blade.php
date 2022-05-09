@@ -185,7 +185,7 @@
                                                 <div class="form-group custom-switches-stacked mt-2">
                                                     <label class="custom-switch pl-0">
                                                         <input type="hidden" name="ban" value="0">
-                                                        <input type="checkbox" name="ban" id="banSwitch" value="1" {{ (!empty($user) and $user->ban) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
+                                                        <input type="checkbox" name="ban" id="banSwitch" value="1" {{ ((!empty($user) and $user->ban)|| !empty(old('ban'))) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
                                                         <span class="custom-switch-indicator"></span>
                                                         <label class="custom-switch-description mb-0 cursor-pointer" for="banSwitch">{{ trans('admin/main.ban') }}</label>
                                                     </label>
@@ -233,7 +233,7 @@
                                                 <div class="form-group custom-switches-stacked">
                                                     <label class="custom-switch pl-0">
                                                         <input type="hidden" name="verified" value="0">
-                                                        <input type="checkbox" name="verified" id="verified" value="1" {{ (!empty($user) and $user->verified) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
+                                                        <input type="checkbox" name="verified" id="verified" value="1" {{ ((!empty($user) and $user->verified)|| !empty(old('verified'))) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
                                                         <span class="custom-switch-indicator"></span>
                                                         <label class="custom-switch-description mb-0 cursor-pointer" for="verified">{{ trans('admin/main.enable_blue_badge') }}</label>
                                                     </label>

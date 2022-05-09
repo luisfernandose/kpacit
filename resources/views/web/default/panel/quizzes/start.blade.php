@@ -4,6 +4,9 @@
     <div class="container">
         <section class="mt-40">
             <h2 class="font-weight-bold font-16 text-dark-blue">{{ $quiz->title }}</h2>
+            <div class="nav-icons-or-start-live navbar-order">
+                <a href="{{ $quiz->webinar->getUrl() }}" class="btn btn-sm btn-primary nav-start-a-live-btn">{{ trans('quiz.course_back') }}</a>
+            </div>
             <p class="text-gray font-14 mt-5">
                 <a href="{{ $quiz->webinar->getUrl() }}" target="_blank" class="text-gray">{{ $quiz->webinar->title }}</a>
                 | {{ trans('public.by') }}
@@ -70,13 +73,13 @@
                             <div class="quiz-card">
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div>
-                                        <h3 class="font-weight-bold font-16 text-secondary">{{ $question->title }}?</h3>
+                                        <h3 class="font-weight-bold font-16 text-secondary pregunta">{{ $question->title }}?</h3>
                                         <p class="text-gray font-14 mt-5">
                                             <span>{{ trans('quiz.question_grade') }} : {{ $question->grade }} </span>
                                         </p>
                                     </div>
 
-                                    <div class="rounded-sm border border-gray200 p-15 text-gray">{{ $key + 1 }}/{{ $quizQuestions->count() }}</div>
+                                    <div class="rounded-sm border border-gray200 p-15 text-gray">{{ $key + 1 }}/<span id="questions">{{ $quizQuestions->count() }}</span></div>
                                 </div>
                                 @if($question->type === \App\Models\QuizzesQuestion::$descriptive)
                                     <div class="form-group mt-35">
@@ -85,22 +88,27 @@
                                 @else
                                     <div class="question-multi-answers mt-35">
                                         @foreach($question->quizzesQuestionsAnswers as $key => $answer)
-                                            <div class="answer-item">
-                                                <input id="asw-{{ $answer->id }}" type="radio" name="question[{{ $question->id }}][answer]" value="{{ $answer->id }}">
+                                            
                                                 @if(!$answer->image)
-                                                    <label for="asw-{{ $answer->id }}" class="answer-label font-16 text-dark-blue d-flex align-items-center justify-content-center">
-                                                            <span class="answer-title">
-                                                                {{ $answer->title }}
-                                                            </span>
-                                                    </label>
+                                                    <div class="answer-item">
+                                                        <input id="asw-{{ $answer->id }}" type="radio" name="question[{{ $question->id }}][answer]" value="{{ $answer->id }}" hidden>
+                                                        <label for="asw-{{ $answer->id }}" class="answer-label font-16 text-dark-blue d-flex align-items-center justify-content-center" style="height: auto; width: 100%;">
+                                                                <span class="answer-title">
+                                                                    {{ $answer->title }}
+                                                                </span>
+                                                        </label>
+                                                    </div>
                                                 @else
-                                                    <label for="asw-{{ $answer->id }}" class="answer-label font-16 text-dark-blue d-flex align-items-center justify-content-center">
-                                                        <div class="image-container">
-                                                            <img src="{{ config('app_url') . $answer->image }}" class="img-cover" alt="">
-                                                        </div>
-                                                    </label>
+                                                    <div class="answer-item image-contenedor">
+                                                        <input id="asw-{{ $answer->id }}" type="radio" name="question[{{ $question->id }}][answer]" value="{{ $answer->id }}" hidden>
+                                                        <label for="asw-{{ $answer->id }}" class="answer-label font-16 text-dark-blue d-flex align-items-center justify-content-center">
+                                                            <div class="image-container">
+                                                                <img src="{{ config('app_url') . $answer->image }}" class="img-cover" style="height: 300px; object-fit: fill;" alt="">
+                                                            </div>
+                                                        </label>
+                                                    </div>
                                                 @endif
-                                            </div>
+                                            
                                         @endforeach
                                     </div>
                                 @endif
@@ -112,7 +120,7 @@
                 <div class="d-flex align-items-center mt-30">
                     <button type="button" class="previous btn btn-sm btn-primary mr-20 p-0">{{ trans('quiz.previous_question') }}</button>
                     <button type="button" class="next btn btn-sm btn-primary mr-auto p-0">{{ trans('quiz.next_question') }}</button>
-                    <button type="submit" class="finish btn btn-sm btn-danger p-0">{{ trans('public.finish') }}</button>
+                    <button type="submit" class="finish btn btn-sm p-0">{{ trans('public.finish') }}</button>                
                 </div>
             </form>
         </section>
@@ -123,4 +131,46 @@
 @push('scripts_bottom')
     <script src="/assets/default/vendors/jquery.simple.timer/jquery.simple.timer.js"></script>
     <script src="/assets/default/js/parts/quiz-start.min.js"></script>
+    <script>
+    var x=1;
+    $("body").on("click", ".next", function(e) {
+        x=x+1;
+        var checked = document.querySelectorAll("input[type='radio']:checked");
+        var questions = $("#questions").text();
+        if(x>=questions){
+            $(".finish").show();
+            $(".next").hide();
+                if((checked.length)<questions){
+                $(".finish").addClass("btn-disabled");
+                $(".finish").attr('disabled','disabled');
+                }
+                else{
+                    $(".finish").removeClass("btn-disabled");
+                    $(".finish").removeAttr('disabled');
+                }
+        }
+    });
+
+    $("body").on("click", "input[type='radio']", function(e) {
+        var checked = document.querySelectorAll("input[type='radio']:checked");
+        var questions = $("#questions").text();
+        if((checked.length)<questions){
+            $(".finish").addClass("btn-disabled");
+            $(".finish").attr('disabled','disabled');
+        }
+        else{
+            $(".finish").removeClass("btn-disabled");
+            $(".finish").removeAttr('disabled');
+        }
+    });
+
+    $("body").on("click", ".previous", function(e) {
+        x=x-1;
+        var questions = $("#questions").text();
+        if(x<questions){
+            $(".finish").hide();
+            $(".next").show();
+        }
+    });
+    </script>
 @endpush

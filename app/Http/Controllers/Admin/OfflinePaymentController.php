@@ -137,7 +137,7 @@ class OfflinePaymentController extends Controller
         Accounting::create([
             'creator_id' => auth()->user()->id,
             'user_id' => $offlinePayment->user_id,
-            'amount' => $offlinePayment->amount,
+            'amount' => (int)$offlinePayment->amount,
             'type' => Accounting::$addiction,
             'type_account' => Accounting::$asset,
             'description' => trans('admin/pages/setting.notification_offline_payment_approved'),

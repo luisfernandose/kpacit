@@ -75,7 +75,7 @@
                                                 <i class="fa fa-chevron-up"></i>
                                             </button>
                                         </div>
-                                        <input type="text" name="icon" id="icon" value="{{ !empty($promotion->icon) ? $promotion->icon : old('icon') }}" class="form-control @error('icon') is-invalid @enderror"/>
+                                        <input type="text" readonly name="icon" id="icon" value="{{ !empty($promotion->icon) ? str_replace(env('AWS_URL'),'/',$promotion->icon) : old('icon') }}" class="form-control validate-path @error('icon') is-invalid @enderror"/>
                                         <div class="input-group-append">
                                             <button type="button" class="input-group-text admin-file-view" data-input="icon">
                                                 <i class="fa fa-eye"></i>
@@ -103,7 +103,7 @@
                                 <div class="form-group custom-switches-stacked">
                                     <label class="custom-switch pl-0">
                                         <input type="hidden" name="is_popular" value="0">
-                                        <input type="checkbox" name="is_popular" id="isPopular" value="1" {{ (!empty($promotion) and $promotion->is_popular) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
+                                        <input type="checkbox" name="is_popular" id="isPopular" value="1" {{ ((!empty($promotion) and $promotion->is_popular) || !empty(old('is_popular')) )  ) ? 'checked="checked"' : '' }} class="custom-switch-input"/>
                                         <span class="custom-switch-indicator"></span>
                                         <label class="custom-switch-description mb-0 cursor-pointer" for="isPopular">{{ trans('admin/main.is_popular') }}</label>
                                     </label>

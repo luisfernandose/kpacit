@@ -1,93 +1,141 @@
 @extends(getTemplate().'.layouts.app')
-
 @push('styles_top')
     <link rel="stylesheet" href="/assets/default/css/css-stars.css">
     <link rel="stylesheet" href="/assets/default/vendors/video/video-js.min.css">
 @endpush
 
-
 @section('content')
-    <section class="course-cover-container ">
-        <img src="{{ $course->getImageCover() }}" class="img-cover course-cover-img" alt="{{ $course->title }}"/>
-        <div class="cover-content pt-40">
-            <div class="container position-relative">
-                @if(!empty($activeSpecialOffer))
-                    <div class="d-flex align-items-center justify-content-between rounded-lg shadow-xs bg-white p-30">
-                        <div class="d-flex flex-column">
-                            <strong class="font-16 text-dark-blue font-weight-bold">{{ trans('panel.special_offer') }}</strong>
-                            <span class="font-14 text-gray">{{ $activeSpecialOffer->name }}</span>
-                        </div>
-                        <div class="">
-                            @php
-                                $remainingTimes = $activeSpecialOffer->getRemainingTimes()
-                            @endphp
-                            <div id="offerCountDown" class="d-flex time-counter-down"
-                                 data-day="{{ $remainingTimes['day'] }}"
-                                 data-hour="{{ $remainingTimes['hour'] }}"
-                                 data-minute="{{ $remainingTimes['minute'] }}"
-                                 data-second="{{ $remainingTimes['second'] }}">
+<main class="reproductor">
+    <div class="reproductor-video">
+        <section class="mt-20" >
+            <div id="playVideo" class="video-background" style="padding-left: 14px;">
+                <div class="modal-content click.dismiss.bs.modal">
+                    <div class="loading-img text-center video-background">
+                        <img src="/assets/default/img/loading.gif" width="100" height="100" style="margin-top: 17%;">
+                    </div>
+                    <div class="js-modal-video-content click.dismiss.bs.modal"></div>
+                </div>
+            </div>
 
-                                <div class="d-flex align-items-center flex-column mr-10">
-                                    <span class="bg-gray300 rounded p-10 font-16 font-weight-bold text-dark time-item days"></span>
-                                    <span class="font-12 mt-1 text-gray">{{ trans('public.day') }}</span>
-                                </div>
-                                <div class="d-flex align-items-center flex-column mr-10">
-                                    <span class="bg-gray300 rounded p-10 font-16 font-weight-bold text-dark time-item hours"></span>
-                                    <span class="font-12 mt-1 text-gray">{{ trans('public.hr') }}</span>
-                                </div>
-                                <div class="d-flex align-items-center flex-column mr-10">
-                                    <span class="bg-gray300 rounded p-10 font-16 font-weight-bold text-dark time-item minutes"></span>
-                                    <span class="font-12 mt-1 text-gray">{{ trans('public.min') }}</span>
-                                </div>
-                                <div class="d-flex align-items-center flex-column">
-                                    <span class="bg-gray300 rounded p-10 font-16 font-weight-bold text-dark time-item seconds"></span>
-                                    <span class="font-12 mt-1 text-gray">{{ trans('public.sec') }}</span>
-                                </div>
-                            </div>
+            <div style="margin: 2%;">
+                <div class="@if(!$course->isCourse()) mt-35 @else mt-40 @if(empty(session()->has('msg')))  @endif @endif">
+                    <ul class="nav nav-tabs bg-secondary rounded-sm p-15 d-flex align-items-center justify-content-around" id="tabs-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="position-relative font-14 text-white {{ (empty(request()->get('tab','')) or request()->get('tab','') == 'information') ? 'active' : '' }}" id="information-tab"
+                               data-toggle="tab" href="#information" role="tab" aria-controls="information"
+                               aria-selected="true">{{ trans('product.information') }}</a>
+                        </li>
+                        <li class="nav-item">
+                                <a class="position-relative font-14 text-white {{ (request()->get('tab','') == 'comments') ? 'active' : '' }}" id="comments-tab" data-toggle="tab"
+                                   href="#comments" role="tab" aria-controls="comments"
+                                   aria-selected="false">{{ trans('product.comments') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="position-relative font-14 text-white {{ (request()->get('tab','') == 'reviews') ? 'active' : '' }}" id="reviews-tab" data-toggle="tab"
+                               href="#reviews" role="tab" aria-controls="reviews"
+                               aria-selected="false">{{ trans('product.reviews') }} ({{ $course->reviews->count() > 0 ? $course->reviews->pluck('creator_id')->count() : 0 }})</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade {{ (empty(request()->get('tab','')) or request()->get('tab','') == 'information') ? 'show active' : '' }} " id="information" role="tabpanel"
+                             aria-labelledby="information-tab">
+                            @include(getTemplate().'.course.tabs.information')
                         </div>
-
-                        <div class="offer-percent-box d-flex flex-column align-items-center justify-content-center">
-                            <span class="percent font-30 text-white">{{ $activeSpecialOffer->percent }}%</span>
-                            <span class="off font-16 text-white">{{ trans('public.off') }}</span>
+                        <div class="tab-pane fade {{ (request()->get('tab','') == 'content') ? 'show active' : '' }}" id="comments" role="tabpanel" aria-labelledby="comments-tab">
+                                @include(getTemplate().'.course.tabs.comments')
+                        </div>
+                        <div class="tab-pane fade {{ (request()->get('tab','') == 'reviews') ? 'show active' : '' }}" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                            @include(getTemplate().'.course.tabs.reviews')
                         </div>
                     </div>
-                @endif
+                </div>
             </div>
-        </div>
+        </section>
+    </div>
+    <div class="acordeon">
+        <section>
+            @if(!empty($course->sessions) and $course->sessions->count() > 0)
+            <section class="mt-20">
+                <h2 class="section-title after-line">{{ trans('public.sessions') }}</h2>
 
-    </section>
+            <div class="mt-15">
+                <div class="row">
+                    <div class="col-6 col-md-4 font-12 text-gray"><span class="pl-10">{{ trans('public.title') }}</span></div>
+                    <div class="col-3 font-12 text-gray text-center">{{ trans('public.start_date') }}</div>
+                    <div class="col-2 font-12 text-gray text-center d-none d-md-block">{{ trans('public.duration') }}</div>
+                    <div class="col-3"></div>
+            </div>
 
-    <section class="container course-content-section">
-        <div class="row">
-            <div class="col-12 col-lg-8">
-                <div class="course-content-body user-select-none">
-                    <div class="course-body-on-cover text-white">
-                        <h1 class="font-30 course-title">
-                            {{ clean($course->title, 't') }}
-                        </h1>
-                        <span class="d-block font-16 mt-10">{{ trans('public.in') }} <a href="{{ $course->category->getUrl() }}" target="_blank" class="font-weight-500 text-decoration-underline text-white">{{ $course->category->title }}</a></span>
+            <div class="row">
+                <div class="col-12">
+                    <div class="accordion-content-wrapper mt-15" id="sessionsAccordion" role="tablist" aria-multiselectable="true">
+                        @foreach($course->sessions as $session)
+                            <div class="accordion-row rounded-sm shadow-lg border mt-20 p-15">
+                                <div class="row align-items-center" role="tab" id="session_{{ $session->id }}">
+                                    <div class="col-6 col-md-4 d-flex align-items-center" href="#collapseSession{{ $session->id }}" aria-controls="collapseSession{{ $session->id }}" data-parent="#sessionsAccordion" role="button" data-toggle="collapse" aria-expanded="true">
+                                        @if($session->date > time())
+                                            <a href="{{ $session->addToCalendarLink() }}" target="_blank" class="mr-15 d-flex" data-toggle="tooltip" data-placement="top" title="{{ trans('public.add_to_calendar') }}">
+                                                <i data-feather="bell" width="20" height="20" class="text-gray"></i>
+                                            </a>
+                                        @else
+                                            <span class="mr-15 d-flex"><i data-feather="bell" width="20" height="20" class="text-gray"></i></span>
+                                        @endif
+                                        <span class="font-weight-bold text-secondary font-14">{{ $session->title }}</span>
+                                    </div>
+                                    <div class="col-3 text-gray text-center text-center font-14">{{ dateTimeFormat($session->date, 'j M Y | H:i') }}</div>
+                                    <div class="col-2 text-gray text-center text-center font-14 d-none d-md-block">{{ convertMinutesToHourAndMinute($session->duration) }}</div>
+                                    <div class="col-3 d-flex justify-content-end">
+                                        @if(($session->date + 600) < time())
+                                            <button type="button" class="course-content-btns btn btn-sm btn-gray disabled flex-grow-1 disabled session-finished-toast">{{ trans('public.finished') }}</button>
+                                        @elseif(empty($user))
+                                            <button type="button" class="course-content-btns btn btn-sm btn-gray disabled flex-grow-1 disabled not-login-toast">{{ trans('public.go_to_class') }}</button>
+                                        @elseif($hasBought)
+                                            <a href="{{ $session->getJoinLink(true) }}" target="_blank" class="course-content-btns btn btn-sm btn-primary flex-grow-1">{{ trans('public.go_to_class') }}</a>
+                                        @else
+                                            <button type="button" class="course-content-btns btn btn-sm btn-gray flex-grow-1 disabled not-access-toast">{{ trans('public.go_to_class') }}</button>
+                                        @endif
+                                    </div>
+                                </div>
+                                    <div id="collapseSession{{ $session->id }}" aria-labelledby="session_{{ $session->id }}" class=" collapse" role="tabpanel">
+                                        <div class="panel-collapse">
+                                            <div class="text-gray">
+                                                {!! nl2br(clean($session->description)) !!}
+                                            </div>
 
-                        <div class="d-flex align-items-center">
-                            @include('web.default.includes.webinar.rate',['rate' => $course->getRate()])
-                            <span class="ml-10 mt-15 font-14">({{ $course->reviews->pluck('creator_id')->count() }} {{ trans('public.ratings') }})</span>
+                                            @if(!empty($user) and $hasBought)
+                                                <div class="d-flex align-items-center mt-20">
+                                                    <label class="mb-0 mr-10 cursor-pointer font-weight-500" for="sessionReadToggle{{ $session->id }}">{{ trans('public.i_passed_this_lesson') }}</label>
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" @if($session->date < time()) disabled @endif id="sessionReadToggle{{ $session->id }}" data-session-id="{{ $session->id }}" value="{{ $course->id }}" class="js-text-session-toggle custom-control-input" @if(!empty($session->learningStatus)) checked @endif>
+                                                        <label class="custom-control-label" for="sessionReadToggle{{ $session->id }}"></label>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+            @endif
 
-                        <div class="mt-15">
-                            <span class="font-14">{{ trans('public.created_by') }}</span>
-                            <a href="{{ $course->teacher->getProfileUrl() }}" target="_blank" class="text-decoration-underline text-white font-14 font-weight-500">{{ $course->teacher->full_name }}</a>
-                        </div>
-
-                        @if($hasBought or $course->isWebinar())
+            @php
+                $c = 0;
+            @endphp
+{{-- Files --}}
+@if(!empty($course->files) and $course->files->count() > 0)
+    @if($hasBought or $course->isWebinar())
                             @php
                                 $percent = $course->getProgress();
                             @endphp
 
-                            <div class="mt-30 d-flex align-items-center">
-                                <div class="progress course-progress flex-grow-1 shadow-xs rounded-sm">
-                                    <span class="progress-bar rounded-sm bg-warning" style="width: {{ $percent }}%"></span>
-                                </div>
-
-                                <span class="ml-15 font-14 font-weight-500">
+                            <div class="mt-30 align-items-center">
+                                <div style="text-align: center;">
+                                    <span class="font-16" id="percent-progress"><!-- {{ $percent }}% --></span>
+                                    <span class="font-16">
                                     @if($course->isWebinar())
                                         @if($hasBought and $course->isProgressing())
                                             {{ trans('public.course_learning_passed',['percent' => $percent]) }}
@@ -97,378 +145,490 @@
                                     @else
                                         {{ trans('public.course_learning_passed',['percent' => $percent]) }}
                                     @endif
-                            </span>
+                                    </span>
+                                </div>
+                                <div class="progress course-progress shadow-xs rounded-sm">
+                                    <span id="percent-bar" class="progress-bar rounded-sm bg-done" ></span>
+                                </div>
+
+
                             </div>
                         @endif
-                    </div>
 
-                    <div class="@if(!$course->isCourse()) mt-35 @else mt-40 pt-40 @endif">
-                        <ul class="nav nav-tabs bg-secondary rounded-sm p-15 d-flex align-items-center justify-content-between" id="tabs-tab" role="tablist">
-                            <li class="nav-item">
-                                <a class="position-relative font-14 text-white {{ (empty(request()->get('tab','')) or request()->get('tab','') == 'information') ? 'active' : '' }}" id="information-tab"
-                                   data-toggle="tab" href="#information" role="tab" aria-controls="information"
-                                   aria-selected="true">{{ trans('product.information') }}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="position-relative font-14 text-white {{ (request()->get('tab','') == 'content') ? 'active' : '' }}" id="content-tab" data-toggle="tab"
-                                   href="#content" role="tab" aria-controls="content"
-                                   aria-selected="false">{{ trans('product.content') }} ({{ $webinarContentCount }})</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="position-relative font-14 text-white {{ (request()->get('tab','') == 'reviews') ? 'active' : '' }}" id="reviews-tab" data-toggle="tab"
-                                   href="#reviews" role="tab" aria-controls="reviews"
-                                   aria-selected="false">{{ trans('product.reviews') }} ({{ $course->reviews->count() > 0 ? $course->reviews->pluck('creator_id')->count() : 0 }})</a>
-                            </li>
-                        </ul>
+                    @foreach($course->modules as $module)
+                        <div class="section">
+                            <div class="section-menu">
+                                <div class="menu-title" onClick="display('{{$module->id}}')">
+                                    <a href="#">{{ $module->name }}</a>
+                                    <svg id="arrow-down{{$module->id}}" xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-chevron-down" width="25" height="25"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <polyline points="6 9 12 15 18 9" />
+                                    </svg>
+                                    <svg id="arrow-up{{$module->id}}" style="display: none;" xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-chevron-up" width="25" height="25"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <polyline points="6 15 12 9 18 15" />
+                                    </svg>
+                                </div>
+                                <ul class="menu-list" id="collapse{{$module->id}}">
+                                    @foreach($module->files as $file)
+                                    <label hidden>
+                                        @if ($c==0)                                                                                  
+                                            @php
+                                                $c++;  
+                                            @endphp
+                                            <label id="first-id">{{ $file->id }}</label>
+                                        @endif
+                                    </label>
+                                    <li class="menu-video">
+                                        <div class="video-title">
+                                            <div>
+                                                <label class="font-12 text-gray seen">{{ trans('public.seen') }}</label>
+                                                <div class="custom-control custom-switch" style="display: inline-block;" data-toggle="tooltip" data-placement="top" title="{{ trans('public.i_passed_this_lesson') }}">
+                                                    <input type="checkbox" id="fileReadToggle{{ $file->id }}" data-file-id="{{ $file->id }}" value="{{ $course->id }}" class="js-file-learning-toggle custom-control-input checkbox" @if(!empty($file->learningStatus)) checked @endif>
+                                                    <label class="custom-control-label" for="fileReadToggle{{ $file->id }}"></label>
+                                                </div>
+                                            </div>
+                                            <a href="#" class="font-14 ">{{ $file->title }}</a>
+                                            @if($file->accessibility == 'paid')
+                                                @if(!empty($user) and $hasBought)
+                                                    @if($file->downloadable)
+                                                        <a href="{{ $course->getUrl() }}/file/{{ $file->id }}/download" class="btn-play" data-toggle="tooltip" data-placement="top" title="{{ trans('home.download') }}">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-download" width="20" height="20" viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                              <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                              <polyline points="7 11 12 16 17 11" />
+                                                              <line x1="12" y1="4" x2="12" y2="16" />
+                                                            </svg>
+                                                        </a>
+                                                    @else
+                                                        <button type="button" data-id="{{ $file->id }}" class="js-play-video btn-play" data-toggle="tooltip" data-placement="top" title="{{ trans('public.play') }}">
+                                                            @if($file->file_type=='doc' || $file->file_type=='docx' || $file->file_type=='xls'|| $file->file_type=='xlsx'|| $file->file_type=='xls'|| $file->file_type=='ppt'|| $file->file_type=='pptx'|| $file->file_type=='pdf')
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file" width="20" height="20" viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                                  <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                                                  <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                                                                </svg>
+                                                            @else
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    class="icon icon-tabler icon-tabler-player-play" width="20" height="20"
+                                                                    viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                    <path d="M7 4v16l13 -8z" />
+                                                                </svg>
+                                                            @endif
+                                                        </button>
+                                                    @endif
+                                                @else
+                                                    <button type="button" class="course-content-btns btn btn-sm btn-gray flex-grow-1 disabled {{ ((empty($user)) ? 'not-login-toast' : (!$hasBought ? 'not-access-toast' : '')) }}" data-toggle="tooltip" data-placement="top" title="{{ trans('home.download') }}">
+                                                        @if($file->downloadable)
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-download" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                              <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                              <polyline points="7 11 12 16 17 11" />
+                                                              <line x1="12" y1="4" x2="12" y2="16" />
+                                                            </svg>
+                                                        @else
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file" width="20" height="20" viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                              <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                                              <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                                                            </svg>
+                                                        @endif
+                                                    </button>
+                                                @endif
 
-                        <div class="tab-content" id="nav-tabContent">
-                            <div class="tab-pane fade {{ (empty(request()->get('tab','')) or request()->get('tab','') == 'information') ? 'show active' : '' }} " id="information" role="tabpanel"
-                                 aria-labelledby="information-tab">
-                                @include(getTemplate().'.course.tabs.information')
-                            </div>
-                            <div class="tab-pane fade {{ (request()->get('tab','') == 'content') ? 'show active' : '' }}" id="content" role="tabpanel" aria-labelledby="content-tab">
-                                @include(getTemplate().'.course.tabs.content')
-                            </div>
-                            <div class="tab-pane fade {{ (request()->get('tab','') == 'reviews') ? 'show active' : '' }}" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
-                                @include(getTemplate().'.course.tabs.reviews')
+                                            @else
+                                                @if($file->downloadable)
+                                                    <a href="{{ $course->getUrl() }}/file/{{ $file->id }}/download" class="btn-play" data-toggle="tooltip" data-placement="top" title="{{ trans('home.download') }}">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-download" width="20" height="20" viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                          <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                          <polyline points="7 11 12 16 17 11" />
+                                                          <line x1="12" y1="4" x2="12" y2="16" />
+                                                        </svg>
+                                                    </a>
+                                                @else
+                                                    <button type="button" data-id="{{ $file->id }}" class="js-play-video btn-play click.dismiss.bs.modal" id="primero{{ $file->id }}" data-toggle="tooltip" data-placement="top" title="{{ trans('public.play') }}">
+                                                        @if($file->file_type=='doc' || $file->file_type=='docx' || $file->file_type=='xls'|| $file->file_type=='xlsx'|| $file->file_type=='xls'|| $file->file_type=='ppt'|| $file->file_type=='pptx'|| $file->file_type=='pdf')
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file" width="20" height="20" viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                              <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                                              <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                                                            </svg>
+                                                        @else
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                class="icon icon-tabler icon-tabler-player-play" width="20" height="20"
+                                                                viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                <path d="M7 4v16l13 -8z" />
+                                                            </svg>
+                                                        @endif
+                                                    </button>
+                                                @endif
+                                            @endif
+                                        </div>
+
+                                    </li>
+                                    @endforeach
+                                </ul>
                             </div>
                         </div>
 
-                    </div>
-                </div>
-            </div>
+                    @endforeach
 
-            <div class="course-content-sidebar col-12 col-lg-4 mt-25 mt-lg-0">
-                <div class="rounded-lg shadow-sm">
-                    <div class="course-img {{ $course->video_demo ? 'has-video' :'' }}">
+                @if (!empty($course->files_without_module) and count($course->files_without_module) > 0)
+                    <div class="section">
+                            <div class="section-menu">
+                                <div class="menu-title" onClick="display('no-modulo')">
+                                    <a href="#">{{ trans('public.files') }} (Sin Módulo)</a>
+                                    <svg id="arrow-downno-modulo" xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-chevron-down" width="25" height="25"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <polyline points="6 9 12 15 18 9" />
+                                    </svg>
+                                    <svg id="arrow-upno-modulo" style="display: none;" xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-chevron-up" width="25" height="25"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <polyline points="6 15 12 9 18 15" />
+                                    </svg>
+                                </div>
+                                <ul class="menu-list" id="collapseno-modulo">
+                                    @foreach($module->files as $file)
+                                    <li class="menu-video">
+                                        <div class="video-title">
+                                            <div>
+                                                <label class="font-12 text-gray seen">{{ trans('public.seen') }}</label>
+                                                <div class="custom-control custom-switch" style="display: inline-block;" data-toggle="tooltip" data-placement="top" title="{{ trans('public.i_passed_this_lesson') }}">
+                                                    <input type="checkbox" id="fileReadToggle{{ $file->id }}" data-file-id="{{ $file->id }}" value="{{ $course->id }}" class="js-file-learning-toggle custom-control-input" @if(!empty($file->learningStatus)) checked @endif>
+                                                    <label class="custom-control-label" for="fileReadToggle{{ $file->id }}"></label>
+                                                </div>
+                                            </div>
+                                            <a href="#" class="font-14 ">{{ $file->title }}</a>
+                                            @if($file->accessibility == 'paid')
+                                                @if(!empty($user) and $hasBought)
+                                                    @if($file->downloadable)
+                                                        <a href="{{ $course->getUrl() }}/file/{{ $file->id }}/download" class="btn-play" data-toggle="tooltip" data-placement="top" title="{{ trans('home.download') }}">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-download" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                              <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                              <polyline points="7 11 12 16 17 11" />
+                                                              <line x1="12" y1="4" x2="12" y2="16" />
+                                                            </svg>
+                                                        </a>
+                                                    @else
+                                                        <button type="button" data-id="{{ $file->id }}" class="js-play-video btn-play" data-toggle="tooltip" data-placement="top" title="{{ trans('public.play') }}">
+                                                            @if($file->file_type=='doc' || $file->file_type=='docx' || $file->file_type=='xls'|| $file->file_type=='xlsx'|| $file->file_type=='xls'|| $file->file_type=='ppt'|| $file->file_type=='pptx'|| $file->file_type=='pdf')
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file" width="20" height="20" viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                                  <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                                                  <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                                                                </svg>
+                                                            @else
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    class="icon icon-tabler icon-tabler-player-play" width="20" height="20"
+                                                                    viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                    <path d="M7 4v16l13 -8z" />
+                                                                </svg>
+                                                            @endif
+                                                        </button>
+                                                    @endif
+                                                @else
+                                                    <button type="button" class="course-content-btns btn btn-sm btn-gray flex-grow-1 disabled {{ ((empty($user)) ? 'not-login-toast' : (!$hasBought ? 'not-access-toast' : '')) }}" data-toggle="tooltip" data-placement="top" title="{{ trans('home.download') }}">
+                                                        @if($file->downloadable)
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-download" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                              <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                              <polyline points="7 11 12 16 17 11" />
+                                                              <line x1="12" y1="4" x2="12" y2="16" />
+                                                            </svg>
+                                                        @else
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                            class="icon icon-tabler icon-tabler-player-play" width="20" height="20"
+                                                            viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M7 4v16l13 -8z" />
+                                                        </svg>
+                                                        @endif
+                                                    </button>
+                                                @endif
 
-                        <img src="{{ $course->getImage() }}" class="img-cover" alt="">
-
-                        @if($course->video_demo)
-                            <div id="webinarDemoVideoBtn"
-                                 data-video-path="{{ config('app_url') . $course->video_demo }}"
-                                 data-video-type="video/mp4"
-                                 class="course-video-icon cursor-pointer d-flex align-items-center justify-content-center">
-                                <i data-feather="play" width="25" height="25"></i>
+                                            @else
+                                                @if($file->downloadable)
+                                                    <a href="{{ $course->getUrl() }}/file/{{ $file->id }}/download" class="btn-play" data-toggle="tooltip" data-placement="top" title="{{ trans('home.download') }}">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-download" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                          <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                          <polyline points="7 11 12 16 17 11" />
+                                                          <line x1="12" y1="4" x2="12" y2="16" />
+                                                        </svg>
+                                                    </a>
+                                                @else
+                                                    <button type="button" data-id="{{ $file->id }}" class="js-play-video btn-play" data-toggle="tooltip" data-placement="top" title="{{ trans('public.play') }}">
+                                                        @if($file->file_type=='doc' || $file->file_type=='docx' || $file->file_type=='xls'|| $file->file_type=='xlsx'|| $file->file_type=='xls'|| $file->file_type=='ppt'|| $file->file_type=='pptx'|| $file->file_type=='pdf')
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file" width="20" height="20" viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                              <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                                              <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                                                            </svg>
+                                                        @else
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                class="icon icon-tabler icon-tabler-player-play" width="20" height="20"
+                                                                viewBox="0 0 24 24" stroke-width="3" stroke="#ffffff" fill="none"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                <path d="M7 4v16l13 -8z" />
+                                                            </svg>
+                                                        @endif
+                                                    </button>
+                                                @endif
+                                            @endif
+                                        </div>
+                                    </li>
+                                    @endforeach
+                                </ul>
                             </div>
-                        @endif
+                        </div>
+            @endif
+@endif
+
+{{-- TextLessons --}}
+@if(!empty($course->textLessons) and $course->textLessons->count() > 0)
+<div class="section">
+    <div class="section-menu">
+        <div class="menu-title" onClick="display('text-lesson')">
+            <a href="#">{{ trans('webinars.text_lessons') }}</a>
+            <svg id="arrow-downtext-lesson" xmlns="http://www.w3.org/2000/svg"
+                class="icon icon-tabler icon-tabler-chevron-down" width="25" height="25"
+                viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <polyline points="6 9 12 15 18 9" />
+            </svg>
+            <svg id="arrow-uptext-lesson" style="display: none;" xmlns="http://www.w3.org/2000/svg"
+                class="icon icon-tabler icon-tabler-chevron-up" width="25" height="25"
+                viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <polyline points="6 15 12 9 18 15" />
+            </svg>
+        </div>
+        <ul class="menu-list" id="collapsetext-lesson">
+        @foreach($course->textLessons as $textLesson)
+            <li class="menu-video">
+                <div class="video-title">
+                    <div>
+                        <label class="font-12 text-gray seen">{{ trans('public.seen') }}</label>
+                        <div class="custom-control custom-switch" style="display: inline-block;" data-toggle="tooltip" title="{{ trans('public.i_passed_this_lesson') }}">
+                            <input type="checkbox" id="textLessonReadToggle{{ $textLesson->id }}" data-lesson-id="{{ $textLesson->id }}" value="{{ $course->id }}" class="js-text-lesson-learning-toggle custom-control-input" @if(!empty($textLesson->learningStatus)) checked @endif>
+                            <label class="custom-control-label" for="textLessonReadToggle{{ $textLesson->id }}"></label>
+                        </div>
                     </div>
+                    <a href="#" class="font-14 ">{{ $textLesson->title }}</a>
+                    @if($textLesson->accessibility == 'paid')
+                    @if(!empty($user) and $hasBought)
+                    <button type="button" class="js-play-video btn-play" data-toggle="tooltip" data-placement="top" title="{{ trans('public.read') }}" href="{{ $course->getUrl() }}/lessons/{{ $textLesson->id }}/read">
+                        <i data-feather="file-text" width="20" height="20" style="color: white;"></i>
+                    </button>
 
-                    <div class="px-20 pb-30">
-                        <form action="/cart/store" method="post">
-                            {{ csrf_field() }}
-                            <input type="hidden" name="webinar_id" value="{{ $course->id }}">
+                    @else
+                        <button class="mr-15 btn-transparent">
+                            <i data-feather="lock" width="20" height="20" class="text-gray"></i>
+                        </button>
+                    @endif
+                    @else
+                    <button id="text{{$textLesson->id}}" onclick="showTextLesson('{{$textLesson->id}}')" class="btn-play" data-toggle="tooltip" data-placement="top" title="{{ trans('public.read') }}">
+                        <i data-feather="file-text" width="20" height="20" style="color: white;"></i>
+                    </button>
+                    <textarea style="display: none;">
+                        <div class="text-show" style="overflow-y: scroll; padding: 10px;">
+                            <div>
+                                <div>{!! nl2br($textLesson->content) !!}</div>
+                            </div>
+                        </div>
+                    </textarea>
+                    @endif
+                </div>
+            </li>
+            @endforeach
+        </ul>
+    </div>
+</div>
+@endif
+{{-- Quizzes --}}
+@if(!empty($course->quizzes) and $course->quizzes->count() > 0)
+    @php    
+        $x=0;
+    @endphp
 
-                            @if(!empty($course->tickets))
-                                @foreach($course->tickets as $ticket)
-                                    <div class="form-check mt-20">
-                                        <input class="form-check-input" @if(!$ticket->isValid()) disabled @endif type="radio" data-discount="{{ $ticket->discount }}" value="{{ ($ticket->isValid()) ? $ticket->id : '' }}"
-                                               name="ticket_id"
-                                               id="courseOff{{ $ticket->id }}">
-                                        <label class="form-check-label d-flex flex-column cursor-pointer" for="courseOff{{ $ticket->id }}">
-                                            <span class="font-16 font-weight-500 text-dark-blue">{{ $ticket->title }} @if(!empty($ticket->discount)) ({{ $ticket->discount }}% {{ trans('public.off') }}) @endif</span>
-                                            <span class="font-14 text-gray">{{ $ticket->getSubTitle() }}</span>
-                                        </label>
-                                    </div>
-                                @endforeach
-                            @endif
-
-                            @if($course->price > 0)
-                                <div id="priceBox" class="d-flex align-items-center justify-content-center mt-20">
-                                    <span id="realPrice" data-value="{{ $course->price }}"
-                                          data-special-offer="{{ !empty($activeSpecialOffer) ? $activeSpecialOffer->percent : ''}}"
-                                          class="@if(!empty($activeSpecialOffer)) font-16 text-gray text-decoration-line-through mr-15 @else font-30 text-primary @endif">{{ $currency }}{{ number_format($course->price, 2, ".", "") + 0 }}</span>
-                                    <span id="priceWithDiscount" class="font-36 text-primary">{{ !empty($activeSpecialOffer) ? ($currency.number_format($course->price - ($course->price * $activeSpecialOffer->percent / 100),2)) : '' }}</span>
+    @foreach($course->quizzes as $quiz)
+        @if ($quiz->status===\App\Models\Quiz::ACTIVE)
+            @php
+                $x=1;
+            @endphp
+        @endif
+    @endforeach
+    
+    @if ($x==1)
+        <div class="section">
+            <div class="section-menu">
+                <div class="menu-title" onClick="display('quiz')">
+                    <a href="#">{{ trans('quiz.quizzes') }}</a>
+                    <svg id="arrow-downquiz" xmlns="http://www.w3.org/2000/svg"
+                        class="icon icon-tabler icon-tabler-chevron-down" width="25" height="25"
+                        viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                    <svg id="arrow-upquiz" style="display: none;" xmlns="http://www.w3.org/2000/svg"
+                        class="icon icon-tabler icon-tabler-chevron-up" width="25" height="25"
+                        viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <polyline points="6 15 12 9 18 15" />
+                    </svg>
+                </div>
+                <ul class="menu-list" id="collapsequiz">
+                @foreach($course->quizzes as $quiz)
+                @if ($quiz->status===\App\Models\Quiz::ACTIVE)
+                    <li class="menu-video">
+                        <div class="video-title quiz">
+                            <div>
+                                <a href="#">{{ $quiz->title }}</a>
+                            </div>
+                            <div>
+                                <div class="font-12 text-gray" >
+                                    {{ trans('quiz.attempts') }}
+                                    {{ (!empty($user) and !empty($quiz->result_count)) ? $quiz->result_count : '0' }}/{{ $quiz->attempt }}
                                 </div>
-                            @else
-                                <div class="d-flex align-items-center justify-content-center mt-20">
-                                    <span class="font-36 text-primary">{{ trans('public.free') }}</span>
-                                </div>
-                            @endif
-
-                            @php
-                                $userHasBought = $course->checkUserHasBought();
-                                $canSale = ($course->canSale() and !$userHasBought);
-                            @endphp
-
-                            <div class="mt-20 d-flex flex-column">
-                                @if($course->price > 0)
-                                    <button type="{{ $canSale ? 'submit' : 'button' }}" @if(!$canSale) disabled @endif class="btn btn-primary">
-                                        @if($userHasBought)
-                                            {{ trans('panel.purchased') }}
-                                        @else
-                                            {{ trans('public.add_to_cart') }}
-                                        @endif
-                                    </button>
-
-                                    @if($canSale and $course->subscribe)
-                                        <a href="{{ $canSale ? '/subscribes/apply/'. $course->slug : '#' }}" class="btn btn-outline-primary btn-subscribe mt-20 @if(!$canSale) disabled @endif">{{ trans('public.subscribe') }}</a>
-                                    @endif
-                                @else
-                                    <a href="{{ $canSale ? '/course/'. $course->slug .'/free' : '#' }}" class="btn btn-primary @if(!$canSale) disabled @endif">{{ trans('public.enroll_on_webinar') }}</a>
+                            </div>
+                            <div>
+                                @if($quiz->result_status == 'failed')
+                                    <span class="font-12" style="color: #ff1e58;">{{ trans('quiz.failed') }}</span>
+                                @elseif($quiz->result_status == 'passed')
+                                    <span class="font-12 quiz_passed" style="color: #43d477;">{{ trans('quiz.passed') }}</span>
+                                @elseif($quiz->result_status == 'waiting')
+                                    <span class="font-12" style="color: orange;">{{ trans('quiz.waiting') }}</span>
                                 @endif
                             </div>
-
-                        </form>
-
-                        <div class="mt-20 d-flex align-items-center justify-content-center text-gray">
-                            <i data-feather="thumbs-up" width="20" height="20"></i>
-                            <span class="ml-5 font-14">{{ trans('product.guarantee_text') }}</span>
                         </div>
 
-                        <div class="mt-35">
-                            <strong class="d-block text-secondary font-weight-bold">{{ trans('webinars.this_webinar_includes',['classes' => trans('webinars.'.$course->type)]) }}</strong>
-                            @if($course->files->count() > 0)
-                                <div class="mt-20 d-flex align-items-center text-gray">
-                                    <i data-feather="download-cloud" width="20" height="20"></i>
-                                    <span class="ml-5 font-14 font-weight-500">{{ trans('webinars.downloadable_content') }}</span>
-                                </div>
-                            @endif
-                            @if($course->quizzes->where('certificate', 1)->count() > 0)
-                                <div class="mt-20 d-flex align-items-center text-gray">
-                                    <i data-feather="award" width="20" height="20"></i>
-                                    <span class="ml-5 font-14 font-weight-500">{{ trans('webinars.official_certificate') }}</span>
-                                </div>
-                            @endif
+                        <div>
+                           @if(!empty($user) and $quiz->can_try and $hasBought)
+                               <a href="/panel/quizzes/{{ $quiz->id }}/start" class="course-content-btns btn btn-sm btn-primary flex-grow-1">{{ trans('quiz.quiz_start') }}</a>
+                           @else
+                               <button type="button" class="course-content-btns btn btn-sm btn-gray flex-grow-1 disabled {{ ((empty($user)) ? 'not-login-toast' : (!$hasBought ? 'not-access-toast' : (!$quiz->can_try ? 'can-not-try-again-quiz-toast' : ''))) }}">
+                                   {{ trans('quiz.quiz_start') }}
+                               </button>
+                           @endif
+                       </div>
 
-                            @if($course->quizzes->where('status', \App\models\Quiz::ACTIVE)->count() > 0)
-                                <div class="mt-20 d-flex align-items-center text-gray">
-                                    <i data-feather="file-text" width="20" height="20"></i>
-                                    <span class="ml-5 font-14 font-weight-500">{{ trans('webinars.online_quizzes_count',['quiz_count' => $course->quizzes->where('status', \App\models\Quiz::ACTIVE)->count()]) }}</span>
-                                </div>
-                            @endif
-
-                            @if($course->support)
-                                <div class="mt-20 d-flex align-items-center text-gray">
-                                    <i data-feather="headphones" width="20" height="20"></i>
-                                    <span class="ml-5 font-14 font-weight-500">{{ trans('webinars.instructor_support') }}</span>
-                                </div>
-                            @endif
-                        </div>
-
-                        <div class="mt-40 p-10 rounded-sm border row align-items-center favorites-share-box">
-                            @if($course->isWebinar())
-                                <div class="col">
-                                    <a href="{{ $course->addToCalendarLink() }}" target="_blank" class="d-flex flex-column align-items-center text-center text-gray">
-                                        <i data-feather="calendar" width="20" height="20"></i>
-                                        <span class="font-12">{{ trans('public.reminder') }}</span>
-                                    </a>
-                                </div>
-                            @endif
-
-                            <div class="col">
-                                <a href="/favorites/{{ $course->slug }}/toggle" id="favoriteToggle" class="d-flex flex-column align-items-center text-gray">
-                                    <i data-feather="heart" class="{{ !empty($isFavorite) ? 'favorite-active' : '' }}" width="20" height="20"></i>
-                                    <span class="font-12">{{ trans('panel.favorite') }}</span>
-                                </a>
-                            </div>
-
-                            <div class="col">
-                                <a href="#" class="js-share-course d-flex flex-column align-items-center text-gray">
-                                    <i data-feather="share-2" width="20" height="20"></i>
-                                    <span class="font-12">{{ trans('public.share') }}</span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="mt-30 text-center">
-                            <button type="button" id="webinarReportBtn" class="font-14 text-gray btn-transparent">{{ trans('webinars.report_this_webinar') }}</button>
-                        </div>
-                    </div>
-                </div>
-
-                @if($course->teacher->offline)
-                    <div class="rounded-lg shadow-sm mt-35 d-flex">
-                        <div class="offline-icon offline-icon-left d-flex align-items-stretch">
-                            <div class="d-flex align-items-center">
-                                <img src="/assets/default/img/profile/time-icon.png" alt="offline">
-                            </div>
-                        </div>
-
-                        <div class="p-15">
-                            <h3 class="font-16 text-dark-blue">{{ trans('public.instructor_is_not_available') }}</h3>
-                            <p class="font-14 font-weight-500 text-gray mt-15">{{ $course->teacher->offline_message }}</p>
-                        </div>
-                    </div>
-                @endif
-
-                <a href="{{ config('app.store_url') }}" target="_blank">
-                    <div class="rounded-lg shadow-sm mt-35 px-25 py-20 text-center">
-                        <img src="/store/1/Store.png" width="60%">
-                    </div>
-                </a>
-
-                <div class="rounded-lg shadow-sm mt-35 px-25 py-20">
-                    <h3 class="sidebar-title font-16 text-secondary font-weight-bold">{{ trans('webinars.'.$course->type) .' '. trans('webinars.specifications') }}</h3>
-
-                    <div class="mt-30">
-                        @if($course->isWebinar())
-                            <div class="mt-20 d-flex align-items-center justify-content-between text-gray">
-                                <div class="d-flex align-items-center">
-                                    <i data-feather="calendar" width="20" height="20"></i>
-                                    <span class="ml-5 font-14 font-weight-500">{{ trans('public.start_date') }}:</span>
-                                </div>
-                                <span class="font-14">{{ dateTimeFormat($course->start_date, 'j M Y | H:i') }}</span>
-                            </div>
-
-                            <div class="mt-20 d-flex align-items-center justify-content-between text-gray">
-                                <div class="d-flex align-items-center">
-                                    <i data-feather="user" width="20" height="20"></i>
-                                    <span class="ml-5 font-14 font-weight-500">{{ trans('public.capacity') }}:</span>
-                                </div>
-                                <span class="font-14">{{ $course->capacity }} {{ trans('quiz.students') }}</span>
-                            </div>
-                        @endif
-
-                        <div class="mt-20 d-flex align-items-center justify-content-between text-gray">
-                            <div class="d-flex align-items-center">
-                                <i data-feather="clock" width="20" height="20"></i>
-                                <span class="ml-5 font-14 font-weight-500">{{ trans('public.duration') }}:</span>
-                            </div>
-                            <span class="font-14">{{ convertMinutesToHourAndMinute(!empty($course->duration) ? $course->duration : 0) }} {{ trans('home.hours') }}</span>
-                        </div>
-
-                        <div class="mt-20 d-flex align-items-center justify-content-between text-gray">
-                            <div class="d-flex align-items-center">
-                                <i data-feather="users" width="20" height="20"></i>
-                                <span class="ml-5 font-14 font-weight-500">{{ trans('quiz.students') }}:</span>
-                            </div>
-                            <span class="font-14">{{ $course->sales_count }}</span>
-                        </div>
-
-                        @if($course->isWebinar())
-                            <div class="mt-20 d-flex align-items-center justify-content-between text-gray">
-                                <div class="d-flex align-items-center">
-                                    <img src="/assets/default/img/icons/sessions.svg" width="20" alt="">
-                                    <span class="ml-5 font-14 font-weight-500">{{ trans('public.sessions') }}:</span>
-                                </div>
-                                <span class="font-14">{{ $course->sessions->count() }}</span>
-                            </div>
-                        @endif
-
-                        @if($course->isTextCourse())
-                            <div class="mt-20 d-flex align-items-center justify-content-between text-gray">
-                                <div class="d-flex align-items-center">
-                                    <img src="/assets/default/img/icons/sessions.svg" width="20" alt="">
-                                    <span class="ml-5 font-14 font-weight-500">{{ trans('webinars.text_lessons') }}:</span>
-                                </div>
-                                <span class="font-14">{{ $course->textLessons->count() }}</span>
-                            </div>
-                        @endif
-
-                        @if($course->isCourse() or $course->isTextCourse())
-                            <div class="mt-20 d-flex align-items-center justify-content-between text-gray">
-                                <div class="d-flex align-items-center">
-                                    <img src="/assets/default/img/icons/sessions.svg" width="20" alt="">
-                                    <span class="ml-5 font-14 font-weight-500">{{ trans('public.files') }}:</span>
-                                </div>
-                                <span class="font-14">{{ $course->files->count() }}</span>
-                            </div>
-
-                            <div class="mt-20 d-flex align-items-center justify-content-between text-gray">
-                                <div class="d-flex align-items-center">
-                                    <img src="/assets/default/img/icons/sessions.svg" width="20" alt="">
-                                    <span class="ml-5 font-14 font-weight-500">{{ trans('public.created_at') }}:</span>
-                                </div>
-                                <span class="font-14">{{ dateTimeFormat($course->created_at,'Y M j') }}</span>
-                            </div>
-                        @endif
-                    </div>
-                </div>
-
-                {{-- organization --}}
-                @if($course->creator_id != $course->teacher_id)
-                    @include('web.default.course.sidebar_instructor_profile', ['courseTeacher' => $course->creator])
-                @endif
-                {{-- teacher --}}
-                @include('web.default.course.sidebar_instructor_profile', ['courseTeacher' => $course->teacher])
-
-                @if($course->webinarPartnerTeacher->count() > 0)
-                    @foreach($course->webinarPartnerTeacher as $webinarPartnerTeacher)
-                        @include('web.default.course.sidebar_instructor_profile', ['courseTeacher' => $webinarPartnerTeacher->teacher])
+                    </li>
+                    @endif
                     @endforeach
-                @endif
-                {{-- ./ teacher --}}
-
-                {{-- tags --}}
-                @if($course->tags->count() > 0)
-                    <div class="rounded-lg tags-card shadow-sm mt-35 px-25 py-20">
-                        <h3 class="sidebar-title font-16 text-secondary font-weight-bold">{{ trans('public.tags') }}</h3>
-
-                        <div class="d-flex flex-wrap mt-10">
-                            @foreach($course->tags as $tag)
-                                <a href="" class="tag-item bg-gray200 p-5 font-14 text-gray font-weight-500 rounded">{{ $tag->title }}</a>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
-                {{-- ads --}}
-                @if(!empty($advertisingBannersSidebar) and count($advertisingBannersSidebar))
-                    <div class="row">
-                        @foreach($advertisingBannersSidebar as $sidebarBanner)
-                            <div class="rounded-lg sidebar-ads mt-35 col-{{ $sidebarBanner->size }}">
-                                <a href="{{ $sidebarBanner->link }}">
-                                    <img src="{{ $sidebarBanner->image }}" class="img-cover rounded-lg" alt="{{ $sidebarBanner->title }}">
-                                </a>
-                            </div>
-                        @endforeach
-                    </div>
-
-                @endif
+                </ul>
             </div>
         </div>
-
-        {{-- Ads Bannaer --}}
-        @if(!empty($advertisingBanners) and count($advertisingBanners))
-            <div class="mt-30 mt-md-50">
-                <div class="row">
-                    @foreach($advertisingBanners as $banner)
-                        <div class="col-{{ $banner->size }}">
-                            <a href="{{ $banner->link }}">
-                                <img src="{{ $banner->image }}" class="img-cover rounded-sm" alt="{{ $banner->title }}">
-                            </a>
-                        </div>
-                    @endforeach
+    @endif
+@endif
+{{-- Certificates --}}
+@if(!empty($course->quizzes) and $course->quizzes->count() > 0 and ($quiz->certificate) )
+<div class="section">
+    <div class="section-menu">
+        <div class="menu-title" onClick="display('certificate')">
+            <a href="#">{{ trans('panel.certificates') }}</a>
+            <svg id="arrow-downcertificate" xmlns="http://www.w3.org/2000/svg"
+                class="icon icon-tabler icon-tabler-chevron-down" width="25" height="25"
+                viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <polyline points="6 9 12 15 18 9" />
+            </svg>
+            <svg id="arrow-upcertificate" style="display: none;" xmlns="http://www.w3.org/2000/svg"
+                class="icon icon-tabler icon-tabler-chevron-up" width="25" height="25"
+                viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <polyline points="6 15 12 9 18 15" />
+            </svg>
+        </div>
+        <ul class="menu-list" id="collapsecertificate">
+        @foreach($course->quizzes as $quiz)
+            @if($quiz->certificate)
+            <li class="menu-video">
+                <div class="video-title certificate">
+                    <div>
+                        <a href="#">{{ $quiz->title }}</a>
+                    </div>
+                    <div class="text-gray font-12">
+                        {{ trans('public.min') }} {{ trans('quiz.grade') }}
+                        {{ $quiz->pass_mark }}/{{ $quiz->quizQuestions->sum('grade') }}
+                    </div>
                 </div>
-            </div>
-        @endif
-        {{-- ./ Ads Bannaer --}}
-    </section>
-
-    <div id="webinarReportModal" class="d-none">
-        <h3 class="section-title after-line font-20 text-dark-blue">{{ trans('product.report_the_course') }}</h3>
-
-        <form action="/course/{{ $course->id }}/report" method="post" class="mt-25">
-
-            <div class="form-group">
-                <label class="text-dark-blue font-14">{{ trans('product.reason') }}</label>
-                <select id="reason" name="reason" class="form-control">
-                    <option value="" selected disabled>{{ trans('product.select_reason') }}</option>
-
-                    @foreach(getReportReasons() as $reason)
-                        <option value="{{ $reason }}">{{ $reason }}</option>
-                    @endforeach
-                </select>
-                <div class="invalid-feedback"></div>
-            </div>
-
-            <div class="form-group">
-                <label class="text-dark-blue font-14" for="message_to_reviewer">{{ trans('public.message_to_reviewer') }}</label>
-                <textarea name="message" id="message_to_reviewer" class="form-control" rows="10"></textarea>
-                <div class="invalid-feedback"></div>
-            </div>
-            <p class="text-gray font-16">{{ trans('product.report_modal_hint') }}</p>
-
-            <div class="mt-30 d-flex align-items-center justify-content-end">
-                <button type="button" class="js-course-report-submit btn btn-sm btn-primary">{{ trans('panel.report') }}</button>
-                <button type="button" class="btn btn-sm btn-danger ml-10 close-swl">{{ trans('public.close') }}</button>
-            </div>
-        </form>
+                <div>
+                    @if(!empty($user) and $quiz->can_download_certificate and $hasBought and !empty($quiz->result->id))
+                        <a href="/panel/quizzes/results/{{ $quiz->result->id }}/downloadCertificate" class="course-content-btns btn btn-sm btn-primary flex-grow-1">{{ trans('home.download') }}</a>
+                    @else
+                        <button type="button" class="course-content-btns btn btn-sm btn-gray flex-grow-1 disabled {{ ((empty($user)) ? 'not-login-toast' : (!$hasBought ? 'not-access-toast' : (!$quiz->can_download_certificate ? 'can-not-download-certificate-toast' : ''))) }}">
+                            {{ trans('home.download') }}
+                        </button>
+                    @endif
+                </div>
+            </li>
+            @endif
+            @endforeach
+        </ul>
     </div>
+</div>
+@endif
 
-    @include('web.default.course.share_modal')
+
+<style>
+.full_modal-dialog {
+  width: 98% !important;
+  height: 92% !important;
+  min-width: 98% !important;
+  min-height: 92% !important;
+  max-width: 98% !important;
+  max-height: 92% !important;
+  padding: 0 !important;
+}
+
+.full_modal-content {
+  height: 99% !important;
+  min-height: 99% !important;
+  max-height: 99% !important;
+}
+.full_modal-content iframe {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+
+</style>
+
+        </section>
+    </div>
+</main>
+
 @endsection
-
 @push('scripts_bottom')
     <script src="/assets/default/js/parts/time-counter-down.min.js"></script>
     <script src="/assets/default/vendors/barrating/jquery.barrating.min.js"></script>
@@ -500,6 +660,48 @@
         var sessionFinishedToastTitleLang = '{{ trans('public.session_finished_toast_title_lang') }}';
         var sessionFinishedToastMsgLang = '{{ trans('public.session_finished_toast_msg_lang') }}';
 
+        function display(id) {
+        if ($("#collapse" + id).is(":visible")) {
+            $("#collapse" + id).hide();
+            $("#arrow-up" + id).hide();
+            $("#arrow-down" + id).show();
+        } else {
+            $("#collapse" + id).show();
+            $("#arrow-up" + id).show();
+            $("#arrow-down" + id).hide();
+        }
+    }
+
+    function showTextLesson(id) {
+        var textContent = $("#text" + id).next().val();
+        $(".modal-content").find("iframe").remove();
+        $(".modal-content").find(".loading-img").hide();
+        $(".js-modal-video-content").html(textContent);
+    }
+
+    $(document).ready(function() {
+        var first = $("#first-id").text();
+        $("#primero" + first).click();
+        calculateBar();
+    });
+
+    $("body").on("click", "input[type='checkbox']", function(e) {
+        calculateBar();
+    });
+
+    function calculateBar(e) {
+        var percent_bar = document.getElementById("percent-bar");
+        var checkbox = document.querySelectorAll("input[type='checkbox']");
+        var checked = document.querySelectorAll("input[type='checkbox']:checked");
+        var quizzes = document.querySelectorAll(".quiz");
+        var quizzes_passed = document.querySelectorAll(".quiz_passed");
+        var percent_progress = document.getElementById("percent-progress");
+
+        var input_percent = (((checked.length + quizzes_passed.length) / (checkbox.length + quizzes.length)) * 100).toFixed(2);
+        var input_checked = input_percent + "%";
+        percent_bar.style.width = input_checked;
+        percent_progress.textContent = input_checked;
+    }
     </script>
 
     <script src="/assets/default/js/parts/comment.min.js"></script>

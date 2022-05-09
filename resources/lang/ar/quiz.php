@@ -120,4 +120,6 @@ return [
 
     'new_quiz_page_title' => 'اختبار جديد',
     'quizzes_list_page_title' => 'قائمة الاختبارات',
+    'course_back' => 'العودة إلى الدورة'
+
 ];

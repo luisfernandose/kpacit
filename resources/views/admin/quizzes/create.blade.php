@@ -92,7 +92,7 @@
                                             <div class="form-group mt-4 d-flex align-items-center justify-content-between">
                                                 <label class="cursor-pointer" for="certificateSwitch">{{ trans('quiz.certificate_included') }}</label>
                                                 <div class="custom-control custom-switch">
-                                                    <input type="checkbox" name="certificate" class="custom-control-input" id="certificateSwitch" {{ !empty($quiz) && $quiz->certificate ? 'checked' : ''}}>
+                                                    <input type="checkbox" name="certificate" class="custom-control-input" id="certificateSwitch" {{ (!empty($quiz) && $quiz->certificate) || old('certificate')=='on' ? 'checked' : ''}}>
                                                     <label class="custom-control-label" for="certificateSwitch"></label>
                                                 </div>
                                             </div>
