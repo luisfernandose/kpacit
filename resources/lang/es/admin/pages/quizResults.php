@@ -8,11 +8,11 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'quiz_result_list_page_title' => 'Quiz Result',
+    'quiz_result_list_page_title' => 'Resultado Exámenes',
 
-    'admin_quiz_result' => 'Quiz Result',
-    'admin_quiz_result_list' => 'Quiz Result List',
-    'admin_quiz_result_create' => 'Quiz Result Create',
-    'admin_quiz_result_edit' => 'Quiz Result Edit',
-    'admin_quiz_result_delete' => 'Quiz Result Delete',
+    'admin_quiz_result' => 'Resultado examen',
+    'admin_quiz_result_list' => 'Lista de resultados de exámenes',
+    'admin_quiz_result_create' => 'Crear resultado',
+    'admin_quiz_result_edit' => 'Editar resultado',
+    'admin_quiz_result_delete' => 'Eliminar resultado',
 ];
