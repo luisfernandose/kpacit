@@ -13347,10 +13347,13 @@ p {
     box-shadow: 0 12px 23px 0 rgba(62, 73, 84, 0.04);
     background-color: #fff;
 }
+.activities-container img {
+    width: 40px;
+    height: 40px;
+}
 @media (max-width: 767px) {
     .activities-container img {
-        width: 44px;
-        height: 44px;
+        display: none;
     }
 }
 .no-result .no-result-logo {
