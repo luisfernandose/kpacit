@@ -54,6 +54,7 @@
         </div>
 
         @if(!empty($webinars) and !$webinars->isEmpty())
+        <div class="cards-grid">
             @foreach($webinars as $webinar)
                 @php
                     $lastSession = $webinar->lastSession();
@@ -70,76 +71,130 @@
                         <div class="webinar-card webinar-list d-flex">
                             <a href="{{ $webinar->getUrl() }}" target="_blank">
                                 <div class="image-box">
-                                <img src="{{ $webinar->getImage() }}" class="img-cover" alt="">
+                                    <img src="{{ $webinar->getImage() }}" class="img-cover" alt="">
 
-                                @if($webinar->type == 'webinar')
-                                    @if($webinar->start_date > time())
-                                        <span class="badge badge-primary">{{  trans('panel.not_conducted') }}</span>
-                                    @elseif($webinar->isProgressing())
-                                        <span class="badge badge-secondary">{{ trans('webinars.in_progress') }}</span>
-                                    @else
-                                        <span class="badge badge-secondary">{{ trans('public.finished') }}</span>
+                                    @switch($webinar->status)
+                                        @case(\App\Models\Webinar::$active)
+                                        @if($webinar->isWebinar())
+                                            @if($webinar->start_date > time())
+                                                <span class="badge badge-primary">{{  trans('panel.not_conducted') }}</span>
+                                            @elseif($webinar->isProgressing())
+                                                <span class="badge badge-secondary">{{ trans('webinars.in_progress') }}</span>
+                                            @else
+                                                <span class="badge badge-secondary">{{ trans('public.finished') }}</span>
+                                            @endif
+                                        @else
+                                            <span class="badge badge-secondary">{{ trans('webinars.'.$webinar->type) }}</span>
+                                        @endif
+                                        @break
+                                        @case(\App\Models\Webinar::$isDraft)
+                                        <span class="badge badge-danger">{{ trans('public.draft') }}</span>
+                                        @break
+                                        @case(\App\Models\Webinar::$pending)
+                                        <span class="badge badge-warning">{{ trans('public.waiting') }}</span>
+                                        @break
+                                        @case(\App\Models\Webinar::$inactive)
+                                        <span class="badge badge-danger">{{ trans('public.rejected') }}</span>
+                                        @break
+                                    @endswitch
+
+                                    @if($webinar->isWebinar())
+                                        <div class="progress">
+                                            <span class="progress-bar" style="width: {{ $webinar->getProgress() }}%"></span>
+                                        </div>
                                     @endif
-                                @elseif(!empty($webinar->downloadable))
-                                    <span class="badge badge-secondary">{{ trans('home.downloadable') }}</span>
-                                @else
-                                    <span class="badge badge-secondary">{{ trans('webinars.'.$webinar->type) }}</span>
-                                @endif
-
-                                @php
-                                    $percent = $webinar->getProgress();
-
-                                    if($webinar->isWebinar()){
-                                        if($webinar->isProgressing()) {
-                                            $progressTitle = trans('public.course_learning_passed',['percent' => $percent]);
-                                        } else {
-                                            $progressTitle = $webinar->sales_count .'/'. $webinar->capacity .' '. trans('quiz.students');
-                                        }
-                                    } else {
-                                           $progressTitle = trans('public.course_learning_passed',['percent' => $percent]);
-                                    }
-                                @endphp
-
-                                <div class="progress cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{ $progressTitle }}">
-                                    <span class="progress-bar" style="width: {{ $percent }}%"></span>
                                 </div>
-                            </div>
-                        </a>
+                            </a>
 
                             <div class="webinar-card-body w-100 d-flex flex-column">
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <a href="{{ $webinar->getUrl() }}">
-                                        <h3 class="webinar-title font-weight-bold font-16 text-dark-blue">
-                                            {{ $webinar->title }}
+                                    <a href="{{ $webinar->getUrl() }}" target="_blank">
+                                        <h3 class="font-16 text-dark-blue font-weight-bold">{{ $webinar->title }}
                                             <span class="badge badge-dark ml-10 status-badge-dark">{{ trans('webinars.'.$webinar->type) }}</span>
-                                            <span class="badge badge-secondary ml-10">{{ trans('webinars.go_to_class') }}</span>
                                         </h3>
                                     </a>
 
-                                    <div class="btn-group dropdown table-actions">
-                                        <button type="button" class="btn-transparent dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i data-feather="more-vertical" height="20"></i>
-                                        </button>
+                                    @if($authUser->id == $webinar->creator_id or $authUser->id == $webinar->teacher_id)
+                                        <div class="btn-group dropdown table-actions">
+                                            <button type="button" class="btn-transparent dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i data-feather="more-vertical" height="20"></i>
+                                            </button>
+                                            <div class="dropdown-menu ">
+                                                @if(!empty($webinar->start_date) and ($authUser->id == $webinar->creator_id or $authUser->id == $webinar->teacher_id))
+                                                    <button type="button" data-webinar-id="{{ $webinar->id }}" class="js-webinar-next-session webinar-actions btn-transparent d-block">{{ trans('public.create_join_link') }}</button>
+                                                @endif
 
-                                        <div class="dropdown-menu">
-                                            @if(!empty($webinar->start_date) and ($webinar->start_date > time() or ($webinar->isProgressing() and !empty($nextSession))))
-                                                <button type="button" data-webinar-id="{{ $webinar->id }}" class="join-purchase-webinar webinar-actions btn-transparent d-block">{{ trans('footer.join') }}</button>
-                                            @endif
 
-                                            @if(!empty($webinar->downloadable) or (!empty($webinar->files) and count($webinar->files)))
-                                                <a href="{{ $webinar->getUrl() }}?tab=content" target="_blank" class="webinar-actions d-block mt-10">{{ trans('home.download') }}</a>
-                                            @endif
+                                                <a href="/panel/webinars/{{ $webinar->id }}/edit" class="webinar-actions d-block mt-10">{{ trans('public.edit') }}</a>
 
-                                            @if($webinar->price > 0)
-                                                <a href="/panel/webinars/{{ $webinar->id }}/invoice" target="_blank" class="webinar-actions d-block mt-10">{{ trans('public.invoice') }}</a>
-                                            @endif
+                                                @if($webinar->isWebinar())
+                                                    <a href="/panel/webinars/{{ $webinar->id }}/step/4" class="webinar-actions d-block mt-10">{{ trans('public.sessions') }}</a>
+                                                @endif
 
-                                            <a href="{{ $webinar->getUrl() }}?tab=reviews" target="_blank" class="webinar-actions d-block mt-10">{{ trans('public.feedback') }}</a>
+                                                <a href="/panel/webinars/{{ $webinar->id }}/step/4" class="webinar-actions d-block mt-10">{{ trans('public.files') }}</a>
+
+
+                                                @if($authUser->id == $webinar->teacher_id or $authUser->id == $webinar->creator_id)
+                                                    <a href="/panel/webinars/{{ $webinar->id }}/export-students-list" class="webinar-actions d-block mt-10">{{ trans('public.export_list') }}</a>
+                                                @endif
+
+                                                @if($authUser->id == $webinar->creator_id)
+                                                    <a href="/panel/webinars/{{ $webinar->id }}/duplicate" class="webinar-actions d-block mt-10">{{ trans('public.duplicate') }}</a>
+                                                @endif
+
+                                                @if($webinar->creator_id == $authUser->id)
+                                                    <a href="/panel/webinars/{{ $webinar->id }}/delete" class="webinar-actions d-block mt-10 text-danger delete-action">{{ trans('public.delete') }}</a>
+                                                @endif
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 </div>
 
-                                @include(getTemplate() . '.includes.webinar.rate',['rate' => $webinar->getRate()])
+                                    @if(!empty($webinar->partner_instructor) and $webinar->partner_instructor and $authUser->id != $webinar->teacher_id and $authUser->id != $webinar->creator_id)
+                                        <div class="d-flex align-items-start flex-column">
+                                            <span class="stat-value">{{ $webinar->teacher->full_name }}</span>
+                                        </div>
+                                    @elseif($authUser->id != $webinar->teacher_id and $authUser->id != $webinar->creator_id)
+                                        <div class="d-flex align-items-start flex-column">
+                                            <span class="stat-value">{{ $webinar->teacher->full_name }}</span>
+                                        </div>
+                                    @elseif($authUser->id == $webinar->teacher_id and $authUser->id != $webinar->creator_id and $webinar->creator->isOrganization())
+                                        <div class="d-flex align-items-start flex-column">
+                                            <span class="stat-value">{{ $webinar->creator->full_name }}</span>
+                                        </div>
+                                    @else
+                                        <div class="d-flex align-items-start flex-column">
+                                            <span class="stat-value">{{ $webinar->creator->full_name }}</span>
+                                        </div>
+                                    @endif
+
+
+                                @if($webinar->isProgressing() and !empty($nextSession))
+                                        <div class="d-flex align-items-start flex-column">
+                                            <span class="stat-value">{{ convertMinutesToHourAndMinute($nextSession->duration) }} Hrs</span>
+                                        </div>
+
+                                        @if($webinar->isWebinar())
+                                            <div class="d-flex align-items-start flex-column">
+                                                <span class="stat-value">{{ dateTimeFormat($nextSession->date,'j F Y') }}</span>
+                                            </div>
+                                        @endif
+                                    @else
+                                        <div class="d-flex align-items-start flex-column">
+                                            <span class="stat-value">{{ convertMinutesToHourAndMinute($webinar->duration) }} Hrs</span>
+                                        </div>
+
+                                        @if($webinar->isWebinar())
+                                            <div class="d-flex align-items-start flex-column">
+                                                <span class="stat-value">{{ dateTimeFormat($webinar->start_date,'j F Y') }}</span>
+                                            </div>
+                                        @endif
+                                    @endif
+
+                                <div style="display: flex; align-items: center; gap: 2%;">
+                                    <span style="display: inline-block !important;">@include(getTemplate() . '.includes.webinar.rate',['rate' => $webinar->getRate()])</span>
+                                    <span style=" margin-top: 15px;">({{ count($webinar->sales) }})</span>
+                                </div>
 
                                 <div class="webinar-price-box mt-15">
                                     @if($webinar->price > 0)
@@ -149,12 +204,10 @@
                                         @else
                                             <span class="real">{{ $currency }}{{ number_format($webinar->price, 2, ".", "")+0 }}</span>
                                         @endif
-                                    @else
-                                        <span class="real">{{ trans('public.free') }}</span>
                                     @endif
                                 </div>
 
-                                <div class="d-flex align-items-center justify-content-between flex-wrap mt-auto">
+                                <!-- <div class="d-flex align-items-center justify-content-between flex-wrap mt-auto">
                                     <div class="d-flex align-items-start flex-column mt-20 mr-15">
                                         <span class="stat-title">{{ trans('public.item_id') }}:</span>
                                         <span class="stat-value">{{ $webinar->id }}</span>
@@ -165,23 +218,25 @@
                                         <span class="stat-value">{{ !empty($webinar->category_id) ? $webinar->category->title : '' }}</span>
                                     </div>
 
-                                    @if($webinar->type == 'webinar')
-                                        @if($webinar->isProgressing() and !empty($nextSession))
-                                            <div class="d-flex align-items-start flex-column mt-20 mr-15">
-                                                <span class="stat-title">{{ trans('webinars.next_session_duration') }}:</span>
-                                                <span class="stat-value">{{ convertMinutesToHourAndMinute($nextSession->duration) }} Hrs</span>
-                                            </div>
+                                    @if($webinar->isProgressing() and !empty($nextSession))
+                                        <div class="d-flex align-items-start flex-column mt-20 mr-15">
+                                            <span class="stat-title">{{ trans('webinars.next_session_duration') }}:</span>
+                                            <span class="stat-value">{{ convertMinutesToHourAndMinute($nextSession->duration) }} Hrs</span>
+                                        </div>
 
+                                        @if($webinar->isWebinar())
                                             <div class="d-flex align-items-start flex-column mt-20 mr-15">
                                                 <span class="stat-title">{{ trans('webinars.next_session_start_date') }}:</span>
                                                 <span class="stat-value">{{ dateTimeFormat($nextSession->date,'j F Y') }}</span>
                                             </div>
-                                        @else
-                                            <div class="d-flex align-items-start flex-column mt-20 mr-15">
-                                                <span class="stat-title">{{ trans('public.duration') }}:</span>
-                                                <span class="stat-value">{{ convertMinutesToHourAndMinute($webinar->duration) }} Hrs</span>
-                                            </div>
+                                        @endif
+                                    @else
+                                        <div class="d-flex align-items-start flex-column mt-20 mr-15">
+                                            <span class="stat-title">{{ trans('public.duration') }}:</span>
+                                            <span class="stat-value">{{ convertMinutesToHourAndMinute($webinar->duration) }} Hrs</span>
+                                        </div>
 
+                                        @if($webinar->isWebinar())
                                             <div class="d-flex align-items-start flex-column mt-20 mr-15">
                                                 <span class="stat-title">{{ trans('public.start_date') }}:</span>
                                                 <span class="stat-value">{{ dateTimeFormat($webinar->start_date,'j F Y') }}</span>
@@ -189,29 +244,67 @@
                                         @endif
                                     @endif
 
-                                    <div class="d-flex align-items-start flex-column mt-20 mr-15">
-                                        <span class="stat-title">{{ trans('public.instructor') }}:</span>
-                                        <span class="stat-value">{{ $webinar->teacher->full_name }}</span>
-                                    </div>
+                                    @if($webinar->isTextCourse() or $webinar->isCourse())
+                                        <div class="d-flex align-items-start flex-column mt-20 mr-15">
+                                            <span class="stat-title">{{ trans('public.files') }}:</span>
+                                            <span class="stat-value">{{ $webinar->files->count() }}</span>
+                                        </div>
+                                    @endif
+
+                                    @if($webinar->isTextCourse())
+                                        <div class="d-flex align-items-start flex-column mt-20 mr-15">
+                                            <span class="stat-title">{{ trans('webinars.text_lessons') }}:</span>
+                                            <span class="stat-value">{{ $webinar->textLessons->count() }}</span>
+                                        </div>
+                                    @endif
+
+                                    @if($webinar->isCourse())
+                                        <div class="d-flex align-items-start flex-column mt-20 mr-15">
+                                            <span class="stat-title">{{ trans('home.downloadable') }}:</span>
+                                            <span class="stat-value">{{ ($webinar->downloadable) ? trans('public.yes') : trans('public.no') }}</span>
+                                        </div>
+                                    @endif
 
                                     <div class="d-flex align-items-start flex-column mt-20 mr-15">
-                                        <span class="stat-title">{{ trans('panel.purchase_date') }}:</span>
-                                        <span class="stat-value">{{ dateTimeFormat($webinar->purchast_date,'j F Y') }}</span>
+                                        <span class="stat-title">{{ trans('panel.sales') }}:</span>
+                                        <span class="stat-value">{{ count($webinar->sales) }} ({{ $currency }}{{ (!empty($webinar->sales) and count($webinar->sales)) ? $webinar->sales->sum('amount') : 0 }})</span>
                                     </div>
 
-                                </div>
+                                    @if(!empty($webinar->partner_instructor) and $webinar->partner_instructor and $authUser->id != $webinar->teacher_id and $authUser->id != $webinar->creator_id)
+                                        <div class="d-flex align-items-start flex-column mt-20 mr-15">
+                                            <span class="stat-title">{{ trans('panel.invited_by') }}:</span>
+                                            <span class="stat-value">{{ $webinar->teacher->full_name }}</span>
+                                        </div>
+                                    @elseif($authUser->id != $webinar->teacher_id and $authUser->id != $webinar->creator_id)
+                                        <div class="d-flex align-items-start flex-column mt-20 mr-15">
+                                            <span class="stat-title">{{ trans('webinars.teacher_name') }}:</span>
+                                            <span class="stat-value">{{ $webinar->teacher->full_name }}</span>
+                                        </div>
+                                    @elseif($authUser->id == $webinar->teacher_id and $authUser->id != $webinar->creator_id and $webinar->creator->isOrganization())
+                                        <div class="d-flex align-items-start flex-column mt-20 mr-15">
+                                            <span class="stat-title">{{ trans('webinars.organization_name') }}:</span>
+                                            <span class="stat-value">{{ $webinar->creator->full_name }}</span>
+                                        </div>
+                                    @endif
+                                </div> -->
                             </div>
                         </div>
                     </div>
                 </div>
             @endforeach
+            </div>
+
+            <div class="my-30">
+                {{ $webinars->links('vendor.pagination.panel') }}
+            </div>
+
         @else
             @include(getTemplate() . '.includes.no-result',[
-            'file_name' => 'student.png',
-            'title' => trans('panel.no_result_purchases') ,
-            'hint' => trans('panel.no_result_purchases_hint') ,
-            'btn' => ['url' => '/classes?sort=newest','text' => trans('panel.start_learning')]
-        ])
+                'file_name' => 'webinar.png',
+                'title' => trans('panel.you_not_have_any_webinar'),
+                'hint' =>  trans('panel.no_result_hint') ,
+                'btn' => ['url' => '/panel/webinars/new','text' => trans('panel.create_a_webinar') ]
+            ])
         @endif
     </section>
 

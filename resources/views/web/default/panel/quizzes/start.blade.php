@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <section class="mt-40" style="display: flex; justify-content: space-between; align-items: center; margin-top: 5%;">
+        <section class="mt-40" style="display: flex; justify-content: space-between; align-items: center; margin-top: 2% !important;">
             <div>
                 <h2 class="font-weight-bold font-16 text-dark-blue">{{ $quiz->title }}</h2>
                 <p class="text-gray font-14 mt-5">

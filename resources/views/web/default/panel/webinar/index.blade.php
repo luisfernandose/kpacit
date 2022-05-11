@@ -61,6 +61,7 @@
         </div>
 
         @if(!empty($webinars) and !$webinars->isEmpty())
+        <div class="cards-grid">
             @foreach($webinars as $webinar)
                 @php
                     $lastSession = $webinar->lastSession();
@@ -117,7 +118,6 @@
                                     <a href="{{ $webinar->getUrl() }}" target="_blank">
                                         <h3 class="font-16 text-dark-blue font-weight-bold">{{ $webinar->title }}
                                             <span class="badge badge-dark ml-10 status-badge-dark">{{ trans('webinars.'.$webinar->type) }}</span>
-                                            <span class="badge badge-secondary ml-10">{{ trans('webinars.go_to_class') }}</span>
                                         </h3>
                                     </a>
 
@@ -157,7 +157,50 @@
                                     @endif
                                 </div>
 
-                                @include(getTemplate() . '.includes.webinar.rate',['rate' => $webinar->getRate()])
+                                    @if(!empty($webinar->partner_instructor) and $webinar->partner_instructor and $authUser->id != $webinar->teacher_id and $authUser->id != $webinar->creator_id)
+                                        <div class="d-flex align-items-start flex-column">
+                                            <span class="stat-value">{{ $webinar->teacher->full_name }}</span>
+                                        </div>
+                                    @elseif($authUser->id != $webinar->teacher_id and $authUser->id != $webinar->creator_id)
+                                        <div class="d-flex align-items-start flex-column">
+                                            <span class="stat-value">{{ $webinar->teacher->full_name }}</span>
+                                        </div>
+                                    @elseif($authUser->id == $webinar->teacher_id and $authUser->id != $webinar->creator_id and $webinar->creator->isOrganization())
+                                        <div class="d-flex align-items-start flex-column">
+                                            <span class="stat-value">{{ $webinar->creator->full_name }}</span>
+                                        </div>
+                                    @else
+                                        <div class="d-flex align-items-start flex-column">
+                                            <span class="stat-value">{{ $webinar->creator->full_name }}</span>
+                                        </div>
+                                    @endif
+
+                                @if($webinar->isProgressing() and !empty($nextSession))
+                                        <div class="d-flex align-items-start flex-column">
+                                            <span class="stat-value">{{ convertMinutesToHourAndMinute($nextSession->duration) }} Hrs</span>
+                                        </div>
+
+                                        @if($webinar->isWebinar())
+                                            <div class="d-flex align-items-start flex-column">
+                                                <span class="stat-value">{{ dateTimeFormat($nextSession->date,'j F Y') }}</span>
+                                            </div>
+                                        @endif
+                                    @else
+                                        <div class="d-flex align-items-start flex-column">
+                                            <span class="stat-value">{{ convertMinutesToHourAndMinute($webinar->duration) }} Hrs</span>
+                                        </div>
+
+                                        @if($webinar->isWebinar())
+                                            <div class="d-flex align-items-start flex-column">
+                                                <span class="stat-value">{{ dateTimeFormat($webinar->start_date,'j F Y') }}</span>
+                                            </div>
+                                        @endif
+                                    @endif
+
+                                <div style="display: flex; align-items: center; gap: 2%;">
+                                    <span style="display: inline-block !important;">@include(getTemplate() . '.includes.webinar.rate',['rate' => $webinar->getRate()])</span>
+                                    <span style=" margin-top: 15px;">({{ count($webinar->sales) }})</span>
+                                </div>
 
                                 <div class="webinar-price-box mt-15">
                                     @if($webinar->price > 0)
@@ -167,12 +210,10 @@
                                         @else
                                             <span class="real">{{ $currency }}{{ number_format($webinar->price, 2, ".", "")+0 }}</span>
                                         @endif
-                                    @else
-                                        <span class="real">{{ trans('public.free') }}</span>
                                     @endif
                                 </div>
 
-                                <div class="d-flex align-items-center justify-content-between flex-wrap mt-auto">
+                                <!-- <div class="d-flex align-items-center justify-content-between flex-wrap mt-auto">
                                     <div class="d-flex align-items-start flex-column mt-20 mr-15">
                                         <span class="stat-title">{{ trans('public.item_id') }}:</span>
                                         <span class="stat-value">{{ $webinar->id }}</span>
@@ -251,12 +292,13 @@
                                             <span class="stat-value">{{ $webinar->creator->full_name }}</span>
                                         </div>
                                     @endif
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
                 </div>
             @endforeach
+            </div>
 
             <div class="my-30">
                 {{ $webinars->links('vendor.pagination.panel') }}

@@ -13266,6 +13266,7 @@ p {
 }
 .panel-content .webinar-card {
     box-shadow: 0 12px 23px 0 rgba(62, 73, 84, 0.04) !important;
+    flex-direction: column;
 }
 .panel-content .webinar-card:hover {
     transform: unset !important;
@@ -15222,15 +15223,15 @@ p {
     background-color: #fff;
 }
 .webinar-card.webinar-list .image-box {
-    width: 300px;
+    width: 100%;
     min-height: 200px;
     height: auto;
     max-height: 100%;
-    border-radius: 10px 0 0 10px;
+    border-radius: 10px 10px 0 0;
 }
 .webinar-card.webinar-list .image-box:after,
 .webinar-card.webinar-list .image-box img {
-    border-radius: 10px 0 0 10px;
+    border-radius: 10px 10px 0 0;
 }
 .webinar-card.webinar-list .image-box .progress {
     width: auto;
@@ -16534,6 +16535,9 @@ p {
     padding: 0;
     margin-left: -5%;
 }
+.cards-grid{
+    display: grid;
+}
 @media (max-width: 1500px) {
     #my-video{
         height: 500px;
@@ -16543,6 +16547,10 @@ p {
     }
     .video-background{
         height: 500px;
+    }
+    .cards-grid{
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3%;
     }
 }
 @media (max-width: 1100px) {
@@ -16567,6 +16575,10 @@ p {
     .video-background{
         height: 400px;
     }
+    .cards-grid{
+        grid-template-columns: repeat(2, 1fr);
+        gap: 3%;
+    }
 }
 @media (min-width: 1700px) {
     #my-video{
@@ -16577,6 +16589,10 @@ p {
     }
     .video-background{
         height: 700px;
+    }
+    .cards-grid{
+        grid-template-columns: repeat(4, 1fr);
+        gap: 5%;
     }
 }
 .js-modal-video-content{
