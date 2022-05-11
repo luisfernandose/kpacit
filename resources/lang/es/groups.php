@@ -8,11 +8,10 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'group' => 'Group',
-    'groups' => 'Groups',
-    'group_name' => 'Group name',
-    'new_group' => 'New group',
-    'manage_students' => 'Manage students',
-    'manage_classes' => 'Manage classes',
-
+    'group' => 'Grupo',
+    'groups' => 'Grupos',
+    'group_name' => 'Nombre del grupo',
+    'new_group' => 'Nuevo groupo',
+    'manage_students' => 'Agregar estudiantes',
+    'manage_classes' => 'Agregar cursos',
 ];
