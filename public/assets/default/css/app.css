@@ -16580,7 +16580,7 @@ p {
         gap: 3%;
     }
 }
-@media (min-width: 1700px) {
+@media (min-width: 1501px) {
     #my-video{
         height: 700px;
     }

@@ -7,7 +7,7 @@
 @section('content')
 <main class="reproductor">
     <div class="reproductor-video">
-        <section class="mt-20" >
+        <section>
             <div id="playVideo" class="video-background" style="padding-left: 14px;">
                 <div class="modal-content click.dismiss.bs.modal">
                     <div class="loading-img text-center video-background">
