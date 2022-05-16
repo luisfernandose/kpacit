@@ -7,7 +7,7 @@
 @section('content')
 <main class="reproductor">
     <div class="reproductor-video">
-        <section class="mt-20" >
+        <section>
             <div id="playVideo" class="video-background" style="padding-left: 14px;">
                 <div class="modal-content click.dismiss.bs.modal">
                     <div class="loading-img text-center video-background">
@@ -135,17 +135,7 @@
                             <div class="mt-30 align-items-center">
                                 <div style="text-align: center;">
                                     <span class="font-16" id="percent-progress"><!-- {{ $percent }}% --></span>
-                                    <span class="font-16">
-                                    @if($course->isWebinar())
-                                        @if($hasBought and $course->isProgressing())
-                                            {{ trans('public.course_learning_passed',['percent' => $percent]) }}
-                                        @else
-                                            {{ $course->sales_count }}/{{ $course->capacity }} {{ trans('quiz.students') }}
-                                        @endif
-                                    @else
-                                        {{ trans('public.course_learning_passed',['percent' => $percent]) }}
-                                    @endif
-                                    </span>
+                                    <span class="font-16">{{ trans('public.course_passed') }}</span>
                                 </div>
                                 <div class="progress course-progress shadow-xs rounded-sm">
                                     <span id="percent-bar" class="progress-bar rounded-sm bg-done" ></span>
@@ -530,7 +520,7 @@
 
                         <div>
                            @if(!empty($user) and $quiz->can_try and $hasBought)
-                               <a href="/panel/quizzes/{{ $quiz->id }}/start" class="course-content-btns btn btn-sm btn-primary flex-grow-1">{{ trans('quiz.quiz_start') }}</a>
+                               <a href="/panel/quizzes/{{ $quiz->id }}/start" class="quiz_start course-content-btns btn btn-sm btn-primary flex-grow-1">{{ trans('quiz.quiz_start') }}</a>
                            @else
                                <button type="button" class="course-content-btns btn btn-sm btn-gray flex-grow-1 disabled {{ ((empty($user)) ? 'not-login-toast' : (!$hasBought ? 'not-access-toast' : (!$quiz->can_try ? 'can-not-try-again-quiz-toast' : ''))) }}">
                                    {{ trans('quiz.quiz_start') }}
@@ -696,6 +686,14 @@
         var quizzes = document.querySelectorAll(".quiz");
         var quizzes_passed = document.querySelectorAll(".quiz_passed");
         var percent_progress = document.getElementById("percent-progress");
+
+        if(checked.length != checkbox.length) {
+            $(".quiz_start").addClass("disabled");
+            $(".quiz_start").addClass("btn-gray");
+        }   else{
+            $(".quiz_start").removeClass("disabled");
+            $(".quiz_start").removeClass("btn-gray");
+        }
 
         var input_percent = (((checked.length + quizzes_passed.length) / (checkbox.length + quizzes.length)) * 100).toFixed(2);
         var input_checked = input_percent + "%";

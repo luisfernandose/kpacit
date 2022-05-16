@@ -366,5 +366,6 @@ return [
  	'how_zoom_jwt_token' => 'How to create Zoom JWT token',
     'instructor_is_not_available' => 'Instructor is temporarily unavailable.',
     'unlimited' => 'Unlimited',
+    'course_passed' => 'of the course is passed.',
     'seen' => 'Seen'
 ];
