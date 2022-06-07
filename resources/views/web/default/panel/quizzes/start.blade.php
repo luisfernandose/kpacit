@@ -79,7 +79,7 @@
                                 </div>
                                 @if($question->type === \App\Models\QuizzesQuestion::$descriptive)
                                     <div class="form-group mt-35">
-                                        <textarea name="question[{{ $question->id }}][answer]" rows="15" class="form-control"></textarea>
+                                        <textarea name="question[{{ $question->id }}][answer]" rows="15" class="form-control text-descriptive"></textarea>
                                     </div>
                                 @else
                                     <div class="question-multi-answers mt-35">
@@ -151,6 +151,18 @@
         var checked = document.querySelectorAll("input[type='radio']:checked");
         var questions = $("#questions").text();
         if((checked.length)<questions){
+            $(".finish").addClass("btn-disabled");
+            $(".finish").attr('disabled','disabled');
+        }
+        else{
+            $(".finish").removeClass("btn-disabled");
+            $(".finish").removeAttr('disabled');
+        }
+    });
+
+    $("body").on("keyup", ".text-descriptive", function(e) {
+        var value = $(this).val();
+        if(value == ''){
             $(".finish").addClass("btn-disabled");
             $(".finish").attr('disabled','disabled');
         }
