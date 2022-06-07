@@ -76,7 +76,11 @@
                 <div class="row mt-30">
                     <div class="col-12">
                         <div class="webinar-card webinar-list d-flex">
-                            <a href="{{ $webinar->getUrl() }}" target="_blank">
+                            @if($authUser->isOrganization())
+                            <a href="/panel/webinars/{{ $webinar->id }}/edit">
+                            @else
+                            <a href="{{ $webinar->getUrl() }}" target="_blank">                            
+                            @endif
                                 <div class="image-box">
                                     <img src="{{ $webinar->getImage() }}" class="img-cover" alt="">
 
