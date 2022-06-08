@@ -137,4 +137,10 @@ return [
 
     'your_zoom_settings_are_not_complete' => 'برجاء اكمال اعدادات حساب زوم الخاص بك لتتمكن من فتح حصة.',
     'zoom_jwt_token_invalid' => 'كود زوم الخاص بك غير صالح.',
+    'go_to_class' => 'Go to the class',
+
+
+    'status_waiting_title' => 'Wait for the content...',
+    'status_waiting_hint' => "We are working to build the content of this class.\n We will inform you after being finished.",
+    'show_webinars' => 'My classes', 
 ];

@@ -140,4 +140,9 @@ return [
     'your_zoom_settings_are_not_complete' => 'Please complete your Zoom settings to create live sessions.',
     'zoom_jwt_token_invalid' => 'Your Zoom JWT token is invalid.',
     'go_to_class' => 'Ver clase',
+    
+
+    'status_waiting_title' => 'Espera el contenido...',
+    'status_waiting_hint' => "Estamos trabajando para construir el contenido de esta clase.\n Le informaremos cuando hayamos terminado.",
+    'show_webinars' => 'Mis clases',
 ];
