@@ -394,7 +394,7 @@
                     player = videojs('my-video', options);
                 }
 
-                $modal.modal('show');
+                /* $modal.modal('show'); */
             } else {
                 $.toast({
                     heading: notAccessToastTitleLang,

@@ -284,8 +284,13 @@ return [
     'new_noticeboard' => 'Nuevo aviso',
     'noticeboard_success_send' => 'Nuevo aviso enviado con éxito',
     'noticeboard_success_send_to' => 'Nuevo tablón de anuncios enviado correctamente para :users_count',
+
     'more_info' => 'Más información',
     'reports' => 'Reportes',
+    'categories' => 'Categorias',
+    'categories_list' => 'Lista',
+    'categories_new' => 'Nueva',
+
     'courses' => 'Cursos y clases',
     'active_e_inactive_courses' => 'Reporte cursos activos e inactivos',
     'active_courses' => 'Cursos activos ',
@@ -312,7 +317,6 @@ return [
     'users_no_enrolled' => 'Sin usuarios asignados',
     'result_no_result' => 'No hay registros',
     'percent' => 'Promedio',
-    'chart_quizzes' => 'Promedio de quizzes mensual',
     'chart_quizzes' => 'Promedio de quizzes mensual',
     'file' => 'Archivo',
     'session' => 'Sesión',

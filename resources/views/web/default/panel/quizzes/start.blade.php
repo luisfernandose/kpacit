@@ -79,7 +79,7 @@
                                 </div>
                                 @if($question->type === \App\Models\QuizzesQuestion::$descriptive)
                                     <div class="form-group mt-35">
-                                        <textarea name="question[{{ $question->id }}][answer]" rows="15" class="form-control"></textarea>
+                                        <textarea name="question[{{ $question->id }}][answer]" rows="15" class="form-control text-descriptive"></textarea>
                                     </div>
                                 @else
                                     <div class="question-multi-answers mt-35">
@@ -115,8 +115,8 @@
 
                 <div class="d-flex align-items-center mt-30">
                     <button type="button" class="previous btn btn-sm btn-primary mr-20 p-0">{{ trans('quiz.previous_question') }}</button>
-                    <button type="button" class="next btn btn-sm btn-primary mr-auto p-0">{{ trans('quiz.next_question') }}</button>
-                    <button type="submit" class="finish btn btn-sm p-0">{{ trans('public.finish') }}</button>                
+                    <button type="button" class="next btn btn-sm btn-primary mr-auto p-0" disabled>{{ trans('quiz.next_question') }}</button>
+                    <button type="submit" class="finish btn btn-sm p-0" disabled>{{ trans('public.finish') }}</button>                
                 </div>
             </form>
         </section>
@@ -129,34 +129,42 @@
     <script src="/assets/default/js/parts/quiz-start.min.js"></script>
     <script>
     var x=1;
-    $("body").on("click", ".next", function(e) {
-        x=x+1;
-        var checked = document.querySelectorAll("input[type='radio']:checked");
-        var questions = $("#questions").text();
-        if(x>=questions){
-            $(".finish").show();
-            $(".next").hide();
-                if((checked.length)<questions){
-                $(".finish").addClass("btn-disabled");
-                $(".finish").attr('disabled','disabled');
-                }
-                else{
-                    $(".finish").removeClass("btn-disabled");
-                    $(".finish").removeAttr('disabled');
-                }
+    function removeDisabled(){
+        $(".finish").removeClass("btn-disabled");
+        $(".finish").prop("disabled", false);
+        $(".next").removeClass("btn-disabled");
+        $(".next").prop("disabled", false);
+    }
+
+    function addDisabled(){
+        $(".finish").addClass("btn-disabled");
+        $(".finish").prop("disabled", true);
+        $(".next").addClass("btn-disabled");
+        $(".next").prop("disabled", true);
+    }
+
+    $("body").on("click", "input[type='radio']", function(e) {
+        var isChecked= false;
+        $(this).closest('.quiz-card').find("input[type='radio']").each(function() {
+            if($(this).is(':checked')){
+                isChecked =true;
+            }
+        });
+        if(isChecked){
+            removeDisabled();
+        }
+        else{
+            addDisabled()
         }
     });
 
-    $("body").on("click", "input[type='radio']", function(e) {
-        var checked = document.querySelectorAll("input[type='radio']:checked");
-        var questions = $("#questions").text();
-        if((checked.length)<questions){
-            $(".finish").addClass("btn-disabled");
-            $(".finish").attr('disabled','disabled');
+    $("body").on("keyup", ".text-descriptive", function(e) {
+        var value = $(this).val();
+        if(value == ''){
+            addDisabled();
         }
         else{
-            $(".finish").removeClass("btn-disabled");
-            $(".finish").removeAttr('disabled');
+            removeDisabled();
         }
     });
 
@@ -167,6 +175,40 @@
             $(".finish").hide();
             $(".next").show();
         }
+    });
+    $("body").on("click", ".next", function(e) {
+        x=x+1;
+        var questions = $("#questions").text();
+        if(x==questions){
+            $(".finish").show();
+            $(".next").hide();
+        }
+        var isText = $("fieldset").find('.quiz-card:visible').find('textarea').length;
+
+        if(isText ==1){
+            var value =  $("fieldset").find('.quiz-card:visible').find('textarea').val();
+            if(value == ''){
+                    addDisabled();
+                }
+                else{
+                    removeDisabled();
+                }
+        }else{
+
+            var isChecked= false;
+            $("fieldset").find('.quiz-card:visible').find("input[type='radio']").each(function() {
+                if($(this).is(':checked')){
+                    isChecked =true;
+                }
+            });
+            if(isChecked){
+                removeDisabled();
+            }
+            else{
+                addDisabled();
+            }
+        }        
+      
     });
     </script>
 @endpush

@@ -5,6 +5,8 @@
 @endpush
 
 @section('content')
+
+@if(!empty($course->files) and $course->files->count() > 0)
 <main class="reproductor">
     <div class="reproductor-video">
         <section>
@@ -617,6 +619,20 @@
         </section>
     </div>
 </main>
+@else
+    <div class="no-result status-waiting mt-50 d-flex align-items-center justify-content-center flex-column">
+        <div class="no-result-logo">
+            <img src="/assets/default/img/no-results/student.png" alt="">
+        </div>
+        <div class="d-flex align-items-center flex-column mt-30 text-center">
+            <h2 class="section-title">{{ trans('webinars.status_waiting_title') }}</h2>
+            <p class="mt-5 text-center">{!! nl2br(trans('webinars.status_waiting_hint')) !!}</p>
+            <div class=" mt-25">
+                <a href="/panel/webinars/organization_classes" class="btn btn-sm btn-primary">{{ trans('webinars.show_webinars') }}</a>
+            </div>
+        </div>
+    </div>
+@endif 
 
 @endsection
 @push('scripts_bottom')

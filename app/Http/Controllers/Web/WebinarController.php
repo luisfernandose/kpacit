@@ -131,7 +131,7 @@ class WebinarController extends Controller
             return back();
         }
 
-        if($user->isUser()){
+        if($user && $user->isUser()){
 
 
             if( isset($course->limit_device) && (int)$course->limit_device > 0){
