@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
-use App\Prueba;
+use App\Form;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
@@ -64,8 +64,7 @@ class ContactController extends Controller
         $sector_economico = request('sector_economico');
         $country = request('country');
         $ciudad = request('ciudad');
-        $created_at = time();
-        Prueba::create([
+        Form::create([
             'empresa' => $nombre_empresa,
             'nombre' => $nombre_contacto,
             'correo' => $correo_contacto,
@@ -73,8 +72,7 @@ class ContactController extends Controller
             'tamaño' => $tamaño_empresa,
             'sector' => $sector_economico,
             'pais' => $country,
-            'ciudad' => $ciudad,
-            'created_at' => $created_at
+            'ciudad' => $ciudad
         ]);
         return back()->with(['msg' => trans('site.contact_store_success')]);
     }

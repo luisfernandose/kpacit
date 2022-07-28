@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Prueba extends Model
+class Form extends Model
 {
-    protected $table = 'prueba';
+    protected $table = 'form';
     public $timestamps = false;
     protected $dateFormat = 'U';
     protected $guarded = ['id'];
