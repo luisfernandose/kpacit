@@ -33,7 +33,6 @@ Route::group(['namespace' => 'Auth', 'middleware' => ['share']], function () {
 
     Route::get('/register-organization', 'RegisterController@showRegisterOrganizationForm');
     Route::post('/register-organization', 'RegisterController@registerOrganization');
-
 });
 
 Route::group(['namespace' => 'Web', 'middleware' => ['impersonate', 'share']], function () {
@@ -55,6 +54,8 @@ Route::group(['namespace' => 'Web', 'middleware' => ['impersonate', 'share', 'us
     Route::post('/locale', 'LocaleController@setLocale');
 
     Route::get('/', 'HomeController@index');
+
+    Route::post('/hola', 'ContactController@hola');
 
     Route::group(['prefix' => 'course'], function () {
         Route::get('/{slug}', 'WebinarController@course');
@@ -120,7 +121,6 @@ Route::group(['namespace' => 'Web', 'middleware' => ['impersonate', 'share', 'us
             Route::get('/', 'UserController@becomeInstructors');
             Route::post('/', 'UserController@becomeInstructorsStore');
         });
-
     });
 
     Route::group(['prefix' => 'users'], function () {
@@ -192,4 +192,3 @@ Route::group(['namespace' => 'Web', 'middleware' => ['impersonate', 'share', 'us
         Route::post('/{methodName}', 'JobsController@index');
     });
 });
-
