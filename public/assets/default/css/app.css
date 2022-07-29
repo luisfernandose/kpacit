@@ -12783,6 +12783,14 @@ a.badge-outlined-gray300:hover {
     border: 1px solid #d3d3d3;
 }
 a.badge-outlined-gray300.focus,
+a.badge-outlined-gray300:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem hsla(0, 0%, 92.5%, 0.5);
+}
+.badge-outlined-gray200 {
+    color: #f1f1f1;
+    border: 1px solid #f1f1f1;
+}
 a.badge-outlined-gray200:focus,
 a.badge-outlined-gray200:hover {
     color: #f1f1f1;
@@ -16638,168 +16646,155 @@ p {
 .caracteristicas-card,
 .estadisticas-card {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    background-color: #fff;
+    box-shadow: 0 3px 30px 0 rgb(0 0 0 / 10%);
+    border-radius: 10px;
+    text-align: center;
+    padding-top: 2rem;
+    transition: all 0.5s;
+    height: 40rem;
 }
-.reproductor-video{
-    width: 80%;
-    margin: 0;
-    padding: 0;
+
+.estadisticas-card {
+    height: 30rem;
+    margin: 5rem 0;
 }
-.video-background{
-    background-color: black;
-    width: 100%;
-    height: 600px;
+
+.card-capacitado {
+    height: 40rem;
 }
-.video{
-    display: block;
-    background-color: black;
-    width: 100%;
-    height:600px;
-}
-.section {
-  border: 1px solid lightgray;
-  border-radius: 5px;
-  margin: 2% 0;
-}
-.section-menu {
-  background-color: lightgray;
-}
-.menu-title {
-  display: flex;
-  justify-content: space-between;
-  padding: 3% 10%;
-  align-items: center;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.2;
-  color: #171347;
-}
-.menu-list {
-  display: none;
-  background-color: white;
-  flex-direction: column;
-}
-.menu-video {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 2%;
-  border-bottom: 1px solid lightgray;
-}
-.video-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-.btn-play{
-    display: inline-block;
+
+/* .caracteristicas-card:hover {
+    transform: translateY(-1rem);
     background-color: #ff1e58;
-    padding: 2% 4% 0 4%;
-    border-radius: 5px;
-    border: none;
+    color: #fff !important;
 }
-.btn-play:hover{
+ .caracteristicas-card:hover h3,
+.caracteristicas-card:hover p {
+    color: #fff;
+} */
+.card-content {
+    display: grid;
+    grid-template-columns: 50% 40%;
+    width: 100%;
+    height: 100%;
+    justify-content: space-evenly;
+    gap: 5%;
+    padding: 0 5%;
+    align-items: center;
+}
+.content-video {
+    display: grid;
+    align-items: center;
+    height: 100%;
+    grid-template-rows: 80% 10%;
+}
+.btn-cotizacion {
+    width: 70%;
+    align-self: center;
+    margin: 0 auto;
+}
+.caracteristicas-card iframe {
+    border-radius: 10px;
+    width: 100%;
+    height: 70%;
+    align-self: center;
+}
+.caracteristicas-card h3,
+.estadisticas-card h3 {
+    font-size: 35px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #00d990;
+    pointer-events: none;
+}
+.caracteristicas-card p,
+.estadisticas-card p {
+    font-size: 22px;
+    font-weight: normal;
+    text-align: justify;
+    line-height: 1.25;
+    color: #818894;
+    pointer-events: none;
+}
+.shortp {
+    font-size: 28px !important;
+}
+.title-h2 {
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #00da91;
+    pointer-events: none;
+    text-align: center;
+}
+.descubre-mas {
+    width: 100%;
     background-color: #43d477;
-    transition: all 0.3s;
+    padding: 2% 0;
+    color: #fff;
+    transition: background-color 0.8s;
 }
-.acordeon{
-    width: 20%;
-    padding: 0 10px;
-    border-left: 1.7px solid lightgray;
-    overflow-y: auto;
-    overflow-x: hidden;
+
+.descubre-mas:hover {
+    cursor: pointer;
+    background-color: #3bb466;
 }
-.quiz,.certificate{
+
+.row-cards {
+    display: grid;
+    padding: 0 10%;
+    padding-top: 5%;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5%;
+}
+
+.stats-card {
     display: flex;
     flex-direction: column;
-    align-items: baseline;
+    gap: 2rem;
+    align-items: center;
+    border-radius: 15px;
+    box-shadow: 0 3px 30px 0 rgb(0 0 0 / 10%);
+    transition: all 0.5s ease;
+    padding: 5% 1%;
+    word-wrap: break-word;
 }
-.seen{
-    display: block;
-    margin: 0;
-    padding: 0;
-    margin-left: -5%;
+
+.stats-card:hover {
+    transform: translateY(-25px);
+    background-color: #1f3b64;
+    transition: all 0.5s ease;
+    box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.2);
+    color: #fff;
 }
-.cards-grid{
-    display: grid;
+
+.conocimiento {
+    font-size: 30px !important;
+    padding: 3% 0;
 }
-@media (max-width: 1500px) {
-    #my-video{
-        height: 500px;
+
+@media (min-width: 1500px) {
+    .caracteristicas-card {
+        height: 50rem;
     }
-    .video, .text-show{
-        height: 500px;
+    .estadisticas-card {
+        height: 40rem;
     }
-    .video-background{
-        height: 500px;
+    .caracteristicas-card p,
+    .estadisticas-card p {
+        font-size: 28px;
     }
-    .cards-grid{
-        grid-template-columns: repeat(3, 1fr);
-        gap: 3%;
+    .shortp {
+        font-size: 32px !important;
     }
 }
-@media (max-width: 1100px) {
-    .font-16 {
-        font-size: 0.85rem;
-    }
-    .font-14 {
-        font-size: 0.75rem;
-    }
-    .font-12 {
-        font-size: 0.5rem;
-    }
-    .btn-play{
-        padding: 1% 3% 0 3%;
-    }
-    #my-video{
-        height: 400px;
-    }
-    .video, .text-show{
-        height: 400px;
-    }
-    .video-background{
-        height: 400px;
-    }
-    .cards-grid{
+
+@media (max-width: 767px) {
+    .row-cards {
         grid-template-columns: repeat(2, 1fr);
-        gap: 3%;
     }
-}
-@media (min-width: 1501px) {
-    #my-video{
-        height: 700px;
-    }
-    .video, .text-show{
-        height: 700px;
-    }
-    .video-background{
-        height: 700px;
-    }
-    .cards-grid{
-        grid-template-columns: repeat(4, 1fr);
-        gap: 5%;
-    }
-}
-.js-modal-video-content{
-    max-height: 700px;
-}
-.post-show{
-    height: 500px;
-}
-.finish{
-    display: none;
-    background-color: #43d477;
-    color: white !important; 
-}
-.finish:hover{
-    background-color: #87e8b1;
-    transition: all 0.3s;
-}
-.btn-disabled{
-    background-color: lightgray;
-    cursor: default !important;
-}
-.btn-disabled:hover{
-    background-color: lightgray !important;
 }
