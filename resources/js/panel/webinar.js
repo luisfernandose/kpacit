@@ -168,6 +168,7 @@
         $this.addClass("loadingbar primary").prop("disabled", true);
         form.find("input").removeClass("is-invalid");
         form.find("textarea").removeClass("is-invalid");
+        alert('llega')
 
         $.post(action, data, function (result) {
             if (result && result.code === 200) {

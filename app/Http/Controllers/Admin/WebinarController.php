@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Exports\WebinarsExport;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\CourseOrganizations;
+use App\Models\Notification;
 use App\Models\Quiz;
 use App\Models\Role;
 use App\Models\SpecialOffer;
@@ -83,7 +85,6 @@ class WebinarController extends Controller
         if (!empty($teacher_ids)) {
             $data['teachers'] = User::select('id', 'full_name')->whereIn('id', $teacher_ids)->get();
         }
-
         return view('admin.webinars.lists', $data);
     }
 
@@ -531,18 +532,15 @@ class WebinarController extends Controller
                 ];
 
                 return back()->with(['toast' => $toastData]);
-
             }
 
             $webinar->external_id = $serviceResult->data->id;
-
         }
 
         $webinar->update($data);
 
         if ($publish) {
             sendNotification('course_approve', ['[c.title]' => $webinar->title], $webinar->teacher_id);
-
         } elseif ($reject) {
             sendNotification('course_reject', ['[c.title]' => $webinar->title], $webinar->teacher_id);
         }
@@ -585,5 +583,131 @@ class WebinarController extends Controller
         $webinarExport = new WebinarsExport($webinars);
 
         return Excel::download($webinarExport, 'webinars.xlsx');
+    }
+
+    public function share($id)
+    {
+        $this->authorize('admin_webinars_edit');
+
+        $webinar = Webinar::where('id', $id)
+            ->with([
+                'tickets',
+                'sessions',
+                'files',
+                'faqs',
+                'category' => function ($query) {
+                    $query->with(['filters' => function ($query) {
+                        $query->with('options');
+                    }]);
+                },
+                'filterOptions',
+                'prerequisites',
+                'quizzes',
+                'webinarPartnerTeacher' => function ($query) {
+                    $query->with(['teacher' => function ($query) {
+                        $query->select('id', 'full_name');
+                    }]);
+                },
+                'tags',
+                'textLessons',
+            ])
+            ->first();
+
+        if (empty($webinar)) {
+            abort(404);
+        }
+        // $shared = CourseOrganizations::where('webinar_id', $id)->get();
+        $shared = CourseOrganizations::select('course_organizations.id', 'course_organizations.status', 'course_organizations.created_at', 'webinars.title', 'users.full_name')
+            ->leftJoin('users', 'users.id', '=', 'course_organizations.user_id')
+            ->rightJoin('webinars', 'webinars.id', '=', 'course_organizations.webinar_id')
+            ->where('course_organizations.webinar_id', '=', $id)
+            ->get();
+        // dd($shared);
+        $organizations = User::where('role_name', Role::$organization)->get();
+
+        $data = [
+            'pageTitle' =>  trans('public.share') . ' ' .  trans('public.course_page_title')  . ' | ' . $webinar->title,
+            'organizations' => $organizations,
+            'webinar' => $webinar,
+            'courses' => $shared
+        ];
+
+        return view('admin.webinars.share', $data);
+    }
+
+    public function shareContent(Request $request)
+    {
+        $this->authorize('admin_notifications_send');
+
+        $this->validate($request, [
+            'organization_id' => 'required',
+        ]);
+
+        $shared = CourseOrganizations::where('webinar_id', $request->webinar_id)->where('user_id', $request->organization_id)->first();
+        $organization = User::where('id', $request->organization_id)->first();
+        $webinarValidate = Webinar::where('id', $request->webinar_id)->where('creator_id', $request->organization_id)->first();
+
+        if (!empty($shared) || !empty($webinarValidate)) {
+
+            $toastData = [
+                'title' => trans('public.request_failed'),
+                'msg' => 'The course was already shared with this organization',
+                'status' => 'error',
+            ];
+
+            return back()->with(['toast' => $toastData]);
+        }
+
+        $user = auth()->user();
+        $webinar = Webinar::where('id', $request->webinar_id)->first();
+
+        if (!empty($organization)) {
+
+            $new['creator_id'] = $user->id;
+            $new['webinar_id'] = $request->webinar_id;
+            $new['user_id'] = $organization->id;
+            $new['status'] = CourseOrganizations::$pending;
+
+            CourseOrganizations::create($new);
+
+            $last = DB::table('course_organizations')->latest('id')->first();
+
+            Notification::create([
+                'user_id' => $organization->id,
+                'group_id' => null,
+                'title' => 'New course shared',
+                'message' => $last->id,
+                'sender' => auth()->user()->full_name,
+                'type' => 'single',
+                'created_at' => time()
+            ]);
+
+            $toastData = [
+                'title' => trans('public.request_success'),
+                'msg' => 'You successfully shared the course',
+                'status' => 'success'
+            ];
+
+            return redirect('/admin/webinars?type=' . $webinar->type)->with(['toast' => $toastData]);
+        }
+
+        abort(404);
+    }
+
+    public function destroyShare(Request $request, $id)
+    {
+        $this->authorize('admin_webinars_delete');
+
+        $this->authorize('admin_notifications_delete');
+
+        $course = CourseOrganizations::where('id', $id)->first();
+
+        $notification = Notification::where('group_id', $id)->where('user_id', $course->user_id);
+
+        $notification->delete();
+
+        CourseOrganizations::find($id)->delete();
+
+        return redirect('/admin/webinars');
     }
 }

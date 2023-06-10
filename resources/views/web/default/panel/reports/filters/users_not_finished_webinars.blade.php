@@ -2,7 +2,7 @@
     <form action="/panel/reports/users_not_finished_webinars" method="get" class="row">
         <div class="col-12">
             <div class="row">
-                <div class="col-12 col-lg-3">
+                <div class="col-12 col-lg-4">
                     <div class="form-group">
                         <label class="input-label d-block">{{ trans('panel.webinars') }}</label>
                             <select name="webinar_id" class="form-control select2" data-placeholder="{{ trans('panel.all') }}">
@@ -13,7 +13,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-12 col-lg-3">
+                <div class="col-12 col-lg-4">
                     <div class="form-group">
                         <label class="input-label d-block">{{ trans('panel.student') }}</label>
                             <select name="user_id" class="form-control select2" data-placeholder="{{ trans('panel.all') }}">

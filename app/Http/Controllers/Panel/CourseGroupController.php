@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CourseGroupList;
 use App\Models\CourseGroups;
 use App\Models\CourseGroupUsers;
+use App\Models\CourseOrganizations;
 use App\Models\Sale;
 use App\Models\Webinar;
 use Illuminate\Http\Request;
@@ -23,9 +24,9 @@ class CourseGroupController extends Controller
             'id',
             'name'
         )
-        ->where('creator_id', auth()->user()->id)
-        ->withCount('users', 'courses')
-        ->get();
+            ->where('creator_id', auth()->user()->id)
+            ->withCount('users', 'courses')
+            ->get();
 
         $data = [
             'groups' => $groups,
@@ -61,7 +62,7 @@ class CourseGroupController extends Controller
             'name' => 'required|max:250',
         ]);
 
-        $data = (Object)$data;
+        $data = (object)$data;
 
         $courseGroup = new CourseGroupList();
 
@@ -77,7 +78,6 @@ class CourseGroupController extends Controller
         ];
 
         return redirect(route('panel.courseGroups.index'))->with(['toast' => $toastData]);
-
     }
 
     /**
@@ -89,8 +89,8 @@ class CourseGroupController extends Controller
     public function edit($id)
     {
         $group = CourseGroupList::where('id', $id)
-        ->where('creator_id', auth()->user()->id)
-        ->firstOrFail();
+            ->where('creator_id', auth()->user()->id)
+            ->firstOrFail();
 
         $data = [
             'pageTitle' => trans('public.edit') . ' ' . trans('groups.group'),
@@ -113,7 +113,7 @@ class CourseGroupController extends Controller
             'name' => 'required|max:250',
         ]);
 
-        $data = (Object)$data;
+        $data = (object)$data;
 
         $courseGroup = CourseGroupList::findOrFail($id);
 
@@ -156,11 +156,9 @@ class CourseGroupController extends Controller
             return response()->json([
                 'code' => 200
             ], 200);
-
         }
 
         return response()->json([], 422);
-
     }
 
     /**
@@ -174,21 +172,21 @@ class CourseGroupController extends Controller
             'id',
             'name'
         )
-        ->where('id', $id)
-        ->where('creator_id', auth()->user()->id)
-        ->firstOrFail();
+            ->where('id', $id)
+            ->where('creator_id', auth()->user()->id)
+            ->firstOrFail();
 
         $users = CourseGroupUsers::select(
             'id',
             'user_id'
         )
-        ->where('course_group_list_id', $id)
-        ->with('user:id,full_name')
-        ->get();
+            ->where('course_group_list_id', $id)
+            ->with('user:id,full_name')
+            ->get();
 
         $students = auth()->user()->getOrganizationStudents()
-        ->orderBy('full_name')
-        ->get();
+            ->orderBy('full_name')
+            ->get();
 
         $data = [
             'group' => $group,
@@ -211,21 +209,21 @@ class CourseGroupController extends Controller
             'group_id' => 'required|numeric',
         ]);
 
-        $data = (Object)$data;
+        $data = (object)$data;
 
         CourseGroupUsers::updateOrInsert([
             'course_group_list_id' => $data->group_id,
             'user_id' => $data->student_id,
         ]);
-        $courses = CourseGroups::where('course_group_list_id',$data->group_id)->pluck('webinar_id');
+        $courses = CourseGroups::where('course_group_list_id', $data->group_id)->pluck('webinar_id');
 
         if (!empty($courses)) {
             $webinars = Webinar::whereIn('id', $courses)->get();
 
             if (!empty($webinars)) {
-                foreach($webinars as $course){
-                    $student = Sale::where('webinar_id',$course->id)->where('buyer_id',$data->student_id)->first();
-                    if(empty($student)){
+                foreach ($webinars as $course) {
+                    $student = Sale::where('webinar_id', $course->id)->where('buyer_id', $data->student_id)->first();
+                    if (empty($student)) {
                         Sale::create([
                             'buyer_id' => $data->student_id,
                             'seller_id' => $course->creator_id,
@@ -238,7 +236,6 @@ class CourseGroupController extends Controller
                         ]);
                     }
                 }
-
             }
         }
         $toastData = [
@@ -259,12 +256,12 @@ class CourseGroupController extends Controller
     public function manageStudentsDestroy($groupId, $courseGroupId)
     {
         CourseGroupList::where('id', $groupId)
-        ->where('creator_id', auth()->user()->id)
-        ->firstOrFail();
+            ->where('creator_id', auth()->user()->id)
+            ->firstOrFail();
 
         $user = CourseGroupUsers::where('course_group_list_id', $groupId)
-        ->where('id', $courseGroupId)
-        ->firstOrFail();
+            ->where('id', $courseGroupId)
+            ->firstOrFail();
 
         if (!empty($user)) {
 
@@ -273,11 +270,9 @@ class CourseGroupController extends Controller
             return response()->json([
                 'code' => 200
             ], 200);
-
         }
 
         return response()->json([], 422);
-
     }
 
     /**
@@ -291,24 +286,33 @@ class CourseGroupController extends Controller
             'id',
             'name'
         )
-        ->where('id', $id)
-        ->where('creator_id', auth()->user()->id)
-        ->firstOrFail();
+            ->where('id', $id)
+            ->where('creator_id', auth()->user()->id)
+            ->firstOrFail();
 
         $courseGroups = CourseGroups::select(
             'id',
             'webinar_id'
         )
-        ->where('course_group_list_id', $id)
-        ->with('webinar:id,title')
-        ->get();
+            ->where('course_group_list_id', $id)
+            ->with('webinar:id,title')
+            ->get();
+
+        $user = auth()->user();
 
         $webinars = auth()->user()->getActiveWebinars();
+
+        $shared_courses = CourseOrganizations::select('course_organizations.id AS id_share', 'course_organizations.status AS status_share', 'course_organizations.status', 'webinars.*')
+            ->leftJoin('webinars', 'webinars.id', '=', 'course_organizations.webinar_id')
+            ->where('course_organizations.user_id', '=', $user->id)
+            ->where('course_organizations.status', '=', CourseOrganizations::$active)
+            ->get();
 
         $data = [
             'group' => $group,
             'courseGroups' => $courseGroups,
             'webinars' => $webinars,
+            'courses' => $shared_courses,
         ];
 
         return view(getTemplate() . '.panel.groups.manage_classes', $data);
@@ -326,22 +330,22 @@ class CourseGroupController extends Controller
             'group_id' => 'required|numeric',
         ]);
 
-        $data = (Object)$data;
+        $data = (object)$data;
 
         CourseGroups::updateOrInsert([
             'course_group_list_id' => $data->group_id,
             'webinar_id' => $data->webinar_id,
         ]);
 
-        $users = CourseGroupUsers::where('course_group_list_id',$data->group_id)->pluck('user_id');
+        $users = CourseGroupUsers::where('course_group_list_id', $data->group_id)->pluck('user_id');
 
         if (!empty($users)) {
             $webinar = Webinar::find($data->webinar_id);
 
             if (!empty($webinar)) {
-                foreach($users as $user){
+                foreach ($users as $user) {
                     $sale = Sale::where('webinar_id', $data->webinar_id)->where('buyer_id', $user)->first();
-                    if(empty($sale)){
+                    if (empty($sale)) {
                         Sale::create([
                             'buyer_id' =>  $user,
                             'seller_id' => $webinar->creator_id,
@@ -354,7 +358,6 @@ class CourseGroupController extends Controller
                         ]);
                     }
                 }
-
             }
         }
 
@@ -376,12 +379,12 @@ class CourseGroupController extends Controller
     public function manageClassesDestroy($groupId, $courseGroupId)
     {
         CourseGroupList::where('id', $groupId)
-        ->where('creator_id', auth()->user()->id)
-        ->firstOrFail();
+            ->where('creator_id', auth()->user()->id)
+            ->firstOrFail();
 
         $class = CourseGroups::where('course_group_list_id', $groupId)
-        ->where('id', $courseGroupId)
-        ->firstOrFail();
+            ->where('id', $courseGroupId)
+            ->firstOrFail();
 
         if (!empty($class)) {
 
@@ -390,10 +393,8 @@ class CourseGroupController extends Controller
             return response()->json([
                 'code' => 200
             ], 200);
-
         }
 
         return response()->json([], 422);
-
     }
 }

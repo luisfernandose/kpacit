@@ -30,9 +30,12 @@ return [
     'all_quizzes' => 'All quizzes',
 
     'multiple_choice' => 'Multiple choice',
-    'add_multiple_choice' => 'Add a Multiple choice',
+    'add_multiple_choice' => 'Add multiple choice',
+    'add_simple_choice' => 'Add simple choice',
+    'add_twice_choice' => 'Add true/false',
+    'add_descriptive' => 'Add open question',
     'descriptive' => 'Descriptive',
-    'add_descriptive' => 'Add Descriptive',
+    'twice_choice' => 'True/False choice',
     'empty_means_infinity' => 'Leave it blank for unlimited',
 
     'multiple_choice_question' => 'Multiple choice question',
@@ -121,5 +124,6 @@ return [
 
     'new_quiz_page_title' => 'New Quiz',
     'quizzes_list_page_title' => 'Quizzes lists',
-    'course_back' => 'Back to Course'
+    'course_back' => 'Back to Course',
+    'filters' => 'Filters and statistics'
 ];

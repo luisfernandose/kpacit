@@ -29,9 +29,12 @@ return [
     'all_quizzes' => 'Todos los exámenes',
 
     'multiple_choice' => 'Opción multiple',
-    'add_multiple_choice' => 'Agregar una opción múltiple',
+    'add_multiple_choice' => 'Agregar selección múltiple',
+    'add_simple_choice' => 'Agregar selección simple',
+    'add_twice_choice' => 'Agregar verdadero/falso',
+    'add_descriptive' => 'Agregar pregunta abierta',
     'descriptive' => 'Descriptiva',
-    'add_descriptive' => 'Agregar descriptiva',
+    'twice_choice' => 'Opción verdadero/falso',
     'empty_means_infinity' => 'Déjalo en blanco para ilimitado',
 
     'multiple_choice_question' => 'Pregunta de opción múltiple',
@@ -120,5 +123,6 @@ return [
 
     'new_quiz_page_title' => 'Nuevo examen',
     'quizzes_list_page_title' => 'Lista de exámenes',
-    'course_back' => 'Volver al Curso'
+    'course_back' => 'Volver al Curso',
+    'filters' => 'Filtros y estadísticas'
 ];

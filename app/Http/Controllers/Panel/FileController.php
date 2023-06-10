@@ -31,7 +31,7 @@ class FileController extends Controller
             'module_id' => 'required',
             'title' => 'required|max:64',
             'accessibility' => 'required|' . Rule::in(File::$accessibility),
-            'file_path' => 'required',
+            'file_path' => 'required|max:2097152',
             'file_type' => 'required_if:storage,online',
             'volume' => 'required_if:storage,online',
             'description' => 'nullable|max:255',

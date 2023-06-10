@@ -42,6 +42,7 @@ Route::group(['namespace' => 'Panel', 'prefix' => 'panel', 'middleware' => ['imp
             Route::get('/{id}/duplicate', 'WebinarController@duplicate');
             Route::get('/{id}/export-students-list', 'WebinarController@exportStudentsList');
             Route::post('/order-items', 'WebinarController@orderItems');
+            Route::get('/{id}/shareDecision/{decision}/{id_share}', 'WebinarController@shareContent');
         });
 
         Route::get('/organization_classes', 'WebinarController@organizationClasses');

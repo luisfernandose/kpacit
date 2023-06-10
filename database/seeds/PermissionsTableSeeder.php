@@ -2299,6 +2299,13 @@ class PermissionsTableSeeder extends Seeder
                 'section_id' => 708,
                 'allow' => 1,
             ),
+            326 =>
+            array (
+                'id' => 5601,
+                'role_id' => 3,
+                'section_id' => 1052,
+                'allow' => 1,
+            ),
         ));
 
 

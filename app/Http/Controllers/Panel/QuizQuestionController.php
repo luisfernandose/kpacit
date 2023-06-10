@@ -15,11 +15,11 @@ class QuizQuestionController extends Controller
     public function store(Request $request)
     {
         $data = $request->get('ajax');
-      
+
         $rules = [
             'quiz_id' => 'required|exists:quizzes,id',
             'title' => 'required|max:255',
-            'grade' => ['required','integer','numeric', 'between:1,100', new GradeMax],
+            'grade' => ['required', 'integer', 'numeric', 'between:1,100', new GradeMax],
             'type' => 'required',
         ];
 
@@ -35,6 +35,26 @@ class QuizQuestionController extends Controller
         $user = auth()->user();
 
         if ($data['type'] == QuizzesQuestion::$multiple and !empty($data['answers'])) {
+            $answers = $data['answers'];
+
+            $hasCorrect = false;
+            foreach ($answers as $answer) {
+                if (isset($answer['correct'])) {
+                    $hasCorrect = true;
+                }
+            }
+
+            if (!$hasCorrect) {
+                return response([
+                    'code' => 422,
+                    'errors' => [
+                        'current_answer' => [trans('quiz.current_answer_required')]
+                    ],
+                ], 422);
+            }
+        }
+
+        if ($data['type'] == QuizzesQuestion::$twice and !empty($data['answers'])) {
             $answers = $data['answers'];
 
             $hasCorrect = false;
@@ -86,15 +106,16 @@ class QuizQuestionController extends Controller
                     }
                 }
             }
+
             $status =  $quiz->status;
 
-            if($quiz->quizQuestions->pluck('grade')->sum() < 100){
+            if ($quiz->quizQuestions->pluck('grade')->sum() < 100) {
                 $status = Quiz::INACTIVE;
             }
             $quiz->update([
                 'status' => $status,
             ]);
-            
+
             return response()->json([
                 'code' => 200
             ], 200);
@@ -144,7 +165,7 @@ class QuizQuestionController extends Controller
         $rules = [
             'quiz_id' => 'required|exists:quizzes,id',
             'title' => 'required',
-            'grade' => ['required','integer','numeric', 'between:1,100', new GradeMax],
+            'grade' => ['required', 'integer', 'numeric', 'between:1,100', new GradeMax],
             'type' => 'required',
         ];
 
@@ -220,7 +241,7 @@ class QuizQuestionController extends Controller
 
                 $status =  $quiz->status;
 
-                if($quiz->quizQuestions->pluck('grade')->sum() < 100){
+                if ($quiz->quizQuestions->pluck('grade')->sum() < 100) {
                     $status = Quiz::INACTIVE;
                 }
                 $quiz->update([
@@ -248,5 +269,4 @@ class QuizQuestionController extends Controller
             'code' => 200
         ], 200);
     }
-
 }

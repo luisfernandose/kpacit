@@ -12,7 +12,7 @@
     <div class="container">
         <div class="row login-container">
             <div class="col-12 col-md-6 pl-0">
-                <img src="{{ getPageBackgroundSettings('register') }}" class="img-cover" alt="Login">
+                <img src="{{ getPageBackgroundSettings('register') }}" class="img-fluid" alt="Login">
             </div>
             <div class="col-12 col-md-6">
                 <div class="login-card">

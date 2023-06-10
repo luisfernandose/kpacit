@@ -211,6 +211,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'web'
             Route::get('/{id}/delete', 'WebinarController@destroy');
             Route::post('/search', 'WebinarController@search');
             Route::get('/excel', 'WebinarController@exportExcel');
+            Route::get('/{id}/share', 'WebinarController@share');
+            Route::post('/content/share', 'WebinarController@shareContent');
+            Route::get('/{id}/deleteShare', 'WebinarController@destroyShare');
 
             Route::group(['prefix' => 'features'], function () {
                 Route::get('/', 'FeatureWebinarsControllers@index');

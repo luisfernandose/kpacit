@@ -77,7 +77,8 @@ class ReportController extends Controller
         }
 
         $allStudents = User::select('id', 'full_name')->whereIn('id', $studentsIds)->get();
-        $quizResultsCount = QuizzesResult::whereIn('id',
+        $quizResultsCount = QuizzesResult::whereIn(
+            'id',
             QuizzesResult::select(\DB::raw('MAX(id) AS id'), 'user_grade')->whereIn('user_id', $studentsIds)->groupBy('quiz_id', 'user_id')->where(function ($query) use ($quiz_id) {
                 if ($quiz_id) {
                     $query->where('quiz_id', $quiz_id);
@@ -85,7 +86,8 @@ class ReportController extends Controller
             })->get()->pluck('id')
         )->count();
 
-        $quizAvgGrad = round(QuizzesResult::whereIn('id',
+        $quizAvgGrad = round(QuizzesResult::whereIn(
+            'id',
             QuizzesResult::select(\DB::raw('MAX(id) AS id'), 'user_grade')->whereIn('user_id', $allStudents)->groupBy('quiz_id', 'user_id')->get()->pluck('id')
         )->where(function ($query) use ($quiz_id) {
             if ($quiz_id) {
@@ -93,7 +95,8 @@ class ReportController extends Controller
             }
         })->avg('user_grade'), 2);
 
-        $passedCount = QuizzesResult::whereIn('id',
+        $passedCount = QuizzesResult::whereIn(
+            'id',
             QuizzesResult::select(\DB::raw('MAX(id) AS id'), 'user_grade')->whereIn('user_id', $allStudents)->where('status', \App\Models\QuizzesResult::$passed)->groupBy('quiz_id', 'user_id')->get()->pluck('id')
         )->where(function ($query) use ($quiz_id) {
             if ($quiz_id) {
@@ -167,6 +170,11 @@ class ReportController extends Controller
             $status_id = $request->get('status_id');
         }
 
+        $points = json_encode(collect([
+            ['name' => trans('panel.status_active'), 'y' => $data->where('status', 'active')->count()],
+            ['name' => trans('panel.status_inactive'), 'y' => $data->where('status', 'inactive')->count()],
+        ]));
+        
         return view(getTemplate() . '.panel.reports.courses', [
             "allStatus" => collect([
                 ['id' => 'active', 'title' => trans('panel.status_active')],
@@ -180,6 +188,7 @@ class ReportController extends Controller
             "data" => $data->whereIn('status', ['active', 'inactive'])->paginate(10),
             "active" => $data->where('status', 'active')->count(),
             "inactive" => $data->where('status', 'inactive')->count(),
+            "dataGraphic" => $points,
         ]);
     }
     public function users_not_finished_webinars(Request $request)
@@ -291,7 +300,6 @@ class ReportController extends Controller
                     $w->qty = $count;
                     $data[] = $w;
                 }
-
             } else {
                 $w->qty = false;
                 $data[] = $w;
@@ -306,7 +314,6 @@ class ReportController extends Controller
             "webinar_id" => $webinar_id,
             "webinars" => $allWebinars->get(),
         ]);
-
     }
 
     public function chart_quizzes()
@@ -339,7 +346,8 @@ class ReportController extends Controller
             $first = \Carbon\Carbon::create(date('Y-' . $month . '-01 00:00:00'))->toDateString() . " 00:00:00";
             $last = \Carbon\Carbon::create(date('Y-' . $month . '-01 00:00:00'))->endOfMonth()->toDateString() . " 23:59:59";
 
-            $quizAvgGrad = round(QuizzesResult::whereIn('id',
+            $quizAvgGrad = round(QuizzesResult::whereIn(
+                'id',
                 QuizzesResult::select(\DB::raw('MAX(id) AS id'), 'user_grade')->whereIn('user_id', $userList)->groupBy('quiz_id', 'user_id')->get()->pluck('id')
             )->whereIn('quiz_id', $quizzesIds)->whereBetween('created_at', [strtotime($first), strtotime($last)])->avg('user_grade'), 2);
 
@@ -350,5 +358,4 @@ class ReportController extends Controller
             "data" => $data,
         ]);
     }
-
 }

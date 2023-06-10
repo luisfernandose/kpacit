@@ -14,8 +14,8 @@ class PrerequisiteController extends Controller
         $data = $request->get('ajax')['new'];
 
         $validator = Validator::make($data, [
-            'webinar_id' => 'required',
-            'prerequisite_id' => 'required|unique:prerequisites,prerequisite_id,null,id,webinar_id,' . $data['webinar_id'],
+            //'webinar_id' => 'required',
+            //'prerequisite_id' => 'required|unique:prerequisites,prerequisite_id,null,id,webinar_id,' . $data['webinar_id'],
         ]);
 
         if ($validator->fails()) {

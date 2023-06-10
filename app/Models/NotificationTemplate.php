@@ -17,6 +17,7 @@ class NotificationTemplate extends Model
         'real_name' => '[u.name]',
         'instructor_name' => '[instructor.name]',
         'student_name' => '[student.name]',
+        'organization_name' => '[organization.name]',
         'group_title' => '[u.g.title]',
         'badge_title' => '[u.b.title]',
         'course_title' => '[c.title]',
@@ -36,9 +37,9 @@ class NotificationTemplate extends Model
     ];
 
     static $notificationTemplateAssignSetting = [
-        'admin' => ['new_comment_admin', 'support_message_admin', 'support_message_replied_admin', 'promotion_plan_admin', 'new_contact_message','payout_request_admin'],
+        'admin' => ['new_comment_admin', 'support_message_admin', 'support_message_replied_admin', 'promotion_plan_admin', 'new_contact_message', 'payout_request_admin'],
         'user' => ['new_badge', 'change_user_group'],
-        'course' => ['course_created', 'course_approve', 'course_reject', 'new_comment', 'support_message', 'support_message_replied', 'new_rating', 'webinar_reminder'],
+        'course' => ['course_created', 'course_shared', 'course_approve', 'course_reject', 'new_comment', 'support_message', 'support_message_replied', 'new_rating', 'webinar_reminder'],
         'financial' => ['new_financial_document', 'payout_request', 'payout_proceed', 'offline_payment_request', 'offline_payment_approved', 'offline_payment_rejected'],
         'sale_purchase' => ['new_sales', 'new_purchase'],
         'plans' => ['new_subscribe_plan', 'promotion_plan'],
