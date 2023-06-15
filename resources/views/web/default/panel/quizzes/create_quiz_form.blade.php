@@ -140,7 +140,7 @@
                     <h2 class="section-title after-line">{{ trans('public.questions') }}</h2>
 
                     <div class="d-flex align-items-center mt-20 mt-md-0">
-                        <button id="add_multiple_question" data-quiz-id="{{ $quiz->id }}" type="button"
+                        <button id="add_simple_question" data-quiz-id="{{ $quiz->id }}" type="button"
                             class="btn btn-primary btn-sm ml-10">{{ trans('quiz.add_simple_choice') }}</button>
                         <button id="add_multiple_question" data-quiz-id="{{ $quiz->id }}" type="button"
                             class="btn btn-primary btn-sm ml-10">{{ trans('quiz.add_multiple_choice') }}</button>
@@ -199,6 +199,7 @@
 <!-- Modal -->
 @if (!empty($quiz))
     @include(getTemplate() . '.panel.quizzes.modals.multiple_question', ['quiz' => $quiz])
+    @include(getTemplate() . '.panel.quizzes.modals.simple_question', ['quiz' => $quiz])
     @include(getTemplate() . '.panel.quizzes.modals.twice_question', ['quiz' => $quiz])
     @include(getTemplate() . '.panel.quizzes.modals.descriptive_question', ['quiz' => $quiz])
 @endif

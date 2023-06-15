@@ -190,7 +190,7 @@
                                                             class="webinar-actions d-block mt-10 text-danger delete-action">{{ trans('public.delete') }}</a>
                                                     @endif
 
-                                                    @if ($webinar->creator_id == $authUser->id)
+                                                    {{-- @if ($webinar->creator_id == $authUser->id)
                                                         <button id="share_webinar" data-webinar-id="{{ $webinar->id }}"
                                                             type="button" class="webinar-actions d-block mt-10"
                                                             style="padding: 0;
@@ -198,7 +198,7 @@
                                                             background: none;">
                                                             {{ trans('public.share') }}
                                                             {{ trans('public.course_page_title') }}</button>
-                                                    @endif
+                                                    @endif --}}
 
                                                 </div>
                                             </div>

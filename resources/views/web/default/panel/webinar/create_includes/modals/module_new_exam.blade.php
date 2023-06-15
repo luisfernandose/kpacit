@@ -1,5 +1,7 @@
 <div id="newExamModal" class="newExamModal d-none">
-    <div class="">
+    <div class="" style="
+width: 100%;
+height: 100%;">
         <div data-action="{{ '/panel/quizzes/store' }}" class="quiz-form webinar-form">
 
             <section>
@@ -12,9 +14,9 @@
                     </div>
 
                     <input type="hidden" name="ajax[webinar_id]" value="{{ $webinar->id }}">
-                
+
                     <div class="col-12 col-md-6">
-                        <div class="form-group mt-25">
+                        <div class="form-group mt-25 text-left text-left">
                             <label class="input-label">{{ trans('quiz.quiz_title') }}</label>
                             <input type="text" value="{{ !empty($quiz) ? $quiz->title : old('title') }}"
                                 name="ajax[title]"
@@ -29,7 +31,7 @@
                     </div>
 
                     <div class="col-12 col-md-6">
-                        <div class="form-group mt-25">
+                        <div class="form-group mt-25 text-left">
                             <label class="input-label">{{ trans('public.time') }} <span
                                     class="braces">({{ trans('public.minutes') }})</span></label>
                             <input type="text" value="{{ !empty($quiz) ? $quiz->time : old('time') }}"
@@ -44,7 +46,7 @@
                     </div>
 
                     <div class="col-12 col-md-6">
-                        <div class="form-group mt-25">
+                        <div class="form-group mt-25 text-left">
                             <label class="input-label">{{ trans('quiz.number_of_attemps') }}</label>
                             <input type="text" name="ajax[attempt]"
                                 value="{{ !empty($quiz) ? $quiz->attempt : old('attempt') }}"
@@ -59,7 +61,7 @@
                     </div>
 
                     <div class="col-12 col-md-6">
-                        <div class="form-group mt-25">
+                        <div class="form-group mt-25 text-left">
                             <label class="input-label">{{ trans('quiz.pass_mark') }}</label>
                             <input type="text" name="ajax[pass_mark]"
                                 value="{{ !empty($quiz) ? $quiz->pass_mark : old('pass_mark') }}" maxlength="3"
@@ -74,7 +76,7 @@
                     </div>
 
                     {{-- <div class="col-12 col-md-8">
-                        <div class="form-group mt-25 d-flex align-items-center ">
+                        <div class="form-group mt-25 text-left d-flex align-items-center ">
                             <label class="cursor-pointer input-label mr-20"
                                 for="certificateSwitch{{ !empty($quiz) ? $quiz->id : '' }}">{{ trans('quiz.certificate_included') }}</label>
                             <div class="custom-control custom-switch">
@@ -90,7 +92,7 @@
 
                     @if (!empty($quiz))
                         <div class="col-12 col-md-6">
-                            <div class="form-group mt-25 d-flex align-items-center">
+                            <div class="form-group mt-25 text-left d-flex align-items-center">
                                 <label class="cursor-pointer input-label mr-20"
                                     for="statusSwitch{{ !empty($quiz) ? $quiz->id : '' }}">{{ trans('quiz.active_quiz') }}</label>
                                 <div class="custom-control custom-switch">
@@ -166,12 +168,13 @@
                 </section>
             @endif
 
-            <input type="hidden" name="ajax[is_webinar_page]"
-                value="1">
+            <input type="hidden" name="ajax[is_webinar_page]" value="1">
 
-            <div class="mt-20 mb-20">
-                    <button type="button"
-                        class="js-submit-quiz-form btn btn-sm btn-primary">{{ !empty($quiz) ? trans('public.save_change') : trans('public.create') }}</button>
+            <div class="mt-20 mb-20 text-left">
+                <button type="button"
+                    class="js-submit-quiz-form btn btn-sm btn-primary">{{ !empty($quiz) ? trans('public.save_change') : trans('public.create') }}</button>
+                <button type="button"
+                    class="close-swl btn btn-sm btn-danger ml-10">{{ trans('public.close') }}</button>
             </div>
         </div>
     </div>

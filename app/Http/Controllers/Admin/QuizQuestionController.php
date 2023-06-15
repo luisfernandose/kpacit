@@ -13,10 +13,11 @@ class QuizQuestionController extends Controller
 {
     public function store(Request $request)
     {
+        dd($request->all());
         $this->validate($request, [
             'quiz_id' => 'required|exists:quizzes,id',
             'title' => 'required|max:255',
-            'grade' => ['required','integer','numeric', 'between:1,100' ,new GradeMax],
+            'grade' => ['required', 'integer', 'numeric', 'between:1,100', new GradeMax],
             'type' => 'required',
         ]);
 
@@ -77,7 +78,7 @@ class QuizQuestionController extends Controller
 
             $status =  $quiz->status;
 
-            if($quiz->quizQuestions->pluck('grade')->sum() < 100){
+            if ($quiz->quizQuestions->pluck('grade')->sum() < 100) {
                 $status = Quiz::INACTIVE;
             }
             $quiz->update([
@@ -128,7 +129,7 @@ class QuizQuestionController extends Controller
         $this->validate($request, [
             'quiz_id' => 'required|exists:quizzes,id',
             'title' => 'required',
-            'grade' => ['required','integer','numeric', 'between:1,100' ,new GradeMax],
+            'grade' => ['required', 'integer', 'numeric', 'between:1,100', new GradeMax],
             'type' => 'required',
         ]);
 
@@ -207,7 +208,7 @@ class QuizQuestionController extends Controller
                 }
                 $status =  $quiz->status;
 
-                if($quiz->quizQuestions->pluck('grade')->sum() < 100){
+                if ($quiz->quizQuestions->pluck('grade')->sum() < 100) {
                     $status = Quiz::INACTIVE;
                 }
                 $quiz->update([
@@ -232,5 +233,4 @@ class QuizQuestionController extends Controller
 
         return redirect()->back();
     }
-
 }

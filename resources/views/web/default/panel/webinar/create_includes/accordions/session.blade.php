@@ -30,7 +30,7 @@
 
                             <div class="custom-control custom-radio custom-control-inline">
                                 <input type="radio" name="ajax[new][session_api]" id="bigBlueButton{{$module['id']}}{{isset($edit)?'E':''}}" value="big_blue_button" @if(!empty($session) and $session->session_api == 'big_blue_button') checked @endif class="js-api-input custom-control-input" {{ (!empty($session) and $session->session_api != 'local') ? 'disabled' :'' }}>
-                                <label class="custom-control-label" for="bigBlueButton{{$module['id']}}{{isset($edit)?'E':''}}">{{ trans('webinars.session_big_blue_button') }}</label>
+                                <label class="custom-control-label" for="bigBlueButton{{$module['id']}}{{isset($edit)?'E':''}}">{{ trans('panel.create_session') }}</label>
                             </div>
 
                             {{-- <div class="custom-control custom-radio custom-control-inline">
