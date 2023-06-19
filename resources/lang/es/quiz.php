@@ -38,6 +38,7 @@ return [
     'empty_means_infinity' => 'Déjalo en blanco para ilimitado',
 
     'multiple_choice_question' => 'Pregunta de opción múltiple',
+    'simple_choice_question' => 'Pregunta de opción simple',
     'question_title' => 'Título de la pregunta',
     'question_grade' => 'Calificación de la pregunta',
     'question_grade_error' => 'Incorrecto todas las calificaciones no pueden exceder el valor',

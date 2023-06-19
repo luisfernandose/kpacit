@@ -8,7 +8,7 @@
 
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <input type="hidden" name="ajax[quiz_id]" value="{{ !empty($quiz) ? $quiz->id : '' }}">
-            <input type="hidden" name="ajax[type]" value="{{ \App\Models\QuizzesQuestion::$multiple }}">
+            <input type="hidden" name="ajax[type]" value="{{ \App\Models\QuizzesQuestion::$twice }}">
 
             <div class="row mt-25">
                 <div class="col-12 col-md-8">

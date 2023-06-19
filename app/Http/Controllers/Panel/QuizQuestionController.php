@@ -145,6 +145,10 @@ class QuizQuestionController extends Controller
 
                 if ($question->type == 'multiple') {
                     $html = (string)\View::make(getTemplate() . '.panel.quizzes.modals.multiple_question', $data);
+                } else if ($question->type == 'simple') {
+                    $html = (string)\View::make(getTemplate() . '.panel.quizzes.modals.multiple_question', $data);
+                } else if ($question->type == 'twice') {
+                    $html = (string)\View::make(getTemplate() . '.panel.quizzes.modals.multiple_question', $data);
                 } else {
                     $html = (string)\View::make(getTemplate() . '.panel.quizzes.modals.descriptive_question', $data);
                 }
@@ -211,6 +215,38 @@ class QuizQuestionController extends Controller
                     $answers = $data['answers'];
 
                     if ($quizQuestion->type == QuizzesQuestion::$multiple and $answers) {
+                        foreach ($answers as $key => $answer) {
+                            if (!empty($answer['title']) or !empty($answer['file'])) {
+                                $quizQuestionsAnswer = QuizzesQuestionsAnswer::where('id', $key)->first();
+
+                                if (!empty($quizQuestionsAnswer)) {
+                                    $quizQuestionsAnswer->update([
+                                        'question_id' => $quizQuestion->id,
+                                        'creator_id' => $user->id,
+                                        'title' => $answer['title'],
+                                        'image' => $answer['file'],
+                                        'correct' => isset($answer['correct']) ? true : false,
+                                        'created_at' => time()
+                                    ]);
+                                } else {
+                                    QuizzesQuestionsAnswer::create([
+                                        'question_id' => $quizQuestion->id,
+                                        'creator_id' => $user->id,
+                                        'title' => $answer['title'],
+                                        'image' => $answer['file'],
+                                        'correct' => isset($answer['correct']) ? true : false,
+                                        'created_at' => time()
+                                    ]);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if ($data['type'] == QuizzesQuestion::$simple and !empty($data['answers'])) {
+                    $answers = $data['answers'];
+
+                    if ($quizQuestion->type == QuizzesQuestion::$simple and $answers) {
                         foreach ($answers as $key => $answer) {
                             if (!empty($answer['title']) or !empty($answer['file'])) {
                                 $quizQuestionsAnswer = QuizzesQuestionsAnswer::where('id', $key)->first();

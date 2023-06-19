@@ -1,4 +1,4 @@
-@php
+{{-- @php
     $userLanguages = !empty($generalSettings['site_language']) ? [$generalSettings['site_language'] => getLanguages($generalSettings['site_language'])] : [];
 
     if (!empty($generalSettings['user_languages']) and is_array($generalSettings['user_languages'])) {
@@ -18,14 +18,14 @@
         <div class="top-contact-box border-bottom d-flex flex-column flex-md-row align-items-center justify-content-center">
 
             <div class="d-flex align-items-center justify-content-center">
-                @if(!empty($generalSettings['site_phone']))
+                @if (!empty($generalSettings['site_phone']))
                     <span class="d-flex align-items-center py-10 py-lg-0 text-dark-blue font-14">
                         <i data-feather="phone" width="20" height="20" class="mr-10"></i>
                         {{ $generalSettings['site_phone'] }}
                     </span>
                 @endif
 
-                @if(!empty($generalSettings['site_email']))
+                @if (!empty($generalSettings['site_email']))
                     <div class="border-left mx-5 mx-lg-15 h-100"></div>
 
                     <span class="d-flex align-items-center py-10 py-lg-0 text-dark-blue font-14">
@@ -70,7 +70,7 @@
                 @include(getTemplate().'.includes.notification-dropdown')
             </div>
 
-            @if(!empty($authUser))
+            @if (!empty($authUser))
 
 
                 <div class="dropdown">
@@ -88,7 +88,7 @@
                             <img src="/assets/default/img/icons/sidebar/dashboard.svg" width="25" alt="nav-icon">
                             <span class="font-14 text-dark-blue">{{ trans('public.my_panel') }}</span>
                         </a>
-                        @if($authUser->isTeacher() or $authUser->isOrganization())
+                        @if ($authUser->isTeacher() or $authUser->isOrganization())
                             <a class="dropdown-item" href="{{ $authUser->getProfileUrl() }}">
                                 <img src="/assets/default/img/icons/profile.svg" width="25" alt="nav-icon">
                                 <span class="font-14 text-dark-blue">{{ trans('public.my_profile') }}</span>
@@ -110,9 +110,94 @@
     </div>
 </div>
 
-
 @push('scripts_bottom')
     <link href="/assets/default/vendors/flagstrap/css/flags.css" rel="stylesheet">
     <script src="/assets/default/vendors/flagstrap/js/jquery.flagstrap.min.js"></script>
     <script src="/assets/default/js/parts/top_nav_flags.min.js"></script>
-@endpush
+@endpush --}}
+        
+<header id="masthead" itemscope="itemscope" itemtype="https://schema.org/WPHeader">
+    <p class="main-title bhf-hidden" itemprop="headline">
+        <a href="" title="Entrepreneur, Business and Corporate WordPress Theme" rel="home"></a>
+    </p>
+    <div data-elementor-type="wp-post" data-elementor-id="692" class="elementor elementor-692">
+        <div class="elementor-inner">
+            <div class="elementor-section-wrap">
+                <section
+                    class="elementor-section elementor-top-section elementor-element elementor-element-7afead5e elementor-section-content-middle elementor-section-boxed elementor-section-height-default elementor-section-height-default"
+                    data-id="7afead5e" data-element_type="section"
+                    data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+                    <div class="elementor-container elementor-column-gap-default">
+                        <div class="elementor-row">
+                            <div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-5dae9012"
+                                data-id="5dae9012" data-element_type="column">
+                                <div class="elementor-column-wrap elementor-element-populated">
+                                    <div class="elementor-widget-wrap">
+                                        <div class="elementor-element elementor-element-509e3e3e elementor-widget elementor-widget-sm-logo"
+                                            data-id="509e3e3e" data-element_type="widget"
+                                            data-widget_type="sm-logo.default">
+                                            <div class="elementor-widget-container">
+                                                <a class="seq_logo">
+                                                    <div class="seq_logo_img">
+                                                        <img src="@if (request()->is('login')) assets\images\logorojo.png @else assets\images\logo.png @endif"
+                                                            alt="">
+
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="elementor-column elementor-col-66 elementor-top-column elementor-element elementor-element-426efc65"
+                                data-id="426efc65" data-element_type="column">
+                                <div class="elementor-column-wrap elementor-element-populated">
+                                    <div class="elementor-widget-wrap">
+                                        <div class="sm_display_inline elementor-element elementor-element-76c6a9d8 elementor-widget__width-auto elementor-widget elementor-widget-sm-menu"
+                                            data-id="76c6a9d8" data-element_type="widget"
+                                            data-widget_type="sm-menu.default">
+                                            <div class="elementor-widget-container">
+                                                <div id="elementor-header-primary" class="elementor-header">
+                                                    <button class="sm_menu_toggle">
+                                                        <i class="ti ti-menu"></i>
+                                                    </button>
+                                                    <div id="sm_menu" class="sm_menu">
+                                                        <nav itemtype="http://schema.org/SiteNavigationElement"
+                                                            itemscope="itemscope" id="elementor-navigation"
+                                                            class="elementor-navigation" role="navigation"
+                                                            aria-label="Elementor Menu">
+                                                            <ul id="sm_nav_menu" class="sm_nav_menu">
+                                                                <li id="menu-item-3022"
+                                                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-46 current_page_item menu-item-3022">
+                                                                    <a href=""
+                                                                        style="color: @if (request()->is('login')) #171347 @else #FFFFFF @endif;"
+                                                                        aria-current="page">Home</a>
+                                                                </li>
+                                                                <li id="menu-item-3022"
+                                                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-46 current_page_item menu-item-3022">
+
+                                                                    @if (!empty($authUser))
+                                                                        <a style="color: @if (request()->is('login')) #171347 @else #FFFFFF @endif;"
+                                                                            href="{{ $authUser->isAdmin() ? '/admin' : '/panel' }}">{{ trans('public.my_panel') }}
+                                                                        </a>
+                                                                    @else
+                                                                        <a style="color: @if (request()->is('login')) #171347 @else #FFFFFF @endif;"
+                                                                            href="/login">{{ trans('auth.login') }}</a>
+                                                                    @endif
+                                                                </li>
+                                                            </ul>
+                                                        </nav>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</header>

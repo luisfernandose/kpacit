@@ -39,6 +39,7 @@ return [
     'empty_means_infinity' => 'Leave it blank for unlimited',
 
     'multiple_choice_question' => 'Multiple choice question',
+    'simple_choice_question' => 'Simple choice question',
     'question_title' => 'Question title',
     'question_grade' => 'Question grade',
     'question_grade_error' => 'Incorrect all grades cannot exceed value',
