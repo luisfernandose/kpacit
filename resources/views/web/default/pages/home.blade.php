@@ -3,6 +3,13 @@
 @push('styles_top')
     <link rel="stylesheet" href="/assets/default/vendors/swiper/swiper-bundle.min.css">
     <link rel="stylesheet" href="/assets/default/vendors/owl-carousel2/owl.carousel.min.css">
+
+    <!-- General CSS File -->
+    <link href="/assets/default/css/font.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/default/vendors/sweetalert2/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="/assets/default/vendors/toast/jquery.toast.min.css">
+    <link rel="stylesheet" href="/assets/default/vendors/simplebar/simplebar.css">
+    <link rel="stylesheet" href="/assets/default/css/app.css">
 @endpush
 
 @section('content')
@@ -1078,11 +1085,11 @@
                                                             </p>
                                                             <ul></ul>
                                                         </div>
-                                                        <form action="/12_corporate/contacts-1/#wpcf7-f2063-p156-o1"
-                                                            method="post" class="wpcf7-form init"
-                                                            aria-label="Contact form" novalidate="novalidate"
-                                                            data-status="init">
-                                                            <div style="display: none;">
+                                                        <form action="/contact/store" method="post"
+                                                            class="wpcf7-form init" aria-label="Contact form"
+                                                            novalidate="novalidate" data-status="init">
+                                                            {{ csrf_field() }}
+                                                            {{-- <div style="display: none;">
                                                                 <input type="hidden" name="_wpcf7" value="2063">
                                                                 <input type="hidden" name="_wpcf7_version"
                                                                     value="5.7.4">
@@ -1094,18 +1101,18 @@
                                                                     value="156">
                                                                 <input type="hidden" name="_wpcf7_posted_data_hash"
                                                                     value="">
-                                                            </div>
+                                                            </div> --}}
                                                             <div class="row">
                                                                 <div class="col-md-6">
                                                                     <p>
                                                                         <span class="wpcf7-form-control-wrap"
-                                                                            data-name="your-name">
+                                                                            data-name="name">
                                                                             <input size="40"
                                                                                 class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required"
                                                                                 aria-required="true" aria-invalid="false"
                                                                                 placeholder="Nombre Completo*"
-                                                                                value="" type="text"
-                                                                                name="your-name">
+                                                                                type="text" name="name"
+                                                                                value="{{ old('name') }}">
                                                                         </span>
                                                                     </p>
                                                                 </div>
@@ -1116,8 +1123,9 @@
                                                                             <input size="40"
                                                                                 class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required"
                                                                                 aria-required="true" aria-invalid="false"
-                                                                                placeholder="Empresa*" value=""
-                                                                                type="text" name="your-company">
+                                                                                placeholder="Empresa*" type="text"
+                                                                                name="subject"
+                                                                                value="{{ old('subject') }}">
                                                                         </span>
                                                                     </p>
                                                                 </div>
@@ -1126,12 +1134,13 @@
                                                                 <div class="col-md-6">
                                                                     <p>
                                                                         <span class="wpcf7-form-control-wrap"
-                                                                            data-name="your-email">
+                                                                            data-name="email">
                                                                             <input size="40"
                                                                                 class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email"
                                                                                 aria-required="true" aria-invalid="false"
-                                                                                placeholder="Email*" value=""
-                                                                                type="email" name="your-email">
+                                                                                placeholder="Email*" type="email"
+                                                                                name="email"
+                                                                                value="{{ old('email') }}">
                                                                         </span>
                                                                     </p>
                                                                 </div>
@@ -1143,11 +1152,16 @@
                                                                                 class="wpcf7-form-control wpcf7-text wpcf7-tel wpcf7-validates-as-required wpcf7-validates-as-tel"
                                                                                 aria-required="true" aria-invalid="false"
                                                                                 placeholder="Teléfono Contacto*"
-                                                                                value="" type="tel"
-                                                                                name="your-tel">
+                                                                                type="tel" name="phone"
+                                                                                value="{{ old('phone') }}">
                                                                         </span>
                                                                     </p>
                                                                 </div>
+                                                                <input type="text" name="message" class="form-control"
+                                                                    value="Estoy interesado en sus servicios." hidden
+                                                                    style="display: none;">
+                                                                <input type="text" name="captcha" class="form-control"
+                                                                    value="" hidden style="display: none;">
                                                             </div>
                                                             <p>
                                                                 <input class="wpcf7-form-control has-spinner wpcf7-submit"
@@ -1275,4 +1289,29 @@
             })
         });
     </script>
+    <!-- Template JS File -->
+    <script src="/assets/default/js/app.js"></script>
+    <script src="/assets/default/vendors/feather-icons/dist/feather.min.js"></script>
+    <script src="/assets/default/vendors/moment.min.js"></script>
+    <script src="/assets/default/vendors/sweetalert2/dist/sweetalert2.min.js"></script>
+    <script src="/assets/default/vendors/toast/jquery.toast.min.js"></script>
+    <script type="text/javascript" src="/assets/default/vendors/simplebar/simplebar.min.js"></script>
+
+    @if (session()->has('toast'))
+        <script>
+            (function() {
+                "use strict";
+
+                $.toast({
+                    heading: '{{ session()->get('toast')['title'] ?? '' }}',
+                    text: '{{ session()->get('toast')['msg'] ?? '' }}',
+                    bgColor: '@if (session()->get('toast')['status'] == 'success') #43d477 @else #f63c3c @endif',
+                    textColor: 'white',
+                    hideAfter: 10000,
+                    position: 'bottom-right',
+                    icon: '{{ session()->get('toast')['status'] }}'
+                });
+            })(jQuery)
+        </script>
+    @endif
 @endpush
