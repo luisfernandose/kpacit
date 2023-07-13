@@ -74,6 +74,26 @@ class QuizQuestionController extends Controller
             }
         }
 
+        if ($data['type'] == QuizzesQuestion::$simple and !empty($data['answers'])) {
+            $answers = $data['answers'];
+
+            $hasCorrect = false;
+            foreach ($answers as $answer) {
+                if (isset($answer['correct'])) {
+                    $hasCorrect = true;
+                }
+            }
+
+            if (!$hasCorrect) {
+                return response([
+                    'code' => 422,
+                    'errors' => [
+                        'current_answer' => [trans('quiz.current_answer_required')]
+                    ],
+                ], 422);
+            }
+        }
+
         $quiz = Quiz::where('id', $data['quiz_id'])
             ->where('creator_id', $user->id)
             ->first();
@@ -92,6 +112,38 @@ class QuizQuestionController extends Controller
             $quiz->increaseTotalMark($quizQuestion->grade);
 
             if ($quizQuestion->type == QuizzesQuestion::$multiple and !empty($data['answers'])) {
+
+                foreach ($answers as $answer) {
+                    if (!empty($answer['title']) or !empty($answer['file'])) {
+                        QuizzesQuestionsAnswer::create([
+                            'question_id' => $quizQuestion->id,
+                            'creator_id' => $user->id,
+                            'title' => $answer['title'],
+                            'image' => $answer['file'],
+                            'correct' => isset($answer['correct']) ? true : false,
+                            'created_at' => time()
+                        ]);
+                    }
+                }
+            }
+
+            if ($quizQuestion->type == QuizzesQuestion::$twice and !empty($data['answers'])) {
+
+                foreach ($answers as $answer) {
+                    if (!empty($answer['title']) or !empty($answer['file'])) {
+                        QuizzesQuestionsAnswer::create([
+                            'question_id' => $quizQuestion->id,
+                            'creator_id' => $user->id,
+                            'title' => $answer['title'],
+                            'image' => $answer['file'],
+                            'correct' => isset($answer['correct']) ? true : false,
+                            'created_at' => time()
+                        ]);
+                    }
+                }
+            }
+
+            if ($quizQuestion->type == QuizzesQuestion::$simple and !empty($data['answers'])) {
 
                 foreach ($answers as $answer) {
                     if (!empty($answer['title']) or !empty($answer['file'])) {

@@ -444,6 +444,7 @@
   line-height: normal;
   text-align: center;
   word-wrap: break-word;
+  height: 100% !important;
 }
 
 .swal2-input,

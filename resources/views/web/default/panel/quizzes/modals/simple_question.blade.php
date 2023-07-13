@@ -59,7 +59,7 @@
                     @endforeach
                 @else
                     <div
-                        class="add-answer-card mt-25 {{ (empty($answer) or !empty($loop) and $loop->iteration == 1) ? 'main-answer-row' : '' }}">
+                        class="add-answer-card mt-25 {{ (empty($answer) or !empty($loop) and $loop->iteration == 1) ? 'main-answer-row' : '' }}" style="background-color: lightgray">
                         <button type="button"
                             class="btn btn-sm btn-danger rounded-circle answer-remove {{ (!empty($answer) and !empty($loop) and $loop->iteration > 1) ? '' : 'd-none' }}">
                             <i data-feather="x" width="20" height="20"></i>

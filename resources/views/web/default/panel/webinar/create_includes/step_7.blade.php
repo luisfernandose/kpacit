@@ -1,17 +1,17 @@
 @push('styles_top')
     <style>
         .swal-wide {
-            width: 100% !important;
+            width: 48rem !important;
             height: 100% !important;
             padding: 0;
         }
-    </style>
-    <style>
+
         /* The container */
         .container {
             display: block;
             position: relative;
             padding-left: 35px;
+            height: 0;
             margin-bottom: 12px;
             cursor: pointer;
             font-size: 22px;
@@ -35,11 +35,12 @@
             position: absolute;
             top: 0;
             left: 0;
-            height: 25px;
-            width: 25px;
+            width: 1.5em;
+            height: 1.5em;
             background-color: #eee;
             border: 1px solid #47c363;
             display: block;
+            border-radius: 50%;
         }
 
         /* On mouse-over, add a grey background color */
@@ -66,15 +67,33 @@
 
         /* Style the checkmark/indicator */
         .container .checkmark:after {
-            left: 9px;
+            left: 10px;
             top: 5px;
-            width: 5px;
-            height: 10px;
+            width: 10px;
+            height: 15px;
             border: solid white;
             border-width: 0 3px 3px 0;
             -webkit-transform: rotate(45deg);
             -ms-transform: rotate(45deg);
             transform: rotate(45deg);
+        }
+    </style>
+    <style>
+        .checkbox-round {
+            width: 1.5em;
+            height: 1.5em;
+            background-color: white;
+            border-radius: 50%;
+            vertical-align: middle;
+            border: 1px solid #ddd;
+            appearance: none;
+            -webkit-appearance: none;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .checkbox-round:checked {
+            background-color: #39b54a;
         }
     </style>
 @endpush
@@ -355,9 +374,9 @@
                                         @include(getTemplate() . '.panel.quizzes.modals.multiple_question',
                                             ['quiz' => $quizInfo]
                                         )
-                                        @include(getTemplate() . '.panel.quizzes.modals.simple_question',
-                                            ['quiz' => $quizInfo]
-                                        )
+                                        @include(getTemplate() . '.panel.quizzes.modals.simple_question', [
+                                            'quiz' => $quizInfo,
+                                        ])
                                         @include(getTemplate() . '.panel.quizzes.modals.twice_question', [
                                             'quiz' => $quizInfo,
                                         ])

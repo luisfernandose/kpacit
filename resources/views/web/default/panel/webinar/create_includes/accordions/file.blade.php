@@ -139,10 +139,10 @@
 
                                 <div
                                     class="js-downloadable-file form-group mt-20 @if (!empty($file) and $file->storage == 'online') d-none @endif">
-                                    <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
                                         <label class="cursor-pointer input-label"
                                             for="downloadableSwitch{{ $module['id'] }}_record{{ isset($edit) ? 'E' : '' }}">{{ trans('home.downloadable') }}</label>
-                                        <div class="custom-control custom-switch">
+                                        <div class="custom-control custom-switch ml-20">
                                             <input type="checkbox" name="ajax[new][downloadable]"
                                                 class="custom-control-input"
                                                 id="downloadableSwitch{{ $module['id'] }}_record{{ isset($edit) ? 'E' : '' }}">

@@ -158,8 +158,18 @@
                                 <h4 class="question-title">{{ $question->title }}</h4>
                                 <div class="font-12 mt-5 question-infos" data-question-id="{{ $question->id }}"
                                     data-question-grade="{{ $question->grade }}">
-                                    <span>{{ $question->type === App\Models\QuizzesQuestion::$multiple ? trans('quiz.multiple_choice') : trans('quiz.descriptive') }}
-                                        | {{ trans('quiz.grade') }}: {{ $question->grade }}</span>
+                                    <span>
+                                        @if ($question->type === App\Models\QuizzesQuestion::$multiple)
+                                            {{ trans('quiz.multiple_choice') }}
+                                        @elseif ($question->type === App\Models\QuizzesQuestion::$simple)
+                                            {{ trans('quiz.simple_choice_question') }}
+                                        @elseif ($question->type === App\Models\QuizzesQuestion::$twice)
+                                            {{ trans('quiz.twice_choice') }}
+                                        @else
+                                            {{ trans('quiz.descriptive') }}
+                                        @endif
+                                        | {{ trans('quiz.grade') }}: {{ $question->grade }}
+                                    </span>
                                 </div>
                             </div>
 

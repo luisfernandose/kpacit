@@ -10,9 +10,9 @@
             <input type="hidden" name="ajax[quiz_id]" value="{{ !empty($quiz) ? $quiz->id : '' }}">
             <input type="hidden" name="ajax[type]" value="{{ \App\Models\QuizzesQuestion::$multiple }}">
 
-            <div class="row mt-25">
+            <div class="row mt-10">
                 <div class="col-12 col-md-8">
-                    <div class="form-group">
+                    <div class="form-group" style="text-align: center">
                         <label class="input-label">{{ trans('quiz.question_title') }}</label>
                         <input type="text" name="ajax[title]" class="js-ajax-title form-control"
                             value="{{ !empty($question_edit) ? $question_edit->title : '' }}" />
@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
-                    <div class="form-group">
+                    <div class="form-group" style="text-align: center">
                         <label class="input-label">{{ trans('quiz.grade') }}</label>
                         <input type="text" name="ajax[grade]" maxlength="3"
                             class="js-ajax-grade form-control only_number"
@@ -35,12 +35,12 @@
                 </div>
             </div>
 
-            <div class="mt-25">
+            <div class="mt-10">
                 <h2 class="section-title after-line">{{ trans('public.answers') }}</h2>
 
                 <div class="d-flex justify-content-between align-items-center">
                     <button type="button"
-                        class="btn btn-sm btn-primary mt-15 add-answer-btn">{{ trans('quiz.add_an_answer') }}</button>
+                        class="btn btn-sm btn-primary add-answer-btn">{{ trans('quiz.add_an_answer') }}</button>
 
                     <div class="form-group">
                         <input type="hidden" name="ajax[current_answer]" class="js-ajax-current_answer " />
@@ -49,12 +49,12 @@
                 </div>
             </div>
 
-            <div class="add-answer-container">
+            <div class="add-answer-container" style="height: 22rem">
 
                 @if (!empty($question_edit->quizzesQuestionsAnswers) and !$question_edit->quizzesQuestionsAnswers->isEmpty())
                     @foreach ($question_edit->quizzesQuestionsAnswers as $answer)
-                        <div
-                            class="add-answer-card mt-25 {{ (empty($answer) or !empty($loop) and $loop->iteration == 1) ? 'main-answer-row' : '' }}">
+                        <div class="add-answer-card mt-25 {{ (empty($answer) or !empty($loop) and $loop->iteration == 1) ? 'main-answer-row' : '' }}"
+                            style="background-color: lightgray">
                             <button type="button"
                                 class="btn btn-sm btn-danger rounded-circle answer-remove {{ (!empty($answer) and !empty($loop) and $loop->iteration > 1) ? '' : 'd-none' }}">
                                 <i data-feather="x" width="20" height="20"></i>
@@ -62,7 +62,7 @@
 
                             <div class="row">
                                 <div class="col-12">
-                                    <div class="form-group">
+                                    <div class="form-group" style="text-align: center">
                                         <label class="input-label">{{ trans('quiz.answer_title') }}</label>
                                         <input type="text"
                                             name="ajax[answers][{{ !empty($answer) ? $answer->id : 'record' }}][title]"
@@ -71,9 +71,9 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-15 align-items-end">
+                            <div class="row align-items-end">
                                 <div class="col-12 col-md-8">
-                                    <div class="form-group">
+                                    <div class="form-group" style="text-align: center">
                                         <label class="input-label">{{ trans('quiz.answer_image') }} <span
                                                 class="braces">({{ trans('public.optional') }})</span></label>
                                         <div class="input-group">
@@ -105,7 +105,8 @@
                                             name="ajax[answers][{{ !empty($answer) ? $answer->id : 'record' }}][correct]"
                                             @if (!empty($answer) and $answer->correct) checked @endif class=""> --}}
                                             <label class="container">
-                                                <input id="correctAnswerSwitch{{ !empty($answer) ? $answer->id : '' }}"
+                                                <input class="checkbox-round"
+                                                    id="correctAnswerSwitch{{ !empty($answer) ? $answer->id : '' }}"
                                                     type="checkbox"
                                                     name="ajax[answers][{{ !empty($answer) ? $answer->id : 'record' }}][correct]"
                                                     @if (!empty($answer) and $answer->correct) checked @endif>
@@ -118,8 +119,8 @@
                         </div>
                     @endforeach
                 @else
-                    <div
-                        class="add-answer-card mt-25 {{ (empty($answer) or !empty($loop) and $loop->iteration == 1) ? 'main-answer-row' : '' }}">
+                    <div class="add-answer-card mt-25 {{ (empty($answer) or !empty($loop) and $loop->iteration == 1) ? 'main-answer-row' : '' }}"
+                        style="background-color: lightgray">
                         <button type="button"
                             class="btn btn-sm btn-danger rounded-circle answer-remove {{ (!empty($answer) and !empty($loop) and $loop->iteration > 1) ? '' : 'd-none' }}">
                             <i data-feather="x" width="20" height="20"></i>
@@ -127,7 +128,7 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group">
+                                <div class="form-group" style="text-align: center">
                                     <label class="input-label">{{ trans('quiz.answer_title') }}</label>
                                     <input type="text"
                                         name="ajax[answers][{{ !empty($answer) ? $answer->id : 'record' }}][title]"
@@ -136,9 +137,9 @@
                             </div>
                         </div>
 
-                        <div class="row mt-15 align-items-end">
+                        <div class="row align-items-end">
                             <div class="col-12 col-md-8">
-                                <div class="form-group">
+                                <div class="form-group" style="text-align: center">
                                     <label class="input-label">{{ trans('quiz.answer_image') }} <span
                                             class="braces">({{ trans('public.optional') }})</span></label>
                                     <div class="input-group">
@@ -170,11 +171,13 @@
                                             name="ajax[answers][{{ !empty($answer) ? $answer->id : 'record' }}][correct]"
                                             @if (!empty($answer) and $answer->correct) checked @endif class=""> --}}
                                         <label class="container">
-                                            <input id="correctAnswerSwitch{{ !empty($answer) ? $answer->id : '' }}"
+                                            <input class="checkbox-round"
+                                                id="correctAnswerSwitch{{ !empty($answer) ? $answer->id : '' }}"
                                                 type="checkbox"
                                                 name="ajax[answers][{{ !empty($answer) ? $answer->id : 'record' }}][correct]"
                                                 @if (!empty($answer) and $answer->correct) checked @endif>
                                             <span class="checkmark"></span>
+                                            {{-- <label for="correctAnswerSwitch{{ !empty($answer) ? $answer->id : '' }}" class="fas fa-bars"></label> --}}
                                         </label>
                                     </div>
                                 </div>
@@ -184,7 +187,7 @@
                 @endif
             </div>
 
-            <div class="d-flex align-items-center justify-content-end mt-25">
+            <div class="d-flex align-items-center justify-content-end mt-10">
                 <button type="button"
                     class="save-question btn btn-sm btn-primary">{{ trans('public.save') }}</button>
                 <button type="button"

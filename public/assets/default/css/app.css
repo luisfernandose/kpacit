@@ -19995,6 +19995,23 @@ p {
     opacity: 1;
 }
 
+.quiz-form .question-multi-answers .answer-item input[type="checkbox"] {
+    visibility: hidden;
+    display: none;
+    transition: all 0.3s ease;
+}
+
+.quiz-form .question-multi-answers .answer-item input[type="checkbox"]:checked+.answer-label {
+    box-shadow: 0 10px 30px 0 rgba(67, 212, 119, 0.3);
+    border: 3px solid #43d477;
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+.quiz-form .question-multi-answers .answer-item input[type="checkbox"]:checked+.answer-label .image-container:after {
+    opacity: 1;
+}
+
 .reproductor {
     display: flex;
 }
