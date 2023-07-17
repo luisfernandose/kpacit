@@ -31,6 +31,8 @@ class ContactController extends Controller
 
     public function store(Request $request)
     {
+        $generalSettings = getGeneralSettings();
+
         $this->validate($request, [
             'name' => 'required|string',
             'email' => 'required|string|email',
@@ -56,10 +58,12 @@ class ContactController extends Controller
             <br>
         ";
 
-        $email = getGeneralSettings('site_email');
+        $mail = [
+            'title' => 'Solicitud',
+            'message' => $message,
+        ];
 
-        \Mail::to($email)->send(new SendNotifications(['title' => 'Solicitud información', 'message' => $message]));
-
+        \Mail::to('registro@kpacit.com')->send(new \App\Mail\SendNotifications($mail));
         return redirect('/');
     }
 

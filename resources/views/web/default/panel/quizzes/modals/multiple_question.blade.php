@@ -10,7 +10,7 @@
             <input type="hidden" name="ajax[quiz_id]" value="{{ !empty($quiz) ? $quiz->id : '' }}">
             <input type="hidden" name="ajax[type]" value="{{ \App\Models\QuizzesQuestion::$multiple }}">
 
-            <div class="row mt-10">
+            <div class="row mt-25">
                 <div class="col-12 col-md-8">
                     <div class="form-group" style="text-align: center">
                         <label class="input-label">{{ trans('quiz.question_title') }}</label>
@@ -35,12 +35,12 @@
                 </div>
             </div>
 
-            <div class="mt-10">
+            <div class="mt-25">
                 <h2 class="section-title after-line">{{ trans('public.answers') }}</h2>
 
                 <div class="d-flex justify-content-between align-items-center">
                     <button type="button"
-                        class="btn btn-sm btn-primary add-answer-btn">{{ trans('quiz.add_an_answer') }}</button>
+                        class="btn btn-sm btn-primary mt-15 add-answer-btn">{{ trans('quiz.add_an_answer') }}</button>
 
                     <div class="form-group">
                         <input type="hidden" name="ajax[current_answer]" class="js-ajax-current_answer " />
@@ -49,7 +49,7 @@
                 </div>
             </div>
 
-            <div class="add-answer-container" style="height: 22rem">
+            <div class="add-answer-container" style="height: 70% !important">
 
                 @if (!empty($question_edit->quizzesQuestionsAnswers) and !$question_edit->quizzesQuestionsAnswers->isEmpty())
                     @foreach ($question_edit->quizzesQuestionsAnswers as $answer)

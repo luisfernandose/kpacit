@@ -13,7 +13,6 @@ class QuizQuestionController extends Controller
 {
     public function store(Request $request)
     {
-        dd($request->all());
         $this->validate($request, [
             'quiz_id' => 'required|exists:quizzes,id',
             'title' => 'required|max:255',
@@ -182,9 +181,13 @@ class QuizQuestionController extends Controller
                 ];
 
                 if ($question->type == 'multiple') {
-                    $html = (string)\View::make('admin.quizzes.modals.multiple_question', $data);
+                    $html = (string)\View::make(getTemplate() . '.panel.quizzes.modals.multiple_question', $data);
+                } else if ($question->type == 'simple') {
+                    $html = (string)\View::make(getTemplate() . '.panel.quizzes.modals.simple_question', $data);
+                } else if ($question->type == 'twice') {
+                    $html = (string)\View::make(getTemplate() . '.panel.quizzes.modals.twice_question', $data);
                 } else {
-                    $html = (string)\View::make('admin.quizzes.modals.descriptive_question', $data);
+                    $html = (string)\View::make(getTemplate() . '.panel.quizzes.modals.descriptive_question', $data);
                 }
 
                 return response()->json([

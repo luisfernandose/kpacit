@@ -22,7 +22,8 @@
             <h2 class="section-title">{{ trans('panel.percents_quizzes') }}</h2>
 
             <div class="activities-container mt-25 p-20 p-lg-35">
-                <div class="row">
+                <div id="container"></div>
+                {{-- <div class="row">
                     <div class="col-12 d-flex align-items-center justify-content-center">
                         <div class="d-flex flex-column align-items-center text-center">
                             <img src="/assets/default/img/activity/48.svg" width="64" height="64" alt="">
@@ -30,7 +31,7 @@
                             <span class="font-16 text-gray font-weight-500">{{ trans('panel.percent_quizzes') }}</span>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </section>
     </div>
@@ -146,4 +147,40 @@
     <script src="/assets/default/vendors/moment.min.js"></script>
     <script src="/assets/default/vendors/daterangepicker/daterangepicker.min.js"></script>
     <script src="/assets/default/vendors/select2/select2.min.js"></script>
+
+    <script src="/assets/default/js/panel/quiz_list.min.js"></script>
+    <script>
+        Highcharts.chart('container', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: null,
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            accessibility: {
+                point: {
+                    valueSuffix: '%'
+                }
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                    }
+                }
+            },
+            series: [{
+                name: 'Status',
+                colorByPoint: true,
+                data: <?= $dataGraphic ?>
+            }]
+        });
+    </script>
 @endpush

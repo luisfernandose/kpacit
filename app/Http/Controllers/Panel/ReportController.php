@@ -117,6 +117,11 @@ class ReportController extends Controller
         })->orderBy('created_at', 'desc')
             ->paginate(10);
 
+        $points = json_encode(collect([
+            ['name' => trans('panel.percent_quizzes'), 'y' => $quizAvgGrad],
+            ['name' => trans('quiz.success_rate'), 'y' => $successRate],
+        ]));
+
         return view(getTemplate() . '.panel.reports.percents_quizzes', [
             'pageTitle' => trans('quiz.results'),
             'quizResultsCount' => $query->count(),
@@ -132,6 +137,7 @@ class ReportController extends Controller
             "user_id" => $user_id,
             "quiz_id" => $quiz_id,
             "quizzes " => $quizzes,
+            "dataGraphic" => $points,
         ]);
     }
     public function courses(Request $request)
@@ -174,7 +180,7 @@ class ReportController extends Controller
             ['name' => trans('panel.status_active'), 'y' => $data->where('status', 'active')->count()],
             ['name' => trans('panel.status_inactive'), 'y' => $data->where('status', 'inactive')->count()],
         ]));
-        
+
         return view(getTemplate() . '.panel.reports.courses', [
             "allStatus" => collect([
                 ['id' => 'active', 'title' => trans('panel.status_active')],
@@ -241,6 +247,11 @@ class ReportController extends Controller
         $data = Sale::whereIn('id', array_column($ids, "id"))->paginate(10);
 
         $dataCount = Sale::whereIn('id', array_column($ids, "id"))->get()->count();
+            
+        $points = json_encode(collect([
+            ['name' => trans('panel.users_not_finished_webinars'), 'y' => $dataCount],
+            ['name' => trans('panel.students_list'), 'y' => $users->count()],
+        ]));
 
         return view(getTemplate() . '.panel.reports.users_not_finished_webinars', [
             "webinar_id" => $webinar_id,
@@ -249,6 +260,7 @@ class ReportController extends Controller
             "dataCount" => $dataCount,
             "webinars" => $webinars,
             "userList" => $users,
+            "dataGraphic" => $points,
         ]);
     }
 
@@ -306,6 +318,11 @@ class ReportController extends Controller
             }
         }
 
+        $points = json_encode(collect([
+            ['name' => trans('panel.courses_not_started'), 'y' => count($data)],
+            ['name' => trans('panel.students_list'), 'y' => $allWebinars->get()->count()],
+        ]));
+
         return view(getTemplate() . '.panel.reports.courses_not_started', [
             "data" => $data,
             "dataCount" => count($data),
@@ -313,6 +330,7 @@ class ReportController extends Controller
             "category_id" => $category_id,
             "webinar_id" => $webinar_id,
             "webinars" => $allWebinars->get(),
+            "dataGraphic" => $points,
         ]);
     }
 

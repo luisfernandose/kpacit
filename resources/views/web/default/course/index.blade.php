@@ -262,19 +262,19 @@
                                                                     </svg>
                                                                 </a>
                                                             @else
-                                                                <button type="button" data-id="{{ $file->id }}"
-                                                                    class="js-play-video btn-play" data-toggle="tooltip"
-                                                                    data-placement="top"
-                                                                    title="{{ trans('public.play') }}">
-                                                                    @if (
-                                                                        $file->file_type == 'doc' ||
-                                                                            $file->file_type == 'docx' ||
-                                                                            $file->file_type == 'xls' ||
-                                                                            $file->file_type == 'xlsx' ||
-                                                                            $file->file_type == 'xls' ||
-                                                                            $file->file_type == 'ppt' ||
-                                                                            $file->file_type == 'pptx' ||
-                                                                            $file->file_type == 'pdf')
+                                                                @if (
+                                                                    $file->file_type == 'doc' ||
+                                                                        $file->file_type == 'docx' ||
+                                                                        $file->file_type == 'xls' ||
+                                                                        $file->file_type == 'xlsx' ||
+                                                                        $file->file_type == 'xls' ||
+                                                                        $file->file_type == 'ppt' ||
+                                                                        $file->file_type == 'pptx' ||
+                                                                        $file->file_type == 'pdf')
+                                                                    <button type="button" data-id="{{ $file->id }}"
+                                                                        class="js-play-video btn-play"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="{{ trans('public.open') }}">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                                             class="icon icon-tabler icon-tabler-file"
                                                                             width="20" height="20"
@@ -288,7 +288,12 @@
                                                                             <path
                                                                                 d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
                                                                         </svg>
-                                                                    @else
+                                                                    </button>
+                                                                @else
+                                                                    <button type="button" data-id="{{ $file->id }}"
+                                                                        class="js-play-video btn-play"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="{{ trans('public.play') }}">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                                             class="icon icon-tabler icon-tabler-player-play"
                                                                             width="20" height="20"
@@ -300,8 +305,8 @@
                                                                                 fill="none" />
                                                                             <path d="M7 4v16l13 -8z" />
                                                                         </svg>
-                                                                    @endif
-                                                                </button>
+                                                                    </button>
+                                                                @endif
                                                             @endif
                                                         @else
                                                             <button type="button"
@@ -358,19 +363,20 @@
                                                                 </svg>
                                                             </a>
                                                         @else
-                                                            <button type="button" data-id="{{ $file->id }}"
-                                                                class="js-play-video btn-play click.dismiss.bs.modal"
-                                                                id="primero{{ $file->id }}" data-toggle="tooltip"
-                                                                data-placement="top" title="{{ trans('public.play') }}">
-                                                                @if (
-                                                                    $file->file_type == 'doc' ||
-                                                                        $file->file_type == 'docx' ||
-                                                                        $file->file_type == 'xls' ||
-                                                                        $file->file_type == 'xlsx' ||
-                                                                        $file->file_type == 'xls' ||
-                                                                        $file->file_type == 'ppt' ||
-                                                                        $file->file_type == 'pptx' ||
-                                                                        $file->file_type == 'pdf')
+                                                            @if (
+                                                                $file->file_type == 'doc' ||
+                                                                    $file->file_type == 'docx' ||
+                                                                    $file->file_type == 'xls' ||
+                                                                    $file->file_type == 'xlsx' ||
+                                                                    $file->file_type == 'xls' ||
+                                                                    $file->file_type == 'ppt' ||
+                                                                    $file->file_type == 'pptx' ||
+                                                                    $file->file_type == 'pdf')
+                                                                <button type="button" data-id="{{ $file->id }}"
+                                                                    class="js-play-video btn-play click.dismiss.bs.modal"
+                                                                    id="primero{{ $file->id }}" data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title="{{ trans('public.open') }}">
                                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                                         class="icon icon-tabler icon-tabler-file"
                                                                         width="20" height="20" viewBox="0 0 24 24"
@@ -382,7 +388,13 @@
                                                                         <path
                                                                             d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
                                                                     </svg>
-                                                                @else
+                                                                </button>
+                                                            @else
+                                                                <button type="button" data-id="{{ $file->id }}"
+                                                                    class="js-play-video btn-play click.dismiss.bs.modal"
+                                                                    id="primero{{ $file->id }}" data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title="{{ trans('public.play') }}">
                                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                                         class="icon icon-tabler icon-tabler-player-play"
                                                                         width="20" height="20" viewBox="0 0 24 24"
@@ -392,8 +404,8 @@
                                                                             fill="none" />
                                                                         <path d="M7 4v16l13 -8z" />
                                                                     </svg>
-                                                                @endif
-                                                            </button>
+                                                                </button>
+                                                            @endif
                                                         @endif
                                                     @endif
                                                 </div>
@@ -470,19 +482,19 @@
                                                                     </svg>
                                                                 </a>
                                                             @else
-                                                                <button type="button" data-id="{{ $file->id }}"
-                                                                    class="js-play-video btn-play" data-toggle="tooltip"
-                                                                    data-placement="top"
-                                                                    title="{{ trans('public.play') }}">
-                                                                    @if (
-                                                                        $file->file_type == 'doc' ||
-                                                                            $file->file_type == 'docx' ||
-                                                                            $file->file_type == 'xls' ||
-                                                                            $file->file_type == 'xlsx' ||
-                                                                            $file->file_type == 'xls' ||
-                                                                            $file->file_type == 'ppt' ||
-                                                                            $file->file_type == 'pptx' ||
-                                                                            $file->file_type == 'pdf')
+                                                                @if (
+                                                                    $file->file_type == 'doc' ||
+                                                                        $file->file_type == 'docx' ||
+                                                                        $file->file_type == 'xls' ||
+                                                                        $file->file_type == 'xlsx' ||
+                                                                        $file->file_type == 'xls' ||
+                                                                        $file->file_type == 'ppt' ||
+                                                                        $file->file_type == 'pptx' ||
+                                                                        $file->file_type == 'pdf')
+                                                                    <button type="button" data-id="{{ $file->id }}"
+                                                                        class="js-play-video btn-play"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="{{ trans('public.open') }}">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                                             class="icon icon-tabler icon-tabler-file"
                                                                             width="20" height="20"
@@ -496,7 +508,12 @@
                                                                             <path
                                                                                 d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
                                                                         </svg>
-                                                                    @else
+                                                                    </button>
+                                                                @else
+                                                                    <button type="button" data-id="{{ $file->id }}"
+                                                                        class="js-play-video btn-play"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="{{ trans('public.play') }}">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                                             class="icon icon-tabler icon-tabler-player-play"
                                                                             width="20" height="20"
@@ -508,8 +525,8 @@
                                                                                 fill="none" />
                                                                             <path d="M7 4v16l13 -8z" />
                                                                         </svg>
-                                                                    @endif
-                                                                </button>
+                                                                    </button>
+                                                                @endif
                                                             @endif
                                                         @else
                                                             <button type="button"
@@ -564,18 +581,19 @@
                                                                 </svg>
                                                             </a>
                                                         @else
-                                                            <button type="button" data-id="{{ $file->id }}"
-                                                                class="js-play-video btn-play" data-toggle="tooltip"
-                                                                data-placement="top" title="{{ trans('public.play') }}">
-                                                                @if (
-                                                                    $file->file_type == 'doc' ||
-                                                                        $file->file_type == 'docx' ||
-                                                                        $file->file_type == 'xls' ||
-                                                                        $file->file_type == 'xlsx' ||
-                                                                        $file->file_type == 'xls' ||
-                                                                        $file->file_type == 'ppt' ||
-                                                                        $file->file_type == 'pptx' ||
-                                                                        $file->file_type == 'pdf')
+                                                            @if (
+                                                                $file->file_type == 'doc' ||
+                                                                    $file->file_type == 'docx' ||
+                                                                    $file->file_type == 'xls' ||
+                                                                    $file->file_type == 'xlsx' ||
+                                                                    $file->file_type == 'xls' ||
+                                                                    $file->file_type == 'ppt' ||
+                                                                    $file->file_type == 'pptx' ||
+                                                                    $file->file_type == 'pdf')
+                                                                <button type="button" data-id="{{ $file->id }}"
+                                                                    class="js-play-video btn-play" data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title="{{ trans('public.open') }}">
                                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                                         class="icon icon-tabler icon-tabler-file"
                                                                         width="20" height="20" viewBox="0 0 24 24"
@@ -587,7 +605,12 @@
                                                                         <path
                                                                             d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
                                                                     </svg>
-                                                                @else
+                                                                </button>
+                                                            @else
+                                                                <button type="button" data-id="{{ $file->id }}"
+                                                                    class="js-play-video btn-play" data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title="{{ trans('public.play') }}">
                                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                                         class="icon icon-tabler icon-tabler-player-play"
                                                                         width="20" height="20" viewBox="0 0 24 24"
@@ -597,8 +620,8 @@
                                                                             fill="none" />
                                                                         <path d="M7 4v16l13 -8z" />
                                                                     </svg>
-                                                                @endif
-                                                            </button>
+                                                                </button>
+                                                            @endif
                                                         @endif
                                                     @endif
                                                 </div>

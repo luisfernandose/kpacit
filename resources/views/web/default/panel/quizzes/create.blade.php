@@ -1,6 +1,180 @@
 @extends(getTemplate() . '.panel.layouts.panel_layout')
 
 @push('styles_top')
+    <style>
+        .swal-wide {
+            width: 48rem !important;
+            height: 100% !important;
+            padding: 0;
+        }
+
+        .swal-wide .swal2-content .swal2-html-container {
+            height: 100% !important;
+        }
+
+        /* Extra small devices (phones, 600px and down) */
+        @media only screen and (max-width: 600px) {
+            .custom-modal-body {
+                height: 100% !important;
+            }
+
+            .quiz-questions-form {
+                height: 35% !important;
+            }
+        }
+
+        /* Small devices (portrait tablets and large phones, 600px and up) */
+        @media only screen and (min-width: 600px) {
+
+            .custom-modal-body {
+                height: 100% !important;
+            }
+
+            .quiz-questions-form {
+                height: 35% !important;
+            }
+        }
+
+        /* Medium devices (landscape tablets, 768px and up) */
+        @media only screen and (min-width: 768px) {
+
+            .custom-modal-body {
+                height: 100% !important;
+            }
+
+            .quiz-questions-form {
+                height: 60% !important;
+            }
+        }
+
+        /* Large devices (laptops/desktops, 992px and up) */
+        @media only screen and (min-width: 992px) {
+
+            .custom-modal-body {
+                height: 100% !important;
+            }
+
+            .quiz-questions-form {
+                height: 65% !important;
+            }
+        }
+
+        /* Extra large devices (large laptops and desktops, 1200px and up) */
+        @media only screen and (min-width: 1200px) {
+
+            .custom-modal-body {
+                height: 100% !important;
+            }
+
+            .quiz-questions-form {
+                height: 75% !important;
+            }
+
+        }
+
+        /*Extra Extra large devices (large laptops and desktops, 1440px and up) */
+        @media only screen and (min-width: 1440px) {
+
+            .custom-modal-body {
+                height: 100% !important;
+            }
+
+            .quiz-questions-form {
+                height: 90% !important;
+            }
+
+        }
+
+        /* The container */
+        .container {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            height: 0;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 22px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Hide the browser's default checkbox */
+        .container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        /* Create a custom checkbox */
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1.5em;
+            height: 1.5em;
+            background-color: #eee;
+            border: 1px solid #47c363;
+            display: block;
+            border-radius: 50%;
+        }
+
+        /* On mouse-over, add a grey background color */
+        .container:hover input~.checkmark {
+            background-color: #ccc;
+        }
+
+        /* When the checkbox is checked, add a blue background */
+        .container input:checked~.checkmark {
+            background-color: #47c363;
+        }
+
+        /* Create the checkmark/indicator (hidden when not checked) */
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the checkmark when checked */
+        .container input:checked~.checkmark:after {
+            display: block;
+        }
+
+        /* Style the checkmark/indicator */
+        .container .checkmark:after {
+            left: 10px;
+            top: 5px;
+            width: 10px;
+            height: 15px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+    </style>
+    <style>
+        .checkbox-round {
+            width: 1.5em;
+            height: 1.5em;
+            background-color: white;
+            border-radius: 50%;
+            vertical-align: middle;
+            border: 1px solid #ddd;
+            appearance: none;
+            -webkit-appearance: none;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .checkbox-round:checked {
+            background-color: #39b54a;
+        }
+    </style>
 @endpush
 @section('content')
     @include('web.default.panel.quizzes.create_quiz_form')

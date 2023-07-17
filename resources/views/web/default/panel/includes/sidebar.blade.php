@@ -220,9 +220,9 @@
 
                     @if ($authUser->isOrganization() || $authUser->isTeacher())
                         {{-- @if ($authUser->isTeacher()) --}}
-                        <li class="mt-5 {{ request()->is('panel/webinars/comments') ? 'active' : '' }}">
+                        {{-- <li class="mt-5 {{ request()->is('panel/webinars/comments') ? 'active' : '' }}">
                             <a href="/panel/webinars/comments">{{ trans('panel.my_class_comments') }}</a>
-                        </li>
+                        </li> --}}
                     @endif
 
                     <li class="mt-5 {{ request()->is('panel/webinars/my-comments') ? 'active' : '' }}">

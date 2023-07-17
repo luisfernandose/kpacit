@@ -27,7 +27,7 @@ class WebinarController extends Controller
     {
         $this->authorize('admin_webinars_list');
 
-        $type = $request->get('type', 'webinar');
+        $type = 'webinar';
         $query = Webinar::where('webinars.type', $type);
 
         $totalWebinars = $query->count();
@@ -44,9 +44,8 @@ class WebinarController extends Controller
             ->get();
 
         $inProgressWebinars = 0;
-        if ($type == 'webinar') {
-            $inProgressWebinars = $this->getInProgressWebinarsCount();
-        }
+
+        $inProgressWebinars = $this->getInProgressWebinarsCount();
 
         $query = $this->filterWebinar($query, $request)
             ->with([
@@ -85,6 +84,70 @@ class WebinarController extends Controller
         if (!empty($teacher_ids)) {
             $data['teachers'] = User::select('id', 'full_name')->whereIn('id', $teacher_ids)->get();
         }
+
+        return view('admin.webinars.listsLive', $data);
+    }
+
+    public function indexCourse(Request $request)
+    {
+        $this->authorize('admin_webinars_list');
+
+        $type = 'course';
+        $query = Webinar::where('webinars.type', $type);
+
+        $totalWebinars = $query->count();
+        $totalPendingWebinars = deepClone($query)->where('webinars.status', 'pending')->count();
+        $totalDurations = deepClone($query)->sum('duration');
+        $totalSales = deepClone($query)->join('sales', 'webinars.id', '=', 'sales.webinar_id')
+            ->select(DB::raw('count(sales.webinar_id) as sales_count'))
+            ->whereNotNull('sales.webinar_id')
+            ->whereNull('sales.refund_at')
+            ->first();
+
+        $categories = Category::where('parent_id', null)
+            ->with('subCategories')
+            ->get();
+
+        $inProgressWebinars = 0;
+
+        $query = $this->filterWebinar($query, $request)
+            ->with([
+                'category',
+                'teacher' => function ($qu) {
+                    $qu->select('id', 'full_name');
+                },
+                'sales' => function ($query) {
+                    $query->whereNull('refund_at');
+                },
+            ]);
+
+        $webinars = $query->paginate(10);
+
+        if ($request->get('status', null) == 'active_finished') {
+            foreach ($webinars as $key => $webinar) {
+                if ($webinar->last_date > time()) { // is in progress
+                    unset($webinars[$key]);
+                }
+            }
+        }
+
+        $data = [
+            'pageTitle' => trans('admin/pages/webinars.webinars_list_page_title'),
+            'webinars' => $webinars,
+            'totalWebinars' => $totalWebinars,
+            'totalPendingWebinars' => $totalPendingWebinars,
+            'totalDurations' => $totalDurations,
+            'totalSales' => !empty($totalSales) ? $totalSales->sales_count : 0,
+            'categories' => $categories,
+            'inProgressWebinars' => $inProgressWebinars,
+            'classesType' => $type,
+        ];
+
+        $teacher_ids = $request->get('teacher_ids', null);
+        if (!empty($teacher_ids)) {
+            $data['teachers'] = User::select('id', 'full_name')->whereIn('id', $teacher_ids)->get();
+        }
+
         return view('admin.webinars.lists', $data);
     }
 

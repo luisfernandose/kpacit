@@ -6,6 +6,77 @@
             padding: 0;
         }
 
+        .swal-wide .swal2-content .swal2-html-container {
+            height: 100% !important;
+        }
+
+        /* Extra small devices (phones, 600px and down) */
+        @media only screen and (max-width: 600px) {
+            .custom-modal-body {
+                height: 100% !important;
+            }
+            .quiz-questions-form {
+                height: 35% !important;
+            }
+        }
+
+        /* Small devices (portrait tablets and large phones, 600px and up) */
+        @media only screen and (min-width: 600px) {
+
+            .custom-modal-body {
+                height: 100% !important;
+            }
+            .quiz-questions-form {
+                height: 35% !important;
+            }
+        }
+
+        /* Medium devices (landscape tablets, 768px and up) */
+        @media only screen and (min-width: 768px) {
+
+            .custom-modal-body {
+                height: 100% !important;
+            }
+            .quiz-questions-form {
+                height: 60% !important;
+            }
+        }
+
+        /* Large devices (laptops/desktops, 992px and up) */
+        @media only screen and (min-width: 992px) {
+
+            .custom-modal-body {
+                height: 100% !important;
+            }
+            .quiz-questions-form {
+                height: 65% !important;
+            }
+        }
+
+        /* Extra large devices (large laptops and desktops, 1200px and up) */
+        @media only screen and (min-width: 1200px) {
+
+            .custom-modal-body {
+                height: 100% !important;
+            }
+            .quiz-questions-form {
+                height: 75% !important;
+            }
+
+        }
+
+        /*Extra Extra large devices (large laptops and desktops, 1440px and up) */
+        @media only screen and (min-width: 1440px) {
+
+            .custom-modal-body {
+                height: 100% !important;
+            }
+            .quiz-questions-form {
+                height: 90% !important;
+            }
+
+        }
+
         /* The container */
         .container {
             display: block;

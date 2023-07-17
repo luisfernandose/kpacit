@@ -203,7 +203,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'web'
         });
 
         Route::group(['prefix' => 'webinars'], function () {
-            Route::get('/', 'WebinarController@index');
+            Route::get('/webinar', 'WebinarController@index');
+            Route::get('/course', 'WebinarController@indexCourse');
             Route::get('/create', 'WebinarController@create');
             Route::post('/store', 'WebinarController@store');
             Route::get('/{id}/edit', 'WebinarController@edit');
