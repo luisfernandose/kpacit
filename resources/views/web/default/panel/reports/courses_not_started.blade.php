@@ -22,8 +22,8 @@
             <h2 class="section-title">{{ trans('panel.courses_not_started') }}</h2>
 
             <div class="activities-container mt-25 p-20 p-lg-35">
-                <div id="container"></div>
-                {{-- <div class="row">
+                {{-- <div id="container"></div> --}}
+                <div class="row">
                     <div class="col-12 d-flex align-items-center justify-content-center">
                         <div class="d-flex flex-column align-items-center text-center">
                             <img src="/assets/default/img/activity/48.svg" width="64" height="64" alt="">
@@ -31,7 +31,7 @@
                             <span class="font-16 text-gray font-weight-500">{{ trans('panel.courses_not_started') }}</span>
                         </div>
                     </div>
-                </div> --}}
+                </div>
             </div>
         </section>
     </div>

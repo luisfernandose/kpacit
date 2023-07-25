@@ -117,10 +117,52 @@ class ReportController extends Controller
         })->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        $points = json_encode(collect([
-            ['name' => trans('panel.percent_quizzes'), 'y' => $quizAvgGrad],
-            ['name' => trans('quiz.success_rate'), 'y' => $successRate],
-        ]));
+
+        $totalPercQuizzes =  QuizzesResult::with([
+            'quiz' => function ($query) {
+                $query->with(['quizQuestions', 'creator', 'webinar']);
+            }, 'user',
+        ])->whereIn('user_id', $studentsIds)->where(function ($query) use ($quiz_id) {
+            if ($quiz_id) {
+                $query->where('quiz_id', $quiz_id);
+            }
+        })->count();
+
+        $totalWaiting = QuizzesResult::with([
+            'quiz' => function ($query) {
+                $query->with(['quizQuestions', 'creator', 'webinar']);
+            }, 'user',
+        ])->whereIn('user_id', $studentsIds)->where(function ($query) use ($quiz_id) {
+            if ($quiz_id) {
+                $query->where('quiz_id', $quiz_id);
+            }
+        })->where('status', 'waiting')->count();
+
+        $totalPassed = QuizzesResult::with([
+            'quiz' => function ($query) {
+                $query->with(['quizQuestions', 'creator', 'webinar']);
+            }, 'user',
+        ])->whereIn('user_id', $studentsIds)->where(function ($query) use ($quiz_id) {
+            if ($quiz_id) {
+                $query->where('quiz_id', $quiz_id);
+            }
+        })->where('status', 'passed')->count();
+
+        $totalFailed = QuizzesResult::with([
+            'quiz' => function ($query) {
+                $query->with(['quizQuestions', 'creator', 'webinar']);
+            }, 'user',
+        ])->whereIn('user_id', $studentsIds)->where(function ($query) use ($quiz_id) {
+            if ($quiz_id) {
+                $query->where('quiz_id', $quiz_id);
+            }
+        })->where('status', 'failed')->count();
+
+        $points = json_encode(array(
+            array('name' => trans('quiz.waiting') . ' ' . trans('quiz.results'), 'y' => $totalWaiting * 100 / $totalPercQuizzes),
+            array('name' => trans('quiz.success_rate'), 'y' => $totalPassed * 100 / $totalPercQuizzes),
+            array('name' => trans('quiz.failed_quizzes'), 'y' => $totalFailed * 100 / $totalPercQuizzes),
+        ));
 
         return view(getTemplate() . '.panel.reports.percents_quizzes', [
             'pageTitle' => trans('quiz.results'),
@@ -140,6 +182,7 @@ class ReportController extends Controller
             "dataGraphic" => $points,
         ]);
     }
+
     public function courses(Request $request)
     {
         $user = auth()->user();
@@ -161,6 +204,7 @@ class ReportController extends Controller
                 $query->where('creator_id', $user->id);
             }
         });
+
         $webinars = $data;
 
         if ($request->get('webinar_id') and $request->get('webinar_id') != "all") {
@@ -176,10 +220,26 @@ class ReportController extends Controller
             $status_id = $request->get('status_id');
         }
 
-        $points = json_encode(collect([
-            ['name' => trans('panel.status_active'), 'y' => $data->where('status', 'active')->count()],
-            ['name' => trans('panel.status_inactive'), 'y' => $data->where('status', 'inactive')->count()],
-        ]));
+        $activePoints = Webinar::where(function ($query) use ($user) {
+            if ($user->isTeacher()) {
+                $query->where('teacher_id', $user->id);
+            } elseif ($user->isOrganization()) {
+                $query->where('creator_id', $user->id);
+            }
+        })->where('status', 'active')->count();
+
+        $inactivePoints = Webinar::where(function ($query) use ($user) {
+            if ($user->isTeacher()) {
+                $query->where('teacher_id', $user->id);
+            } elseif ($user->isOrganization()) {
+                $query->where('creator_id', $user->id);
+            }
+        })->where('status', 'inactive')->count();
+
+        $points = json_encode(array(
+            array('name' => trans('panel.status_active'), 'y' => $activePoints * 100 / $webinars->count()),
+            array('name' => trans('panel.status_inactive'), 'y' => $inactivePoints != 0 ? $inactivePoints * 100 / $webinars->count() : 0),
+        ));
 
         return view(getTemplate() . '.panel.reports.courses', [
             "allStatus" => collect([
@@ -197,6 +257,7 @@ class ReportController extends Controller
             "dataGraphic" => $points,
         ]);
     }
+
     public function users_not_finished_webinars(Request $request)
     {
         $user = auth()->user();
@@ -247,11 +308,11 @@ class ReportController extends Controller
         $data = Sale::whereIn('id', array_column($ids, "id"))->paginate(10);
 
         $dataCount = Sale::whereIn('id', array_column($ids, "id"))->get()->count();
-            
-        $points = json_encode(collect([
-            ['name' => trans('panel.users_not_finished_webinars'), 'y' => $dataCount],
-            ['name' => trans('panel.students_list'), 'y' => $users->count()],
-        ]));
+
+        $points = json_encode(array(
+            array('name' => trans('panel.users_not_finished_webinars'), 'y' => $dataCount * 100 / $users->count()),
+            array('name' => trans('panel.students_list'), 'y' => $users->count()),
+        ));
 
         return view(getTemplate() . '.panel.reports.users_not_finished_webinars', [
             "webinar_id" => $webinar_id,
