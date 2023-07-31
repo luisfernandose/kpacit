@@ -1,5 +1,5 @@
 <div id="multipleQuestionModal"
-    class="@if (!empty($quiz)) multipleQuestionModal{{ $quiz->id }} @endif {{ empty($question_edit) ? 'd-none' : '' }}" style="@if (!empty($quiz))height: 100% !important;@endif">
+    class="@if (!empty($quiz)) multipleQuestionModal{{ $quiz->id }} @endif {{ empty($question_edit) ? 'd-none' : '' }}" style="sheight: 100% !important;">
     <div class="custom-modal-body">
         <h2 class="section-title after-line">{{ trans('quiz.multiple_choice_question') }}</h2>
 
