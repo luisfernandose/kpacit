@@ -1997,7 +1997,7 @@
                                                                     value="156">
                                                                 <input type="hidden" name="_wpcf7_posted_data_hash"
                                                                     value="">
-                                                            </div> --}}
+                                                                </div> --}}
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <p>
@@ -2074,6 +2074,7 @@
                                                                 <div class="wpcf7-response-output"
                                                                     aria-hidden="true">
                                                                 </div>
+                                                                <div class="g-recaptcha" data-sitekey="6LeVAGEnAAAAAGvB5_mh9iDW1M98kPMaglNE0zMM"></div>
                                                             </form>
                                                         </div>
                                                     </div>
@@ -2539,6 +2540,7 @@
     <script type='text/javascript' src='lib/swiper/swiper.min.js' id='swiper-js'></script>
     <script type='text/javascript' src='lib/share-link/share-link.min.js' id='share-link-js'></script>
     <script type='text/javascript' src='lib/dialog/dialog.min.js' id='elementor-dialog-js'></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script type='text/javascript' id='elementor-frontend-js-before'>
         var elementorFrontendConfig = {
             "environmentMode": {
