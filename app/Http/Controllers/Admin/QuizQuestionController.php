@@ -16,13 +16,53 @@ class QuizQuestionController extends Controller
         $this->validate($request, [
             'quiz_id' => 'required|exists:quizzes,id',
             'title' => 'required|max:255',
-            'grade' => ['required','integer','numeric', 'between:1,100' ,new GradeMax],
+            'grade' => ['required', 'integer', 'numeric', 'between:1,100', new GradeMax],
             'type' => 'required',
         ]);
 
         $data = $request->all();
 
         if ($data['type'] == QuizzesQuestion::$multiple and !empty($data['answers'])) {
+            $answers = $data['answers'];
+
+            $hasCorrect = false;
+            foreach ($answers as $answer) {
+                if (isset($answer['correct'])) {
+                    $hasCorrect = true;
+                }
+            }
+
+            if (!$hasCorrect) {
+                return response([
+                    'code' => 422,
+                    'errors' => [
+                        'current_answer' => [trans('quiz.current_answer_required')]
+                    ],
+                ], 422);
+            }
+        }
+
+        if ($data['type'] == QuizzesQuestion::$twice and !empty($data['answers'])) {
+            $answers = $data['answers'];
+
+            $hasCorrect = false;
+            foreach ($answers as $answer) {
+                if (isset($answer['correct'])) {
+                    $hasCorrect = true;
+                }
+            }
+
+            if (!$hasCorrect) {
+                return response([
+                    'code' => 422,
+                    'errors' => [
+                        'current_answer' => [trans('quiz.current_answer_required')]
+                    ],
+                ], 422);
+            }
+        }
+
+        if ($data['type'] == QuizzesQuestion::$simple and !empty($data['answers'])) {
             $answers = $data['answers'];
 
             $hasCorrect = false;
@@ -75,9 +115,41 @@ class QuizQuestionController extends Controller
                 }
             }
 
+            if ($quizQuestion->type == QuizzesQuestion::$twice and !empty($data['answers'])) {
+
+                foreach ($answers as $answer) {
+                    if (!empty($answer['title']) or !empty($answer['file'])) {
+                        QuizzesQuestionsAnswer::create([
+                            'question_id' => $quizQuestion->id,
+                            'creator_id' => $creator->id,
+                            'title' => $answer['title'],
+                            'image' => $answer['file'],
+                            'correct' => isset($answer['correct']) ? true : false,
+                            'created_at' => time()
+                        ]);
+                    }
+                }
+            }
+
+            if ($quizQuestion->type == QuizzesQuestion::$simple and !empty($data['answers'])) {
+
+                foreach ($answers as $answer) {
+                    if (!empty($answer['title']) or !empty($answer['file'])) {
+                        QuizzesQuestionsAnswer::create([
+                            'question_id' => $quizQuestion->id,
+                            'creator_id' => $creator->id,
+                            'title' => $answer['title'],
+                            'image' => $answer['file'],
+                            'correct' => isset($answer['correct']) ? true : false,
+                            'created_at' => time()
+                        ]);
+                    }
+                }
+            }
+
             $status =  $quiz->status;
 
-            if($quiz->quizQuestions->pluck('grade')->sum() < 100){
+            if ($quiz->quizQuestions->pluck('grade')->sum() < 100) {
                 $status = Quiz::INACTIVE;
             }
             $quiz->update([
@@ -109,9 +181,13 @@ class QuizQuestionController extends Controller
                 ];
 
                 if ($question->type == 'multiple') {
-                    $html = (string)\View::make('admin.quizzes.modals.multiple_question', $data);
+                    $html = (string)\View::make(getTemplate() . '.panel.quizzes.modals.multiple_question', $data);
+                } else if ($question->type == 'simple') {
+                    $html = (string)\View::make(getTemplate() . '.panel.quizzes.modals.simple_question', $data);
+                } else if ($question->type == 'twice') {
+                    $html = (string)\View::make(getTemplate() . '.panel.quizzes.modals.twice_question', $data);
                 } else {
-                    $html = (string)\View::make('admin.quizzes.modals.descriptive_question', $data);
+                    $html = (string)\View::make(getTemplate() . '.panel.quizzes.modals.descriptive_question', $data);
                 }
 
                 return response()->json([
@@ -128,7 +204,7 @@ class QuizQuestionController extends Controller
         $this->validate($request, [
             'quiz_id' => 'required|exists:quizzes,id',
             'title' => 'required',
-            'grade' => ['required','integer','numeric', 'between:1,100' ,new GradeMax],
+            'grade' => ['required', 'integer', 'numeric', 'between:1,100', new GradeMax],
             'type' => 'required',
         ]);
 
@@ -207,7 +283,7 @@ class QuizQuestionController extends Controller
                 }
                 $status =  $quiz->status;
 
-                if($quiz->quizQuestions->pluck('grade')->sum() < 100){
+                if ($quiz->quizQuestions->pluck('grade')->sum() < 100) {
                     $status = Quiz::INACTIVE;
                 }
                 $quiz->update([
@@ -232,5 +308,4 @@ class QuizQuestionController extends Controller
 
         return redirect()->back();
     }
-
 }

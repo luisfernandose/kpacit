@@ -8,6 +8,8 @@ class QuizzesQuestion extends Model
 {
     static $multiple = 'multiple';
     static $descriptive = 'descriptive';
+    static $twice = 'twice';
+    static $simple = 'simple';
 
     public $timestamps = false;
 

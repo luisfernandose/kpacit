@@ -322,9 +322,10 @@ return [
     'session' => 'Sesión',
     'text' => 'Texto',
     'content_module' => 'Contenido del Módulo',
-    'create_file' => 'Nuevo archivo',
-    'create_session' => 'Nueva sesión',
-    'create_text_lesson' => 'Nuevo texto',
+    'new_module' => 'Nuevo Módulo',
+    'create_file' => 'Video o Archivo',
+    'create_session' => 'Kpacit Live',
+    'create_text_lesson' => 'Sección de texto',
     'text_lesson' => 'Texto',
 
 ];

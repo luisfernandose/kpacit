@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Form;
 use Illuminate\Http\Request;
+use App\Mail\SendNotifications;
 
 class ContactController extends Controller
 {
@@ -30,13 +31,14 @@ class ContactController extends Controller
 
     public function store(Request $request)
     {
+        $generalSettings = getGeneralSettings();
+
         $this->validate($request, [
             'name' => 'required|string',
             'email' => 'required|string|email',
             'phone' => 'required|numeric',
             'subject' => 'required|string',
-            'message' => 'required|string',
-            'captcha' => 'required|captcha',
+            'message' => 'string'
         ]);
 
         $data = $request->all();
@@ -45,13 +47,24 @@ class ContactController extends Controller
 
         Contact::create($data);
 
-        $notifyOptions = [
-            '[c.u.title]' => $data['subject'],
-            '[u.name]' => $data['name']
-        ];
-        sendNotification('new_contact_message', $notifyOptions, 1);
+        $message = "
+            <b>Empresa:<b> " . $data['subject'] . "
+            <br>
+            <b>Nombre contacto:<b> " . $data['name'] . "
+            <br>
+            <b>Teléfono contacto:<b> " . $data['phone'] . "
+            <br>
+            <b>Email contacto:<b> " . $data['email'] . "
+            <br>
+        ";
 
-        return back()->with(['msg' => trans('site.contact_store_success')]);
+        $mail = [
+            'title' => 'Solicitud',
+            'message' => $message,
+        ];
+
+        \Mail::to('registro@kpacit.com')->send(new \App\Mail\SendNotifications($mail));
+        return redirect('/');
     }
 
     public function hola(Request $request)

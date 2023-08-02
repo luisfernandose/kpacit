@@ -1,0 +1,452 @@
+.stm_zoom_wrapper {
+  display: flex;
+  flex-direction: column; }
+
+.stm_zoom_content {
+  padding: 25px 0;
+  display: flex;
+  width: 1200px;
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 100%;
+  flex-wrap: wrap; }
+  .stm_zoom_content .zoom_image {
+    flex: 0 0 30%;
+    padding: 0 15px; }
+    .stm_zoom_content .zoom_image + .zoom_info {
+      width: 70%;
+      flex: 0 0 70%; }
+    .stm_zoom_content .zoom_image img {
+      width: 370px !important;
+      height: 240px !important;
+      border-radius: 4px;
+      -o-object-fit: cover;
+         object-fit: cover; }
+    @media screen and (max-width: 420px) {
+      .stm_zoom_content .zoom_image {
+        flex: 0 0 100%; }
+        .stm_zoom_content .zoom_image img {
+          width: 100% !important; } }
+  .stm_zoom_content .zoom_content {
+    display: flex;
+    flex-direction: column; }
+    .stm_zoom_content .zoom_content .zoom_info {
+      width: 100%;
+      padding: 0 15px; }
+  .stm_zoom_content .zoom_description {
+    padding: 25px 15px;
+    width: 100%; }
+  .stm_zoom_content h2 {
+    font-size: 36px;
+    line-height: 42px;
+    margin: 0 0 30px; }
+  .stm_zoom_content .date {
+    margin-bottom: 8px; }
+  .stm_zoom_content .stm-calendar-links {
+    padding-bottom: 20px; }
+    .stm_zoom_content .stm-calendar-links a, .stm_zoom_content .stm-calendar-links a:hover {
+      color: #0e71eb;
+      text-decoration: none; }
+  .stm_zoom_content .zoom-recurring-no_fixed_time {
+    padding-bottom: 8px;
+    font-weight: 700; }
+  .stm_zoom_content .zoom-recurring__from, .stm_zoom_content .zoom-recurring__to, .stm_zoom_content .zoom-recurring__interval {
+    padding-bottom: 8px; }
+  .stm_zoom_content .zoom-recurring--content {
+    font-weight: 700; }
+  .stm_zoom_content .agenda {
+    margin-bottom: 20px; }
+  .stm_zoom_content .password {
+    margin-bottom: 20px; }
+    .stm_zoom_content .password .value {
+      font-weight: 700; }
+  .stm_zoom_content .stm-join-btn {
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 16px;
+    line-height: 16px;
+    text-transform: uppercase;
+    border-radius: 50px;
+    background-color: #0e71eb;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    border: 2px #0e71eb solid;
+    transition: .3s;
+    margin-bottom: 10px; }
+    .stm_zoom_content .stm-join-btn:hover {
+      background-color: transparent;
+      color: #0e71eb; }
+    .stm_zoom_content .stm-join-btn.join_in_menu {
+      margin-right: 10px; }
+    .stm_zoom_content .stm-join-btn.outline {
+      background: none;
+      color: #0e71eb; }
+      .stm_zoom_content .stm-join-btn.outline:hover {
+        background: #0e71eb;
+        color: #fff; }
+
+.countdown_title {
+  text-align: center; }
+
+.stm_zooom_countdown {
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+  padding: 30px 30px 67px; }
+  .stm_zooom_countdown .countDays,
+  .stm_zooom_countdown .countHours,
+  .stm_zooom_countdown .countMinutes,
+  .stm_zooom_countdown .countSeconds {
+    position: relative;
+    display: block;
+    width: auto !important;
+    text-align: center;
+    float: left;
+    border-top: 3px solid #676d70;
+    border-bottom: 3px solid #495154;
+    border-radius: 5px; }
+    @media (max-width: 640px) {
+      .stm_zooom_countdown .countDays,
+      .stm_zooom_countdown .countHours,
+      .stm_zooom_countdown .countMinutes,
+      .stm_zooom_countdown .countSeconds {
+        width: 50px;
+        height: 60px !important; } }
+    .stm_zooom_countdown .countDays:before,
+    .stm_zooom_countdown .countHours:before,
+    .stm_zooom_countdown .countMinutes:before,
+    .stm_zooom_countdown .countSeconds:before {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 50%;
+      z-index: 10;
+      bottom: 0;
+      left: 0;
+      background-color: #525b5f;
+      border-bottom-left-radius: 2px;
+      border-bottom-right-radius: 2px; }
+    .stm_zooom_countdown .countDays:after,
+    .stm_zooom_countdown .countHours:after,
+    .stm_zooom_countdown .countMinutes:after,
+    .stm_zooom_countdown .countSeconds:after {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 50%;
+      z-index: 10;
+      top: 0;
+      left: 0;
+      background-color: #3b4448;
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px; }
+    .stm_zooom_countdown .countDays .countdown_label,
+    .stm_zooom_countdown .countHours .countdown_label,
+    .stm_zooom_countdown .countMinutes .countdown_label,
+    .stm_zooom_countdown .countSeconds .countdown_label {
+      position: absolute;
+      bottom: -40px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      color: #495154 !important;
+      text-transform: uppercase;
+      font-size: 15px; }
+      @media (max-width: 640px) {
+        .stm_zooom_countdown .countDays .countdown_label,
+        .stm_zooom_countdown .countHours .countdown_label,
+        .stm_zooom_countdown .countMinutes .countdown_label,
+        .stm_zooom_countdown .countSeconds .countdown_label {
+          font-size: 10px;
+          margin: 10px 0;
+          line-height: 26px; } }
+    .stm_zooom_countdown .countDays .position,
+    .stm_zooom_countdown .countHours .position,
+    .stm_zooom_countdown .countMinutes .position,
+    .stm_zooom_countdown .countSeconds .position {
+      position: relative;
+      display: block;
+      width: 44px;
+      height: 98px;
+      float: left;
+      color: #fff;
+      font-size: 50px;
+      line-height: 98px;
+      z-index: 11;
+      font-weight: 700;
+      margin: 0; }
+      @media (max-width: 640px) {
+        .stm_zooom_countdown .countDays .position,
+        .stm_zooom_countdown .countHours .position,
+        .stm_zooom_countdown .countMinutes .position,
+        .stm_zooom_countdown .countSeconds .position {
+          width: 25px;
+          height: 60px;
+          line-height: 60px;
+          font-size: 27px !important; } }
+      .stm_zooom_countdown .countDays .position .digit,
+      .stm_zooom_countdown .countHours .position .digit,
+      .stm_zooom_countdown .countMinutes .position .digit,
+      .stm_zooom_countdown .countSeconds .position .digit {
+        position: absolute;
+        width: 44px;
+        height: 98px;
+        padding-right: 2px;
+        text-align: right;
+        line-height: 98px;
+        top: 0;
+        left: 0; }
+        @media (max-width: 640px) {
+          .stm_zooom_countdown .countDays .position .digit,
+          .stm_zooom_countdown .countHours .position .digit,
+          .stm_zooom_countdown .countMinutes .position .digit,
+          .stm_zooom_countdown .countSeconds .position .digit {
+            width: 25px;
+            height: 60px;
+            line-height: 60px; } }
+      .stm_zooom_countdown .countDays .position:last-child .digit,
+      .stm_zooom_countdown .countHours .position:last-child .digit,
+      .stm_zooom_countdown .countMinutes .position:last-child .digit,
+      .stm_zooom_countdown .countSeconds .position:last-child .digit {
+        text-align: left;
+        padding-left: 2px; }
+  .stm_zooom_countdown .countDiv {
+    display: block;
+    float: left;
+    width: 29px;
+    position: relative;
+    opacity: 1; }
+    @media (max-width: 640px) {
+      .stm_zooom_countdown .countDiv {
+        height: 60px;
+        width: 10px; } }
+    .stm_zooom_countdown .countDiv:before, .stm_zooom_countdown .countDiv:after {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      z-index: 10;
+      background-color: #414b4f;
+      border-radius: 50%;
+      left: 50%;
+      margin-left: -4px;
+      top: 40px; }
+      @media (max-width: 640px) {
+        .stm_zooom_countdown .countDiv:before, .stm_zooom_countdown .countDiv:after {
+          width: 5px;
+          height: 5px;
+          margin-left: -2px;
+          top: 25px; } }
+    .stm_zooom_countdown .countDiv:after {
+      top: 56px; }
+      @media (max-width: 640px) {
+        .stm_zooom_countdown .countDiv:after {
+          top: 35px; } }
+
+#zmmtg-root {
+  z-index: 999; }
+  #zmmtg-root .chat-container .dropdown-menu {
+    list-style: none;
+    padding-left: 0; }
+  #zmmtg-root .chat-container .chat-scrollbar {
+    max-height: 400px; }
+
+body:not(.full-screen) #zmmtg-root {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+  display: none;
+  z-index: 9999; }
+  body:not(.full-screen) #zmmtg-root.active {
+    display: block;
+    margin-bottom: 30px; }
+  body:not(.full-screen) #zmmtg-root .meeting-app, body:not(.full-screen) #zmmtg-root .meeting-client, body:not(.full-screen) #zmmtg-root .meeting-client-inner, body:not(.full-screen) #zmmtg-root .meeting-client-inner > div, body:not(.full-screen) #zmmtg-root #dialog-join {
+    position: absolute !important;
+    min-width: 100% !important;
+    width: 100% !important;
+    min-height: 100% !important;
+    height: 100% !important;
+    left: 0 !important;
+    top: 0 !important; }
+  body:not(.full-screen) #zmmtg-root #dialog-join {
+    top: auto !important;
+    bottom: 0 !important;
+    min-height: 50% !important;
+    height: 50% !important; }
+  body:not(.full-screen) #zmmtg-root .meeting-app {
+    overflow: hidden; }
+    body:not(.full-screen) #zmmtg-root .meeting-app > span {
+      max-width: 100%; }
+  body:not(.full-screen) #zmmtg-root .active-main {
+    width: 100% !important;
+    height: 100% !important;
+    position: relative !important; }
+  body:not(.full-screen) #zmmtg-root #sv-active-video {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    min-height: 100% !important;
+    min-width: 100% !important; }
+
+body.full-screen.ReactModal__Body--open {
+  overflow: hidden !important;
+  width: 100% !important;
+  height: 100% !important; }
+
+@media (max-width: 768px) {
+  .stm-lessons .stm_zoom_wrap .stm_zooom_countdown .countDays,
+  .stm-lessons .stm_zoom_wrap .stm_zooom_countdown .countHours,
+  .stm-lessons .stm_zoom_wrap .stm_zooom_countdown .countMinutes,
+  .stm-lessons .stm_zoom_wrap .stm_zooom_countdown .countSeconds {
+    height: auto !important; } }
+
+@media (max-width: 640px) {
+  .stm-lessons .stm_zoom_wrap .stm_zooom_countdown .countDays,
+  .stm-lessons .stm_zoom_wrap .stm_zooom_countdown .countHours,
+  .stm-lessons .stm_zoom_wrap .stm_zooom_countdown .countMinutes,
+  .stm-lessons .stm_zoom_wrap .stm_zooom_countdown .countSeconds {
+    height: 60px !important; }
+    .stm-lessons .stm_zoom_wrap .stm_zooom_countdown .countDays .position,
+    .stm-lessons .stm_zoom_wrap .stm_zooom_countdown .countHours .position,
+    .stm-lessons .stm_zoom_wrap .stm_zooom_countdown .countMinutes .position,
+    .stm-lessons .stm_zoom_wrap .stm_zooom_countdown .countSeconds .position {
+      margin-top: 0; } }
+
+.stm-lessons .stm_zoom_wrap .stm_zooom_countdown .countDiv:before {
+  top: 50px; }
+
+.stm-lessons .stm_zoom_wrap .stm_zooom_countdown .countDiv:after {
+  top: 76px; }
+
+@media (max-width: 640px) {
+  .stm-lessons .stm_zoom_wrap .stm_zooom_countdown .countDiv:before {
+    top: 25px; }
+  .stm-lessons .stm_zoom_wrap .stm_zooom_countdown .countDiv:after {
+    top: 35px; } }
+
+.stm_zoom_grid_container {
+  width: 1200px;
+  max-width: 100% !important; }
+  .stm_zoom_grid_container .stm_zoom_grid {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -15px;
+    margin-right: -15px; }
+    .stm_zoom_grid_container .stm_zoom_grid__item {
+      padding-right: 15px;
+      padding-left: 15px;
+      flex: 0 0 33.33%;
+      margin-bottom: 30px; }
+      @media (max-width: 767px) {
+        .stm_zoom_grid_container .stm_zoom_grid__item {
+          width: 50%;
+          flex: 0 0 50%; } }
+      @media (max-width: 480px) {
+        .stm_zoom_grid_container .stm_zoom_grid__item {
+          width: 100%;
+          flex: 0 0 100%; } }
+      .stm_zoom_grid_container .stm_zoom_grid__item .single_meeting {
+        min-width: 340px;
+        border-radius: 10px;
+        overflow: hidden; }
+      .stm_zoom_grid_container .stm_zoom_grid__item .image img {
+        border-radius: 10px 10px 0 0;
+        display: block;
+        -o-object-fit: cover;
+           object-fit: cover;
+        height: 180px !important;
+        width: 100% !important; }
+      .stm_zoom_grid_container .stm_zoom_grid__item .info {
+        border-radius: 0 0 10px 10px;
+        background: #eef1f7;
+        padding: 30px 30px; }
+        .stm_zoom_grid_container .stm_zoom_grid__item .info .title {
+          margin-bottom: 10px; }
+          .stm_zoom_grid_container .stm_zoom_grid__item .info .title a {
+            text-decoration: none; }
+            .stm_zoom_grid_container .stm_zoom_grid__item .info .title a h3 {
+              font-size: 20px;
+              line-height: 28px;
+              margin: 0;
+              font-weight: 500;
+              color: #333; }
+        .stm_zoom_grid_container .stm_zoom_grid__item .info .zoom_date {
+          color: #4689fc;
+          font-weight: bold;
+          font-size: 18px;
+          line-height: 18px;
+          margin-bottom: 30px; }
+          .stm_zoom_grid_container .stm_zoom_grid__item .info .zoom_date .price {
+            display: block;
+            color: #757575;
+            position: relative;
+            margin: 5px 0;
+            font-family: inherit; }
+            .stm_zoom_grid_container .stm_zoom_grid__item .info .zoom_date .price * {
+              color: #757575;
+              background: none;
+              opacity: 1;
+              font-family: inherit; }
+        .stm_zoom_grid_container .stm_zoom_grid__item .info .zoom_host {
+          display: flex;
+          flex-wrap: nowrap;
+          align-items: center; }
+          .stm_zoom_grid_container .stm_zoom_grid__item .info .zoom_host .host_image {
+            width: 60px;
+            padding-right: 10px; }
+            .stm_zoom_grid_container .stm_zoom_grid__item .info .zoom_host .host_image img {
+              max-width: 50px;
+              max-height: 50px;
+              border-radius: 50%;
+              width: 100%;
+              height: 100%; }
+          .stm_zoom_grid_container .stm_zoom_grid__item .info .zoom_host .host_info .host_title, .stm_zoom_grid_container .stm_zoom_grid__item .info .zoom_host .host_info .host_title a {
+            font-size: 16px;
+            line-height: 19px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            text-decoration: none; }
+          .stm_zoom_grid_container .stm_zoom_grid__item .info .zoom_host .host_info .host_timezone {
+            font-size: 12px;
+            line-height: 15px;
+            color: #777; }
+    .stm_zoom_grid_container .stm_zoom_grid.per_row_1 .stm_zoom_grid__item {
+      width: 100% !important;
+      flex: 0 0 100% !important; }
+    .stm_zoom_grid_container .stm_zoom_grid.per_row_2 .stm_zoom_grid__item {
+      width: 50%;
+      flex: 0 0 50%; }
+    .stm_zoom_grid_container .stm_zoom_grid.per_row_4 .stm_zoom_grid__item {
+      width: 25%;
+      flex: 0 0 25%; }
+    .stm_zoom_grid_container .stm_zoom_grid.per_row_5 .stm_zoom_grid__item {
+      width: 20%;
+      flex: 0 0 20%; }
+    @media (max-width: 767px) {
+      .stm_zoom_grid_container .stm_zoom_grid.per_row_1 .stm_zoom_grid__item, .stm_zoom_grid_container .stm_zoom_grid.per_row_2 .stm_zoom_grid__item, .stm_zoom_grid_container .stm_zoom_grid.per_row_4 .stm_zoom_grid__item, .stm_zoom_grid_container .stm_zoom_grid.per_row_5 .stm_zoom_grid__item {
+        width: 50%;
+        flex: 0 0 50%; } }
+    @media (max-width: 480px) {
+      .stm_zoom_grid_container .stm_zoom_grid.per_row_1 .stm_zoom_grid__item, .stm_zoom_grid_container .stm_zoom_grid.per_row_2 .stm_zoom_grid__item, .stm_zoom_grid_container .stm_zoom_grid.per_row_4 .stm_zoom_grid__item, .stm_zoom_grid_container .stm_zoom_grid.per_row_5 .stm_zoom_grid__item {
+        width: 100%;
+        flex: 0 0 100%; } }
+
+.theme-pearl .stm_zooom_countdown .countDays .countdown_label,
+.theme-pearl .stm_zooom_countdown .countHours .countdown_label,
+.theme-pearl .stm_zooom_countdown .countMinutes .countdown_label,
+.theme-pearl .stm_zooom_countdown .countSeconds .countdown_label {
+  position: absolute;
+  bottom: -50px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: #495154 !important;
+  text-transform: uppercase;
+  font-size: 15px; }

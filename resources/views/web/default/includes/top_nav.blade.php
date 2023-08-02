@@ -18,14 +18,14 @@
         <div class="top-contact-box border-bottom d-flex flex-column flex-md-row align-items-center justify-content-center">
 
             <div class="d-flex align-items-center justify-content-center">
-                @if(!empty($generalSettings['site_phone']))
+                @if (!empty($generalSettings['site_phone']))
                     <span class="d-flex align-items-center py-10 py-lg-0 text-dark-blue font-14">
                         <i data-feather="phone" width="20" height="20" class="mr-10"></i>
                         {{ $generalSettings['site_phone'] }}
                     </span>
                 @endif
 
-                @if(!empty($generalSettings['site_email']))
+                @if (!empty($generalSettings['site_email']))
                     <div class="border-left mx-5 mx-lg-15 h-100"></div>
 
                     <span class="d-flex align-items-center py-10 py-lg-0 text-dark-blue font-14">
@@ -70,7 +70,7 @@
                 @include(getTemplate().'.includes.notification-dropdown')
             </div>
 
-            @if(!empty($authUser))
+            @if (!empty($authUser))
 
 
                 <div class="dropdown">
@@ -88,7 +88,7 @@
                             <img src="/assets/default/img/icons/sidebar/dashboard.svg" width="25" alt="nav-icon">
                             <span class="font-14 text-dark-blue">{{ trans('public.my_panel') }}</span>
                         </a>
-                        @if($authUser->isTeacher() or $authUser->isOrganization())
+                        @if ($authUser->isTeacher() or $authUser->isOrganization())
                             <a class="dropdown-item" href="{{ $authUser->getProfileUrl() }}">
                                 <img src="/assets/default/img/icons/profile.svg" width="25" alt="nav-icon">
                                 <span class="font-14 text-dark-blue">{{ trans('public.my_profile') }}</span>
@@ -109,7 +109,6 @@
         </div>
     </div>
 </div>
-
 
 @push('scripts_bottom')
     <link href="/assets/default/vendors/flagstrap/css/flags.css" rel="stylesheet">

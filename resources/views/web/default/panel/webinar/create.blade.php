@@ -7,7 +7,7 @@
 @section('content')
     <div class="">
 
-        <form method="post" action="/panel/webinars/{{ !empty($webinar) ? $webinar->id .'/update' : 'store' }}" id="webinarForm" class="webinar-form mt-30">
+        <form method="post" action="/panel/webinars/{{ !empty($webinar) ? $webinar->id .'/update' : 'store' }}" id="webinarForm" class="webinar-form">
             @include('web.default.panel.webinar.create_includes.progress')
 
             {{ csrf_field() }}
@@ -46,7 +46,7 @@
          
 
 
-                @if(!auth()->user()->isOrganization() and $currentStep != 8)
+                {{-- @if(!auth()->user()->isOrganization() and $currentStep != 8)
                     <button type="button" id="sendForReview" class="btn btn-sm btn-primary">{{ trans('public.send_for_review') }}</button>
 
                     <button type="button" id="saveAsDraft" class=" btn btn-sm btn-primary">{{ trans('public.save_as_draft') }}</button>
@@ -54,7 +54,7 @@
                     <button type="button" id="sendForReview" class="btn btn-sm btn-primary">{{ trans('public.send_for_review') }}</button>
 
                     <button type="button" id="saveAsDraft" class=" btn btn-sm btn-primary">{{ trans('public.save_as_draft') }}</button>
-                @endif
+                @endif --}}
                 @if(!empty($webinar) and $webinar->creator_id == $authUser->id)
                     <a href="/panel/webinars/{{ $webinar->id }}/delete?redirect_to=/panel/webinars" class="delete-action webinar-actions btn btn-sm btn-danger mt-20 mt-md-0">{{ trans('public.delete') }}</a>
                 @endif

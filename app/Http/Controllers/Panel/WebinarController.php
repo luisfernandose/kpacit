@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Panel;
 use App\Exports\WebinarStudents;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\CourseOrganizations;
 use App\Models\FAQ;
 use App\Models\File;
 use App\Models\Module;
@@ -40,11 +41,24 @@ class WebinarController extends Controller
                 $query->where('teacher_id', $user->id);
             } elseif ($user->isOrganization()) {
                 $query->where('creator_id', $user->id);
+                $shared_courses = CourseOrganizations::where('creator_id', $user->id)->where('status', CourseOrganizations::$pending)->get();
             }
         });
 
+        if ($user->isOrganization()) {
+            //$shared_courses = CourseOrganizations::where('user_id', $user->id)->where('status', CourseOrganizations::$pending)->get();
+            $shared_courses = CourseOrganizations::select('course_organizations.id AS id_share', 'course_organizations.status AS status_share', 'course_organizations.status', 'webinars.*')
+                ->leftJoin('webinars', 'webinars.id', '=', 'course_organizations.webinar_id')
+                ->where('course_organizations.user_id', '=', $user->id)
+                ->get();
+        }
+        // dd($shared_courses);
+        $organization = User::where('role_name', Role::$organization)->get();
+
         $data = $this->makeMyClassAndInvitationsData($query, $user, $request);
         $data['pageTitle'] = trans('webinars.webinars_list_page_title');
+        $data['organizations'] = $organization;
+        $data['shared_courses'] = $shared_courses;
 
         return view(getTemplate() . '.panel.webinar.index', $data);
     }
@@ -258,9 +272,9 @@ class WebinarController extends Controller
         $rules = [
             'type' => 'required|in:webinar,course,text_lesson',
             'title' => 'required|max:255',
-            'limit_device' =>'nullable|numeric',
-            'thumbnail' => 'required',
-            'image_cover' => 'required',
+            'limit_device' => 'nullable|numeric',
+            // 'thumbnail' => 'required',
+            // 'image_cover' => 'required',
             'description' => 'required',
         ];
 
@@ -284,14 +298,12 @@ class WebinarController extends Controller
             $private = true;
 
             $webinarStatus = Webinar::$active;
-
         }
 
         // Si es organización
         if ($user->isOrganization()) {
 
             $webinarStatus = Webinar::$active;
-
         }
 
         $webinar = Webinar::create([
@@ -301,7 +313,7 @@ class WebinarController extends Controller
             'private' => $private,
             'title' => $data['title'],
             'seo_description' => $data['seo_description'],
-            'limit_device' => (isset($data['limit_device'])? (int)$data['limit_device'] : null   ),
+            'limit_device' => (isset($data['limit_device']) ? (int)$data['limit_device'] : null),
             'thumbnail' => $data['thumbnail'],
             'image_cover' => $data['image_cover'],
             'video_demo' => $data['video_demo'],
@@ -470,8 +482,8 @@ class WebinarController extends Controller
                 'type' => 'required|in:webinar,course,text_lesson',
                 'title' => 'required|max:255',
                 'limit_device' => 'nullable|numeric',
-                'thumbnail' => 'required',
-                'image_cover' => 'required',
+                // 'thumbnail' => 'required',
+                // 'image_cover' => 'required',
                 'description' => 'required',
             ];
         }
@@ -500,7 +512,7 @@ class WebinarController extends Controller
 
         if ($currentStep == 1) {
             $data['private'] = (!empty($data['private']) and $data['private'] == 'on');
-            $data['limit_device'] = (isset($data['limit_device']) ? (int)$data['limit_device']: null);
+            $data['limit_device'] = (isset($data['limit_device']) ? (int)$data['limit_device'] : null);
             $webinar->slug = null; // regenerate slug in model
         }
 
@@ -572,32 +584,27 @@ class WebinarController extends Controller
 
                 $creatorId = $user->organ_id;
                 $private = true;
-
             } else {
 
                 $creatorId = $user->id;
                 $private = (!empty($data['private']) and $data['private'] == 'on');
                 $data['status'] = ($isDraft or $webinarRulesRequired) ? Webinar::$isDraft : Webinar::$pending;
-
             }
 
             $data['creator_id'] = $creatorId;
             $data['private'] = $private;
-
         }
 
         // Organization class
         if (!empty($user->organ_id) && $webinar->teacher_id != $webinar->creator_id) {
 
             $data['status'] = Webinar::$active;
-
         }
 
         // Si es organización
         if ($user->isOrganization()) {
 
             $data['status'] = Webinar::$active;
-
         }
 
         $webinar->update($data);
@@ -680,6 +687,39 @@ class WebinarController extends Controller
         abort(404);
     }
 
+    public function shareContent(Request $request, $id, $decision, $id_share)
+    {
+        $user = auth()->user();
+
+        if (!$user->isOrganization()) {
+            abort(404);
+        }
+
+        $course = CourseOrganizations::where('id', $id_share)->first();
+
+        if (!empty($course)) {
+
+            if ($decision == 1) {
+                CourseOrganizations::where('id', $id_share)->update(
+                    [
+                        'status' => CourseOrganizations::$active,
+                    ],
+                );
+            } else {
+                CourseOrganizations::find($id_share)->delete();
+            }
+
+            $toastData = [
+                'title' => trans('public.request_success'),
+                'msg' => '',
+                'status' => 'success'
+            ];
+            return back()->with(['toast' => $toastData]);
+        }
+
+        abort(404);
+    }
+
     public function exportStudentsList($id)
     {
         $user = auth()->user();
@@ -740,7 +780,7 @@ class WebinarController extends Controller
                 ->with(['teacher' => function ($query) {
                     $query->select('id', 'full_name');
                 }])
-            //->where('creator_id', $user->id)
+                //->where('creator_id', $user->id)
                 ->get();
 
             foreach ($webinars as $webinar) {
@@ -1043,7 +1083,6 @@ class WebinarController extends Controller
                             ->update(['order' => ($order + 1)]);
                     }
                     break;
-
             }
         }
 

@@ -1,4 +1,4 @@
-<div class="add-answer-card mt-4 {{ (empty($answer) or (!empty($loop) and $loop->iteration == 1)) ? 'main-answer-row' : '' }}">
+<div class="add-answer-card mt-4 {{ (empty($answer) or (!empty($loop) and $loop->iteration == 1)) ? 'main-answer-row' : '' }}" style="background-color: brown;">
     <button type="button" class="btn btn-sm btn-danger rounded-circle answer-remove {{ (!empty($answer) and !empty($loop) and $loop->iteration > 1) ? '' : 'd-none' }}">
         <i class="fa fa-times"></i>
     </button>

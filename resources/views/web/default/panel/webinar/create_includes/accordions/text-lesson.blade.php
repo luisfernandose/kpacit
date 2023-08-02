@@ -1,9 +1,9 @@
-<div class="d-flex align-items-center justify-content-between " role="tab" id="text_lesson_{{ !empty($textLesson) ? $textLesson->id :'record' }}">
+<div class="d-flex align-items-center justify-content-between pt-4" role="tab" id="text_lesson_{{ !empty($textLesson) ? $textLesson->id :'record' }}">
     <div class="font-weight-bold text-dark-blue" href="#collapseTextLesson{{ !empty($textLesson) ? $textLesson->id :'record' }}" aria-controls="collapseTextLesson{{ !empty($textLesson) ? $textLesson->id :'record' }}" data-parent="#text_lessonsAccordion" role="button" data-toggle="collapse" aria-expanded="true">
         <span>{{ isset($edit) ? trans('public.edit_test_lesson') : trans('public.add_new_test_lesson') }}</span>
     </div>
 
-    <div class="d-flex align-items-center">
+    {{-- <div class="d-flex align-items-center">
         <i data-feather="move" class="move-icon mr-10 cursor-pointer" height="20"></i>
 
         @if(!empty($textLesson))
@@ -18,7 +18,7 @@
         @endif
 
         <i class="collapse-chevron-icon" data-feather="chevron-down" height="20" href="#collapseTextLesson{{ !empty($textLesson) ? $textLesson->id :'record' }}" aria-controls="collapseTextLesson{{ !empty($textLesson) ? $textLesson->id :'record' }}" data-parent="#text_lessonsAccordion" role="button" data-toggle="collapse" aria-expanded="true"></i>
-    </div>
+    </div> --}}
 </div>
 
 <div id="collapseTextLessonrecord" aria-labelledby="text_lesson_{{ !empty($textLesson) ? $textLesson->id :'record' }}" class=" collapse @if(empty($textLesson)) show @endif" role="tabpanel">

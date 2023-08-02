@@ -121,7 +121,7 @@
 
                 Swal.fire({
                     title: deleteAlertFail,
-                    html: deleteAlertFailHint + message,
+                    html: deleteAlertFailHint + deleteReason,
                     icon: "error",
                 });
             })

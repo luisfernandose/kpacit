@@ -336,7 +336,7 @@
                 $('.modal-content').find('.img-visor').remove();
                 let html = '';
                 if (storage === 'local' && (type=='mp4'|| type=='mkv'|| type=='avi')) {
-                    html = '<video id="my-video" class="video-js" controls preload="auto" width="870" height="600"><source src="' + result.path + '" type="video/'+type+'"/></video>';
+                    html = '<video id="my-video" class="video-js" controls autoplay preload="auto" width="870" height="600"><source src="' + result.path + '" type="video/'+type+'"/></video>';
                     isVideo=true;
                 } else if(storage === 'online' && type == 'video') {
                     let vimeoControls = (result.storageService =='vimeo' ? ', "vimeo": { "ytControls": 2 }':'');
@@ -345,6 +345,7 @@
                         id="my-video"
                         class="video-js"
                         controls
+                        autoplay
                         preload="auto"
                         width="870" height="600"
                         data-setup='{ "techOrder": ["${result.storageService}"], "sources": [{ "type": "video/${result.storageService}", "src": "${result.path}"}] ${vimeoControls}  }'
@@ -387,7 +388,7 @@
                 if(isVideo){
 
                     const options = {
-                        autoplay: false,
+                        autoplay: true,
                         preload: 'auto',
                     };
     

@@ -22,7 +22,7 @@ class TextLessonsController extends Controller
             'webinar_id' => 'required',
             'title' => 'required',
             'study_time' => 'required|numeric',
-            'image' => 'required',
+            // 'image' => 'required',
             'accessibility' => 'required|' . Rule::in(File::$accessibility),
             'summary' => 'required',
             'content' => 'required',

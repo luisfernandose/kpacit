@@ -30,6 +30,174 @@
         });
     });
 
+    $('body').on('click', '#add_twice_question', function (e) {
+        e.preventDefault();
+        var twiceQuestionModal = $('#twiceQuestionModal');
+        var clone = twiceQuestionModal.clone();
+        var idF = 'correctAnswerSwitchF' + randomString();
+        var idT = 'correctAnswerSwitchT' + randomString();
+        clone.find('label.js-switch').attr('for', idT);
+        clone.find('input.js-switch').attr('id', idT);
+
+        clone.find('label.js-switch.false').attr('for', idF);
+        clone.find('input.js-switch.false').attr('id', idF);
+
+        Swal.fire({
+            html: clone.html(),
+            showCancelButton: false,
+            showConfirmButton: false,
+            customClass: {
+                content: 'p-0 text-left',
+            },
+            width: '48rem',
+        });
+    });
+
+    $('body').on('click', '#add_kpacit_session', function (e) {
+        e.preventDefault();
+        const quiz_id = $(this).attr('data-webinar-id');
+
+        var kpacitLessonModal = $('.kpacitLessonModal');
+        var clone = kpacitLessonModal.clone();
+
+        Swal.fire({
+            html: clone.html(),
+            showCancelButton: false,
+            showConfirmButton: false,
+            customClass: {
+                content: 'p-0 text-left',
+            },
+            width: '48rem',
+        });
+    });
+
+    $('body').on('click', '#add_file_lesson', function (e) {
+        e.preventDefault();
+        const module_id = $(this).attr('data-module-id');
+        var fileLessonModal = $('#fileLessonModal');
+        var clone = fileLessonModal.clone();
+
+        Swal.fire({
+            html: clone.html(),
+            showCancelButton: false,
+            showConfirmButton: false,
+            customClass: {
+                content: 'p-0 text-left',
+            },
+            width: '48rem',
+        });
+    });
+
+    $('body').on('click', '#add_text_lesson', function (e) {
+        e.preventDefault();
+        const module_id = $(this).attr('data-module-id');
+
+        var textLessonModal = $('.textLessonModal' + module_id);
+        var clone = textLessonModal.clone();
+
+        Swal.fire({
+            html: clone.html(),
+            showCancelButton: false,
+            showConfirmButton: false,
+            customClass: {
+                content: 'p-0 text-left',
+            },
+            width: '48rem',
+        });
+    });
+
+    $('body').on('click', '#add_new_price', function (e) {
+        e.preventDefault();
+        const price_id = $(this).attr('data-webinar-id');
+
+        var newPriceModal = $('.newPriceModal' + price_id);
+        var clone = newPriceModal.clone();
+
+        Swal.fire({
+            html: clone.html(),
+            showCancelButton: false,
+            showConfirmButton: false,
+            customClass: {
+                content: 'p-0 text-left',
+            },
+            width: '48rem',
+        });
+
+        resetDatePickers();
+    });
+
+    $('body').on('click', '#add_new_prerequisite', function (e) {
+        e.preventDefault();
+        const price_id = $(this).attr('data-webinar-id');
+
+        var newPrerequisiteModal = $('.newPrerequisiteModal' + price_id);
+        var clone = newPrerequisiteModal.clone();
+
+        Swal.fire({
+            html: clone.html(),
+            showCancelButton: false,
+            showConfirmButton: false,
+            customClass: {
+                content: 'p-0 text-left',
+            },
+            width: '48rem',
+        });
+    });
+
+    $('body').on('click', '#add_new_faq', function (e) {
+        e.preventDefault();
+        const price_id = $(this).attr('data-webinar-id');
+
+        var newFaqModal = $('.newFaqModal' + price_id);
+        var clone = newFaqModal.clone();
+
+        Swal.fire({
+            html: clone.html(),
+            showCancelButton: false,
+            showConfirmButton: false,
+            customClass: {
+                content: 'p-0 text-left',
+            },
+            width: '48rem',
+        });
+    });
+
+    $('body').on('click', '#add_new_exam', function (e) {
+        e.preventDefault();
+        const price_id = $(this).attr('data-webinar-id');
+
+        var newExamModal = $('.newExamModal' + price_id);
+        var clone = newExamModal.clone();
+
+        Swal.fire({
+            html: clone.html(),
+            showCancelButton: false,
+            showConfirmButton: false,
+            customClass: {
+                content: 'p-0 text-left',
+            },
+            width: '48rem',
+        });
+    });
+
+    $('body').on('click', '#add_new_module', function (e) {
+        e.preventDefault();
+        const quiz_id = $(this).attr('data-webinar-id');
+
+        var newModuleModal = $('.newModuleModal');
+        var clone = newModuleModal.clone();
+
+        Swal.fire({
+            html: clone.html(),
+            showCancelButton: false,
+            showConfirmButton: false,
+            customClass: {
+                content: 'p-0 text-left',
+            },
+            width: '48rem',
+        });
+    });
+
     $('body').on('click', '.add-answer-btn', function (e) {
         e.preventDefault();
         var mainRow = $('.add-answer-container .main-answer-box');
@@ -76,8 +244,8 @@
 
     $('body').on('click', '#add_descriptive_question', function (e) {
         e.preventDefault();
-        var multipleQuestionModal = $('#descriptiveQuestionModal');
-        var clone = multipleQuestionModal.clone();
+        var descriptiveQuestionModal = $('#descriptiveQuestionModal');
+        var clone = descriptiveQuestionModal.clone();
 
         Swal.fire({
             html: clone.html(),

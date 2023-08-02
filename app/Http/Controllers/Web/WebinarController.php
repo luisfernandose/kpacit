@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Responses\S3FileStream;
 use App\Models\AdvertisingBanner;
 use App\Models\CourseLearning;
+use App\Models\CourseOrganizations;
 use App\Models\Favorite;
 use App\Models\File;
 use App\Models\Setting;
@@ -23,12 +24,10 @@ class WebinarController extends Controller
 {
     public function course($slug)
     {
-
         $user = null;
 
         if (auth()->check()) {
             $user = auth()->user();
-
         }
 
         $course = Webinar::where('slug', $slug)
@@ -131,27 +130,26 @@ class WebinarController extends Controller
             return back();
         }
 
-        if($user && $user->isUser()){
+        if ($user && $user->isUser()) {
 
 
-            if( isset($course->limit_device) && (int)$course->limit_device > 0){
-               
+            if (isset($course->limit_device) && (int)$course->limit_device > 0) {
+
                 $device = \DeviceTracker::findCurrentDevice();
-              
-                $user_device_find = DeviceUser::where('user_id',$user->id)
-                                               ->orderBy('created_at','ASC')
-                                               ->limit((int)$course->limit_device)
-                                               ->get()->contains('device_id', $device->id); 
 
-                    if(empty($user_device_find)){
-                        $toastData = [
-                            'title' => '',
-                            'msg' => trans('auth.limit_devices'),
-                            'status' => 'error',
-                        ];
-                        return back()->with(['toast' => $toastData]);
-                    }
-                
+                $user_device_find = DeviceUser::where('user_id', $user->id)
+                    ->orderBy('created_at', 'ASC')
+                    ->limit((int)$course->limit_device)
+                    ->get()->contains('device_id', $device->id);
+
+                if (empty($user_device_find)) {
+                    $toastData = [
+                        'title' => '',
+                        'msg' => trans('auth.limit_devices'),
+                        'status' => 'error',
+                    ];
+                    return back()->with(['toast' => $toastData]);
+                }
             }
         }
 
@@ -166,7 +164,9 @@ class WebinarController extends Controller
             ->get();
 
         $isPrivate = $course->private;
-        if (!empty($user) and ($user->id == $course->creator_id or $user->organ_id == $course->creator_id or $user->isAdmin())) {
+        $course_shared = CourseOrganizations::where('webinar_id', $course->id)->where('user_id', $user->organ_id)->first();
+        
+        if (!empty($user) and (!empty($course_shared) or $user->id == $course->creator_id or $user->organ_id == $course->creator_id or $user->isAdmin())) {
             $isPrivate = false;
         }
 
@@ -260,7 +260,7 @@ class WebinarController extends Controller
                 ->where('id', $file_id)
                 ->first();
 
-            if (!empty($file) and $file->storage=='local' and $file->downloadable) {
+            if (!empty($file) and $file->storage == 'local' and $file->downloadable) {
                 $canAccess = true;
 
                 if ($file->accessibility == 'paid') {
@@ -333,7 +333,6 @@ class WebinarController extends Controller
                     $filestream = new S3FileStream($path, config('filesystems.default'), $fileName);
 
                     return $filestream->output();
-
                 }
             }
         }
@@ -377,7 +376,6 @@ class WebinarController extends Controller
                         $storageService = 's3';
 
                         $path =  Storage::url($file->file);
-
                     } else {
 
                         $path = $file->file;

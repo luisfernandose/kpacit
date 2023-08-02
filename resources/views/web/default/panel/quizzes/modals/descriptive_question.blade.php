@@ -32,7 +32,7 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label class="input-label">{{ trans('quiz.correct_answer') }}</label>
-                        <textarea name="ajax[correct]" class="js-ajax-correct form-control" rows="10">{{ !empty($question_edit) ? $question_edit->correct : '' }}</textarea>
+                        <textarea name="ajax[correct]" class="js-ajax-correct form-control" rows="22">{{ !empty($question_edit) ? $question_edit->correct : '' }}</textarea>
                     </div>
                 </div>
             </div>

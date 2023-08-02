@@ -305,6 +305,6 @@ class HomeController extends Controller
             'boxVideoOrImage' => $boxVideoOrImage ?? null,
         ];
 
-        return view(getTemplate() . '.pages.home', $data);
+        return view(getTemplate() . '.layouts.home', $data);
     }
 }
