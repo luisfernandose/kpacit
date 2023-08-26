@@ -9,7 +9,7 @@
     <section class="">
         <div class="d-flex align-items-start align-items-md-center justify-content-between flex-column flex-md-row">
             <h1 class="section-title">{{ trans('panel.dashboard') }}</h1>
-
+<!-- 
             @if(!$authUser->isUser())
                 <div class="d-flex align-items-center flex-row-reverse flex-md-row justify-content-start justify-content-md-center mt-20 mt-md-0">
                     <label class="mb-0 mr-10 cursor-pointer text-gray font-14 font-weight-500" for="iNotAvailable">{{ trans('panel.i_not_available') }}</label>
@@ -18,20 +18,20 @@
                         <label class="custom-control-label" for="iNotAvailable"></label>
                     </div>
                 </div>
-            @endif
+            @endif-->
         </div>
-
+<!--
         @if(!$authUser->financial_approval and !$authUser->isUser())
             <div class="p-15 mt-20 p-lg-20 not-verified-alert font-weight-500 text-dark-blue rounded-sm panel-shadow">
                 {{ trans('panel.not_verified_alert') }}
                 <a href="/panel/setting/step/7" class="text-decoration-underline">{{ trans('panel.this_link') }}</a>.
             </div>
-        @endif
+        @endif-->
 
         <div class="bg-white dashboard-banner-container position-relative px-15 px-ld-35 py-10 panel-shadow rounded-sm">
             <h2 class="font-30 text-primary line-height-1">
-                <span class="d-block">{{ trans('panel.hi') }} {{ $authUser->full_name }},</span>
-                <span class="font-16 text-secondary font-weight-bold">{{ trans('panel.have_event',['count' => !empty($unReadNotifications) ? count($unReadNotifications) : 0]) }}</span>
+                <span class="d-block">{{ trans('panel.hi') }} {{ $authUser->full_name }}</span>
+                <!-- <span class="font-16 text-secondary font-weight-bold">{{ trans('panel.have_event',['count' => !empty($unReadNotifications) ? count($unReadNotifications) : 0]) }}</span>-->
             </h2>
 
             <ul class="mt-15 unread-notification-lists">
@@ -46,17 +46,17 @@
                 @endif
             </ul>
 
-            <a href="/panel/notifications" class="mt-15 font-weight-500 text-dark-blue d-inline-block">{{ trans('panel.view_all_events') }}</a>
+           <!-- <a href="/panel/notifications" class="mt-15 font-weight-500 text-dark-blue d-inline-block">{{ trans('panel.view_all_events') }}</a>-->
 
-            <div class="dashboard-banner">
-                <img src="{{ getPageBackgroundSettings('dashboard') }}" alt="" class="img-cover">
+            <div class="dashboard-banner" >
+                <img src="{{ getPageBackgroundSettings('dashboard') }}" alt="" class="img-cover" style="margin-top: 20%;">
             </div>
         </div>
     </section>
 
     <section class="dashboard">
         <div class="row">
-            <div class="col-12 col-lg-3 mt-35">
+            <!-- <div class="col-12 col-lg-3 mt-35">
                 <div class="bg-white account-balance rounded-sm panel-shadow py-15 py-md-30 px-10 px-md-20">
                     <div class="text-center">
                         <img src="/assets/default/img/activity/36.svg" class="account-balance-icon" alt="">
@@ -75,14 +75,14 @@
                         @if($can_drawable)
                             <span class="font-16 font-weight-500 text-gray">{{ trans('panel.with_drawable') }}:</span>
                             <span class="font-16 font-weight-bold text-secondary">{{ $currency }}{{ $drawable }}</span>
-                        @else
+                        @else-->
                             <!-- <a href="/panel/financial/account" class="font-16 font-weight-bold text-dark-blue">{{ trans('financial.charge_account') }}</a> -->
-                        @endif
+                       <!-- @endif
                     </div>
                 </div>
-            </div>
+            </div>-->
 
-            <div class="col-12 col-lg-3 mt-35">
+            <!--  <div class="col-12 col-lg-3 mt-35">
                 <a href="@if($authUser->isUser()) /panel/webinars/purchases @else /panel/webinars @endif" class="bg-white dashboard-stats rounded-sm panel-shadow p-10 p-md-20 d-flex align-items-center">
                     <div class="stat-icon requests">
                         <img src="/assets/default/img/icons/request.svg" alt="">
@@ -207,7 +207,7 @@
             <span class="modal-time d-block font-12 text-gray mt-25"></span>
             <p class="modal-message font-weight-500 text-gray mt-4"></p>
         </div>
-    </div>
+    </div>-->
 
 @endsection
 
