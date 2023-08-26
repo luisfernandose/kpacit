@@ -26,7 +26,7 @@
                     </button>
                 </div>
 
-                <ul class="navbar-nav mr-auto d-flex align-items-center">
+             <!--   <ul class="navbar-nav mr-auto d-flex align-items-center">
                     @if(!empty($categories) and count($categories))
                         <li class="mr-lg-25">
                             <div class="menu-category">
@@ -73,10 +73,10 @@
                             </li>
                         @endforeach
                     @endif
-                </ul>
+                </ul>-->
             </div>
 
-            <div class="nav-icons-or-start-live navbar-order">
+           <!-- <div class="nav-icons-or-start-live navbar-order">
 
                 <a href="{{ empty($authUser) ? '/login' : ($authUser->isAdmin() ? '/admin/webinars/create' : (($authUser->isUser()) ? '/become_instructor' : '/panel/webinars/new')) }}" class="d-none d-lg-flex btn btn-sm btn-primary nav-start-a-live-btn">
                     {{ (empty($authUser) or !$authUser->isUser()) ? trans('navbar.start_a_live_class') : ($authUser->isUser() ? trans('site.become_instructor') : '') }}
@@ -94,7 +94,7 @@
                     @include(getTemplate().'.includes.notification-dropdown')
                 </div>
 
-            </div>
+            </div>-->
 
             <div  class="nav-icons-or-start-live navbar-order" style="margin-left: 1%;">
                 <a href="{{ empty($authUser) ? '/login' : ($authUser->isAdmin() ? '/admin/webinars' : (($authUser->isUser()) ? '/panel/webinars/organization_classes' : '/panel/webinars')) }}" class="d-none d-lg-flex btn btn-sm btn-primary nav-start-a-live-btn" >

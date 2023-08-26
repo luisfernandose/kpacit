@@ -50,11 +50,11 @@
                                     <a class="nav-link" id="badges-tab" data-toggle="tab" href="#badges" role="tab" aria-controls="badges" aria-selected="true">{{ trans('admin/main.badges') }}</a>
                                 </li>
 
-                                @if(!empty($becomeInstructor))
+                              <!--  @if(!empty($becomeInstructor))
                                     <li class="nav-item">
                                         <a class="nav-link @if(!empty($becomeInstructor)) active @endif" id="become_instructor-tab" data-toggle="tab" href="#become_instructor" role="tab" aria-controls="become_instructor" aria-selected="true">{{ trans('admin/main.become_instructor_info') }}</a>
                                     </li>
-                                @endif
+                                @endif-->
                             </ul>
 
                             <div class="tab-content" id="myTabContent2">
