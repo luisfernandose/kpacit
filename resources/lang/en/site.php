@@ -105,4 +105,7 @@ return [
     'message_success_sent' => 'Message successfully sent',
     'server_error_try_again' => 'Server error! Try again later',
     'store_error_try_again' => 'Operation failed! Try again later',
+    'validate_recaptcha' => '¡Please resolve recaptcha!',
+    'response_contact' => '¡Please validate the form data!',
+    'response_contact_success' => '¡Information registered successfully!',
 ];

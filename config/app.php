@@ -184,6 +184,7 @@ return [
         Mews\Captcha\CaptchaServiceProvider::class,
         Jorenvh\Share\Providers\ShareServiceProvider::class,
         KingFlamez\Rave\RaveServiceProvider::class,
+        Biscolab\ReCaptcha\ReCaptchaServiceProvider::class,
     ],
 
     /*
@@ -240,6 +241,7 @@ return [
         'Captcha' => Mews\Captcha\Facades\Captcha::class,
         'Share' => Jorenvh\Share\ShareFacade::class,
         'Rave' => KingFlamez\Rave\Facades\Rave::class,
+        'ReCaptcha' => Biscolab\ReCaptcha\Facades\ReCaptcha::class,
     ],
 
 ];

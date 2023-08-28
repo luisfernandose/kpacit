@@ -14,12 +14,12 @@
         {{ $pageTitle ?? '' }}{{ !empty($generalSettings['site_name']) ? ' | ' . $generalSettings['site_name'] : '' }}
     </title>
 
+    <link rel="stylesheet" href="/assets/default/vendors/sweetalert2/dist/sweetalert2.min.css">
     @if (!request()->is('/'))
         @include(getTemplate() . '.includes.metas')
 
         <!-- General CSS File -->
         <link href="/assets/default/css/font.css" rel="stylesheet">
-        <link rel="stylesheet" href="/assets/default/vendors/sweetalert2/dist/sweetalert2.min.css">
         <link rel="stylesheet" href="/assets/default/vendors/toast/jquery.toast.min.css">
         <link rel="stylesheet" href="/assets/default/vendors/simplebar/simplebar.css">
         <link rel="stylesheet" href="/assets/default/css/app.css">
@@ -113,6 +113,10 @@
         }]
       }
     </script>
+    <link>
+
+
+
     <!-- / Yoast SEO plugin. -->
     <link rel='dns-prefetch' href='//fonts.googleapis.com' />
     <link rel='dns-prefetch' href='//s.w.org' />
@@ -210,6 +214,13 @@
         media='all' />
     <link rel='stylesheet' id='videos-library-css' href='css/Video.css' type='text/css' media='all' />
     <style id='wp-block-library-theme-inline-css' type='text/css'>
+        .text-danger{
+            color: #ffffff;
+        }
+        .g-recaptcha{
+            display: flex;
+            justify-content: center;
+        }
         .wp-block-audio figcaption {
             color: #555;
             font-size: 13px;
@@ -699,7 +710,8 @@
         media='all' />
     <link rel='stylesheet' id='elementor-icons-fa-brands-css' href='font-awesome/css/brands.min.css' type='text/css'
         media='all' />
-    <script type='text/javascript' src='js/jquery/jquery.min.js' id='jquery-core-js'></script>
+    <script type='text/javascript' src='https://code.jquery.com/jquery-3.6.0.min.js' id='jquery-core-js'></script>
+    
     <script type='text/javascript' src='js/jquery/jquery-migrate.min.js' id='jquery-migrate-js'></script>
     <script type='text/javascript' src='assets/js/skroll-r.js' id='skroll-r-js'></script>
     <script type='text/javascript' src='assets/js/jquery.event.move.js' id='eventmove-js'></script>
@@ -1981,7 +1993,7 @@
                                                                 </p>
                                                                 <ul></ul>
                                                             </div>
-                                                            <form action="/contact/store" method="post"
+                                                            <form id="contact" action="{{ route('contact.store') }}" method="post"
                                                                 class="wpcf7-form init" aria-label="Contact form"
                                                                 novalidate="novalidate" data-status="init">
                                                                 {{ csrf_field() }}
@@ -2010,6 +2022,10 @@
                                                                                     placeholder="Nombre Completo*"
                                                                                     type="text" name="name"
                                                                                     value="{{ old('name') }}">
+                                                                                    <span class="invalid-feedback text-danger" role="alert" id="error-name"></span>
+                                                                                    @error('name')
+                                                                                        <span class="text-danger">{{ $message }}</span>
+                                                                                    @enderror
                                                                             </span>
                                                                         </p>
                                                                     </div>
@@ -2024,6 +2040,10 @@
                                                                                     placeholder="Empresa*"
                                                                                     type="text" name="subject"
                                                                                     value="{{ old('subject') }}">
+                                                                                    <span class="invalid-feedback text-danger" role="alert" id="error-subject"></span>
+                                                                                    @error('subject')
+                                                                                        <span class="text-danger">{{ $message }}</span>
+                                                                                    @enderror
                                                                             </span>
                                                                         </p>
                                                                     </div>
@@ -2040,6 +2060,10 @@
                                                                                     placeholder="Email*"
                                                                                     type="email" name="email"
                                                                                     value="{{ old('email') }}">
+                                                                                    <span class="invalid-feedback text-danger" role="alert" id="error-email"></span>
+                                                                                    @error('email')
+                                                                                        <span class="text-danger">{{ $message }}</span>
+                                                                                    @enderror
                                                                             </span>
                                                                         </p>
                                                                     </div>
@@ -2054,6 +2078,10 @@
                                                                                     placeholder="Teléfono Contacto*"
                                                                                     type="tel" name="phone"
                                                                                     value="{{ old('phone') }}">
+                                                                                    <span class="invalid-feedback text-danger" role="alert" id="error-phone"></span>
+                                                                                    @error('phone')
+                                                                                        <span class="text-danger">{{ $message }}</span>
+                                                                                    @enderror
                                                                             </span>
                                                                         </p>
                                                                     </div>
@@ -2064,17 +2092,29 @@
                                                                     <input type="text" name="captcha"
                                                                         class="form-control" value="" hidden
                                                                         style="display: none;">
+    
+                                                                    
                                                                 </div>
                                                                 <p>
+                                                                    <div class="row">
+                                                                        <div class="col">
+
+                                                                            <div class="g-recaptcha" data-sitekey="{{env('RECAPTCHA_SITE_KEY')}}"></div>
+                                                                            <span class="invalid-feedback text-danger" role="alert" id="error-g-recaptcha-response"></span>
+                                                                        @error('g-recaptcha-response')
+                                                                            <span class="text-danger">{{ $message }}</span>
+                                                                        @enderror
+                                                                        </div>
+                                                                    </div>
                                                                     <input
                                                                         class="wpcf7-form-control has-spinner wpcf7-submit"
-                                                                        type="submit" value="Enviar Correo">
+                                                                        type="submit" value="Enviar Correo" id="submit-contact" disabled>
                                                                     <span class="wpcf7-spinner"></span>
                                                                 </p>
                                                                 <div class="wpcf7-response-output"
                                                                     aria-hidden="true">
                                                                 </div>
-                                                                <div class="g-recaptcha" data-sitekey="6LeVAGEnAAAAAGvB5_mh9iDW1M98kPMaglNE0zMM"></div>
+
                                                             </form>
                                                         </div>
                                                     </div>
@@ -2342,12 +2382,12 @@
         </footer>
     </div>
 
+    <script src="/assets/default/vendors/sweetalert2/dist/sweetalert2.min.js"></script>
     @if (!request()->is('/'))
         <!-- Template JS File -->
         <script src="/assets/default/js/app.js"></script>
         <script src="/assets/default/vendors/feather-icons/dist/feather.min.js"></script>
         <script src="/assets/default/vendors/moment.min.js"></script>
-        <script src="/assets/default/vendors/sweetalert2/dist/sweetalert2.min.js"></script>
         <script src="/assets/default/vendors/toast/jquery.toast.min.js"></script>
         <script type="text/javascript" src="/assets/default/vendors/simplebar/simplebar.min.js"></script>
 
@@ -2707,6 +2747,67 @@
                 behavior: "smooth" // Añade la transición suave
             });
         }
+    </script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('submit-contact').removeAttribute('disabled')
+            document.getElementById('contact').addEventListener('submit', function(event) {
+                event.preventDefault();
+                $('[id^="error-"]').text('');
+                if (!grecaptcha.getResponse()) {
+                   
+                    let errorMsg= @json(__('site.validate_recaptcha'));
+                  
+                    Swal.fire({
+                        title: 'Error!',
+                        text: errorMsg,
+                        icon: 'error',
+                        confirmButtonText: 'ok'
+                    })
+                    return;
+                }
+                
+                // Obtiene el formulario y los datos
+                var formData = new FormData(this);
+                
+                // Envía la solicitud AJAX
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        let errorMsgData= @json(__('site.response_contact_success'));
+                        Swal.fire({
+                                text: errorMsgData,
+                                icon: 'success',
+                                confirmButtonText: 'ok'
+                            })
+                        $('#contact input[type="text"]').val('');
+                        $('#contact input[type="email"]').val('');
+                        $('#contact input[type="tel"]').val('');
+                        grecaptcha.reset();
+                    },
+                    error: function(xhr) {
+                        grecaptcha.reset();
+                        if (xhr.status === 422) {
+                            let errorMsgData= @json(__('site.response_contact'));
+                            Swal.fire({
+                                title: 'Error!',
+                                text: errorMsgData,
+                                icon: 'error',
+                                confirmButtonText: 'ok'
+                            })
+                            var errors = xhr.responseJSON.errors;
+                            for (var field in errors) {
+                                $('#error-' + field).text(errors[field][0]);
+                            }
+                        }
+                    }
+                });
+            });
+        })
     </script>
 </body>
 

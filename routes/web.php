@@ -156,7 +156,7 @@ Route::group(['namespace' => 'Web', 'middleware' => ['impersonate', 'share', 'us
 
     Route::group(['prefix' => 'contact'], function () {
         Route::get('/', 'ContactController@index');
-        Route::post('/store', 'ContactController@store');
+        Route::post('/store', 'ContactController@store')->name('contact.store');
     });
 
     Route::group(['prefix' => 'instructors'], function () {
