@@ -10,6 +10,7 @@
             height: 100% !important;
         }
 
+
         /* Extra small devices (phones, 600px and down) */
         @media only screen and (max-width: 600px) {
             .custom-modal-body {
