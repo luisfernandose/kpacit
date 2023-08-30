@@ -57,7 +57,7 @@
                 {{ csrf_field() }}
                 <input type="hidden" name="quiz_result_id" value="{{ !empty($newQuizStart) ? $newQuizStart->id : ''}}" class="form-control" placeholder=""/>
                 <input type="hidden" name="attempt_number" value="{{  $numberOfAttempt }}" class="form-control" placeholder=""/>
-                <input type="hidden" class="js-quiz-question-count" value="{{ $quizResult->quiz->quizQuestions->count() }}"/>
+                <input type="hidden" id="questions" class="js-quiz-question-count" value="{{ $quizResult->quiz->quizQuestions->count() }}"/>
 
                 @foreach($quizResult->quiz->quizQuestions as $key => $question)
 
@@ -136,8 +136,8 @@
                     <button type="button" disabled class="previous btn btn-sm btn-primary mr-20 p-0">{{ trans('quiz.previous_question') }}</button>
                     <button type="button" class="next btn btn-primary btn-sm mr-auto p-0">{{ trans('quiz.next_question') }}</button>
 
-                    @if(!empty($newQuizStart))
-                        <button type="submit" class="finish btn btn-sm btn-danger p-0">{{ trans('public.finish') }}</button>
+                    @if(!empty($newQuizStart) && $newQuizStart->status!=$statusPassed)
+                        <button type="submit" class="finish btn-disabled btn btn-sm p-0">{{ trans('public.finish') }}</button>
                     @endif
                 </div>
             </form>
@@ -147,4 +147,36 @@
 
 @push('scripts_bottom')
     <script src="/assets/default/js/parts/quiz-start.min.js"></script>
+    <script>
+        var x = 1;
+        $( document ).ready(function() {
+            $('.finish').show();
+        });
+        function removeDisabled() {
+            $(".finish").removeClass("btn-disabled");
+            $(".finish").prop("disabled", false);
+        }
+        function addDisabled() {
+            $(".finish").addClass("btn-disabled");
+            $(".finish").prop("disabled", true);
+
+        }
+        $("body").on("click", ".previous", function(e) {
+            x = x - 1;
+            var questions = +$("#questions").val();
+            if (x < questions) {
+                addDisabled()
+            }
+        });
+
+        $("body").on("click", ".next", function(e) {
+            x = x + 1;
+            var questions = +$("#questions").val();
+            if (x == questions) {
+                removeDisabled()
+                
+            }
+
+        });
+    </script>
 @endpush

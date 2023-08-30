@@ -41,9 +41,9 @@ class WebinarController extends Controller
                 $query->where('teacher_id', $user->id);
             } elseif ($user->isOrganization()) {
                 $query->where('creator_id', $user->id);
-                $shared_courses = CourseOrganizations::where('creator_id', $user->id)->where('status', CourseOrganizations::$pending)->get();
             }
         });
+        $shared_courses = CourseOrganizations::where('creator_id', $user->id)->where('status', CourseOrganizations::$pending)->get();
 
         if ($user->isOrganization()) {
             //$shared_courses = CourseOrganizations::where('user_id', $user->id)->where('status', CourseOrganizations::$pending)->get();
