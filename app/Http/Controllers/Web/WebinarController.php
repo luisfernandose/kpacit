@@ -251,7 +251,7 @@ class WebinarController extends Controller
     public function downloadFile($slug, $file_id)
     {
         $webinar = Webinar::where('slug', $slug)
-            ->where('private', false)
+            /* ->where('private', false) */
             ->where('status', 'active')
             ->first();
 
