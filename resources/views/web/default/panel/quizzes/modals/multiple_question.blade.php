@@ -49,7 +49,7 @@
                 </div>
             </div>
 
-            <div class="add-answer-container" style="height: 70% !important">
+            <div class="add-answer-container">
 
                 @if (!empty($question_edit->quizzesQuestionsAnswers) and !$question_edit->quizzesQuestionsAnswers->isEmpty())
                     @foreach ($question_edit->quizzesQuestionsAnswers as $answer)

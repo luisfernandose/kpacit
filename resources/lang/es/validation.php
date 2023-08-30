@@ -134,6 +134,7 @@ return [
     ],
 
     'captcha' => 'Incorrect captcha...',
+    'recaptcha' => 'El :attribute no es correcto!',
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Attributes

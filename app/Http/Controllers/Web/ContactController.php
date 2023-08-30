@@ -7,6 +7,7 @@ use App\Models\Contact;
 use App\Form;
 use Illuminate\Http\Request;
 use App\Mail\SendNotifications;
+use Illuminate\Support\Facades\Validator;
 
 class ContactController extends Controller
 {
@@ -32,15 +33,25 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         $generalSettings = getGeneralSettings();
-
-        $this->validate($request, [
+        
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'email' => 'required|string|email',
             'phone' => 'required|numeric',
             'subject' => 'required|string',
-            'message' => 'string'
+            'message' => 'string',
+            'g-recaptcha-response' => 'recaptcha',
         ]);
 
+        if ($validator->fails()) {
+            if ($request->ajax()) {
+                return response()->json(['errors' => $validator->errors()], 422);
+            } else {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+        }
         $data = $request->all();
         unset($data['_token']);
         $data['created_at'] = time();
@@ -64,7 +75,12 @@ class ContactController extends Controller
         ];
 
         \Mail::to('registro@kpacit.com')->send(new \App\Mail\SendNotifications($mail));
-        return redirect('/');
+   
+        if ($request->ajax()) {
+            return response()->json(['message' => 'Datos guardados exitosamente'], 200);
+        } else {
+            return redirect('/');
+        }
     }
 
     public function hola(Request $request)

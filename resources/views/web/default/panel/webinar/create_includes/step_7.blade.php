@@ -8,7 +8,10 @@
 
         .swal-wide .swal2-content .swal2-html-container {
             height: 100% !important;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
+
 
         /* Extra small devices (phones, 600px and down) */
         @media only screen and (max-width: 600px) {

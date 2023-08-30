@@ -772,6 +772,7 @@ class QuizController extends Controller
                 'userAnswers' => json_decode($quizResult->results, true),
                 'numberOfAttempt' => $numberOfAttempt,
                 'questionsSumGrade' => $quizResult->quiz->quizQuestions->sum('grade'),
+                'statusPassed'=>QuizzesResult::$passed,
             ];
 
             return view(getTemplate() . '.panel.quizzes.quiz_result', $data);

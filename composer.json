@@ -11,6 +11,7 @@
         "php": "^7.2.5",
         "anandsiddharth/laravel-paytm-wallet": "^1.0",
         "barryvdh/laravel-debugbar": "^3.5",
+        "biscolab/laravel-recaptcha": "^6.0",
         "cashuanony/phpanonymous": "dev-master",
         "cviebrock/eloquent-sluggable": "v7.0.1",
         "doctrine/dbal": "2.13",
