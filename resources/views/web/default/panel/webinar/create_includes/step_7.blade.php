@@ -8,6 +8,8 @@
 
         .swal-wide .swal2-content .swal2-html-container {
             height: 100% !important;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
 
