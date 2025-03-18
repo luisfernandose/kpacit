@@ -31,7 +31,6 @@
         "league/omnipay": "^3.1",
         "maatwebsite/excel": "^3.1",
         "macsidigital/laravel-zoom": "^4.1",
-        "melhorenvio/mercadopago-dx-php-laravel": "^1.2",
         "mews/captcha": "^3.2",
         "mews/purifier": "^3.3",
         "midtrans/midtrans-php": "^2.3",
